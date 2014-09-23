@@ -303,13 +303,14 @@ casex (op)
 	// SLL (37) shift count is giving by the 5 lsb of r[rs2]
 	6'b100101:
 		// Ignore the 27 MSB of r[rs2]
-		res = a << (b & 5'b11111);
+		res = a << (b & 32'h0000001F);
 	// SRL (38)
 	6'b100110:	
-		res = a >> (b & 5'b11111);
+		res = a >> (b & 32'h0000001F);
 	// SRA (39)
 	6'b100111:
-		res = a >>> (b & 5'b11111);
+		// Signed declaration for right shift arithmetic
+		res = $signed(a) >>> (b & 32'h0000001F);
 endcase
 end
 endmodule
