@@ -8,23 +8,22 @@ casex (op)
 	6'b0?0000:
 		begin
 		{carry, res} = a + b;
-		if(CC && op)
+		if(CC & op)
 			addFlags();
 		end
 	// AND (1 y 17)
 	6'b0?0001:
 		begin
 		res = a & b;
-		if(CC && op)
+		if(CC & op)
 			logicFlags();
 		end
 	// OR (2 y 18)
 	6'b0?0010:
 		begin
 		res = a | b;
-		if(CC & op)begin
-			$display("oh oh");
-			logicFlags();end
+		if(CC & op)
+			logicFlags();
 		end
 	// XOR (3 y 19)
 	6'b0?0011:
