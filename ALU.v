@@ -79,7 +79,7 @@ casex (op)
 		if(CC & op)
 			subFlags();
 		end
-	// SLL (37) shift count is giving by the 5 lsb of r[rs2]
+	// SLL (37) shift count is given by the 5 lsb of r[rs2]
 	6'b100101:
 		// Ignore the 27 MSB of r[rs2]
 		res = a << (b & 32'h0000001F);
