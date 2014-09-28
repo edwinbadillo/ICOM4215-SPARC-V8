@@ -95,12 +95,8 @@ always@(Enable, OpCode)
 			end
 
 		//SWAP register with memory
-			6'b001111: begin
-			
-			
-			
-			end
-				
+		//	6'b001111:
+		//Implemented using the Control Unit and previous operations
 			default : $display("Error in RAM");
 		endcase
 	else MDR_DataOut= 32'bz; 
