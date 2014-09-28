@@ -1,4 +1,4 @@
-module alu(output reg [31:0]res, N, Z, V, C,input wire [5:0]op, [31:0]a, [31:0]b, Cin);
+module alu(output reg [31:0]res, output reg N, Z, V, C,input wire [5:0]op, [31:0]a, [31:0]b, input wire Cin);
 reg carry;		// Used to save carry to not modify the C if S is low 
 parameter CC = 5'h10; 	// Used to check the S in the opcode
 always @ (op,a,b,Cin)

@@ -1,8 +1,8 @@
-module test_alu_console;
+module test_alu_csv;
 reg [5:0]op = 6'b000000; //Genera las combinaciones de las entradas
 reg [31:0]a = 5;
 reg [31:0]b = 2;
-reg Cin = 1; 
+reg Cin = 0; 
 wire [31:0]res;
 wire N;
 wire Z;
@@ -30,7 +30,8 @@ if (data_file == `NULL)
 	$display("Error reading aluTestOpCodes.txt file");
 else
 	$display("File open aluTestOpCodes.txt");
-$display (" op		a	   b	Cin	res	N	Z	V	C"); //imprime header
-$monitor ("%b	%d	%d	  %d	%d		%d	%d	%d	%d ",op, a, b, Cin, res, N, Z, V, C); //imprime las señales
+fp=$fopen("result.txt","w");
 end
+always @ (op)
+$fwrite(fp,"%b,%d,%d,%d,%d,%d,%d,%d,%d\n",op, a, b, Cin, res, N, Z, V, C);
 endmodule
