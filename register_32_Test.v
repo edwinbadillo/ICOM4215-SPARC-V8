@@ -1,0 +1,48 @@
+module test_register;
+reg [31:0] in = 32'h0000001;
+wire [31:0] out;
+reg enable;
+reg Clr, Clk;
+
+parameter sim_time = 50;
+
+register_32 register (out, in, enable, Clr, Clk); // Instanciación del módulo
+
+initial #sim_time $finish; // Especifica cuando termina simulacion
+
+// Initialize control signals and emulate clock
+initial 
+begin
+enable = 0; // Enable register
+Clk = 0; // Initialize Clk
+Clr = 1'b1;  // Disable clear
+repeat (10) #5 Clk = ~Clk; // Emulate clock
+end
+
+// Clear register
+initial
+begin
+#15 
+begin 
+Clr = 0;	 // Enable clear
+#5 Clr = 1;	// Disable clear
+end
+end
+
+// Enable register
+initial
+begin
+#25 
+begin 
+enable = 1;	 // Enable register
+#5 enable = 0;	// Disable register
+end
+end
+
+initial repeat (10) #5 in = in + 1;
+
+initial begin
+$display ("in \tout \tenable \tclear \tclock"); //imprime header
+$monitor ("%0d \t %0d \t %0d \t %0d \t %0d", in, out, enable, Clr, Clk); //imprime las señales
+end
+endmodule
