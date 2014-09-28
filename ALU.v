@@ -1,9 +1,14 @@
+// 32-bit Arithmetic Logic Unit
+
 module alu(output reg [31:0]res, output reg N, Z, V, C,input wire [5:0]op, [31:0]a, [31:0]b, input wire Cin);
 reg carry;		// Used to save carry to not modify the C if S is low 
 parameter CC = 5'h10; 	// Used to check the S in the opcode
 always @ (op,a,b,Cin)
 begin
 casex (op)
+
+	// Notation: (op2 of the non modifying, op2 of the modifying) based on S bit
+
 	// ADD (0 y 16)
 	6'b0?0000:
 		begin
