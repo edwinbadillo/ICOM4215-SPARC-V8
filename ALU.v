@@ -22,56 +22,57 @@ casex (op)
 	6'b0?0010:
 		begin
 		res = a | b;
-		if(CC && op)
-			logicFlags();
+		if(CC & op)begin
+			$display("oh oh");
+			logicFlags();end
 		end
 	// XOR (3 y 19)
 	6'b0?0011:
 		begin
 		res = a ^ b;
-		if(CC && op)
+		if(CC & op)
 			logicFlags();
 		end
 	// SUB (4 y 20)
 	6'b0?0100:
 		begin
 		{carry, res} = a - b;
-		if(CC && op)
+		if(CC & op)
 			subFlags();
 		end
 	// ANDN (5 y 21)
 	6'b0?0101:
 		begin
 		res = a & ~b; //Not is applied to the second operand
-		if(CC && op)
+		if(CC & op)
 			logicFlags();
 		end
 	// ORN (6 + 22)
 	6'b0?0110:
 		begin
 		res = a | ~b; //Not is applied to the second operand
-		if(CC && op)
+		if(CC & op)
 			logicFlags();
 		end
 	// XNOR (7 y 23)
 	6'b0?0111:
 		begin
 		res = a ^ ~b; //Not is applied to the second operand
-		if(CC && op)
+		if(CC & op)
 			logicFlags();
 		end
 	// ADDX (8 y 24)
 	6'b0?1000:
 		begin
 		{carry,res} = a + b + Cin;
-		if(CC && op)
+		if(CC & op)
 			addFlags();
 		end
 	// SUBX (12 y 28)
 	6'b0?1100:
 		begin
 		{carry, res} = a - b - Cin;
-		if(CC && op)
+		if(CC & op)
 			subFlags();
 		end
 	// SLL (37) shift count is giving by the 5 lsb of r[rs2]
