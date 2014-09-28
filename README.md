@@ -3,6 +3,7 @@ This is a project for our Computer Architecture and Organization course, under t
 Contributors:
 
 Rafael Pol
-Edwin Badillo
-Carlos N. Abreu Takemura
 
+Edwin Badillo
+
+Carlos N. Abreu Takemura
