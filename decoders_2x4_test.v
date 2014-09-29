@@ -19,18 +19,24 @@ module test_decoder_2x4;
 	initial 
 	begin
 		in = 0;
+		enable = 1;
 		$display("In \t Out \t Enable");
 		$monitor ("%b \t %b \t %b",in, out, enable);
 	end
 
+	// Change input each 5ns interval
 	initial 
 	begin
 		repeat(8)
 		begin
 			#5 in = in + 1;
-			#30 enable = 0;
 		end
-		
 	end
 
+	// Disable decoder at 30ns
+	initial 
+	begin
+		#30 enable = 0;
+	end
+	
 endmodule

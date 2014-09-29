@@ -44,7 +44,7 @@ module ram128x32 (output reg[31:0] MDR_DataOut, input Enable, OpCode, input[6:0]
 			//Store Byte
 				6'b000101: begin
 				MDR_DataOut[31:8] <= 24'h00000;
-				MDR_DataOut[7:0]  <= Mem[MAR_Address]
+				MDR_DataOut[7:0]  <= Mem[MAR_Address];
 				end
 
 			//Store Halfword
