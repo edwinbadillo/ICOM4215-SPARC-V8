@@ -1,4 +1,4 @@
-module ram128x32 (output reg[31:0] MDR_DataOut, input Enable, OpCode, input[6:0] MAR_Address, input[31:0] MDR_DataIn); 
+module ram (output reg[31:0] MDR_DataOut, input Enable, OpCode, input[6:0] MAR_Address, input[31:0] MDR_DataIn); 
 
 	reg[8:0] Mem[0:255]; //256 localizaciones de 8 bits
 
