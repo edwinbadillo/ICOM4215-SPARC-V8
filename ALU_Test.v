@@ -1,36 +1,61 @@
 module test_alu_console;
-reg [5:0]op = 6'b000000; //Genera las combinaciones de las entradas
-reg [31:0]a = 5;
-reg [31:0]b = 2;
+
+// Inputs
+reg [5:0]op; 
+reg signed [31:0]a;
+reg signed [31:0]b;
 reg Cin = 1; 
-wire [31:0]res;
-wire N;
-wire Z;
-wire V;
-wire C;
-parameter sim_time = 125;
-integer data_file; // file handler
-integer fp;
+
+// Outputs
+wire signed [31:0]res;
+wire N, Z, V, C;
+
+// File handlers
+integer opFile;
+integer valueFile;
+
+// Constants
 `define NULL 0
+`define SEEK_SET 0
+parameter sim_time = 690;
 
-alu alu1 (res, N, Z, V, C, op, a, b, Cin); // Instanciación del módulo
+alu alu1 (res, N, Z, V, C, op, a, b, Cin);
 
-initial #sim_time $finish; // Especifica cuando termina simulación
+// End simulation at sim_time
+initial #sim_time $finish;
 
+// Initialize files and monitor
 initial begin
-repeat (23)
-begin
-	#5 $fscanf(data_file, "%b\n", op);
-end
-end
-
-initial begin
-data_file = $fopen("aluTestOpCodes.txt", "r");
-if (data_file == `NULL)
+opFile = $fopen("aluTestOpCodes.txt", "r");
+if (opFile == `NULL)
 	$display("Error reading aluTestOpCodes.txt file");
 else
 	$display("File open aluTestOpCodes.txt");
-$display (" op		a	   b	Cin	res	N	Z	V	C"); //imprime header
-$monitor ("%b	%d	%d	  %d	%d		%d	%d	%d	%d ",op, a, b, Cin, res, N, Z, V, C); //imprime las señales
+valueFile = $fopen("aluValues.txt", "r");
+if (valueFile == `NULL)
+	$display("Error reading aluValues.txt file");
+else
+	$display("File open aluValues.txt");
+$monitor ("%b \t %0d \t %0d \t %0d \t %0d \t %0d \t %0d \t %0d \t %0d ",op, a, b, Cin, res, N, Z, V, C);
 end
+
+initial begin
+repeat(5)
+begin
+	$display("======================================================");
+	// Read values for a and b and display header
+	$fscanf(valueFile, "%d\n", a);
+	$fscanf(valueFile, "%d\n", b);
+	$display("\ta = %0d \t b = %0d",a, b);	
+	$display ("  op \t    a \t b \t Cin \t res \t N \t Z \t V \t C"); 
+	// Reset pointer of the op code file to the start of the file
+	$fseek(opFile, 0, `SEEK_SET);
+	// Read the 23 op codes instruction with a 5ns interval
+	repeat (23)
+	begin
+	#5 $fscanf(data_file, "%b\n", op);
+	end
+end
+end
+
 endmodule
