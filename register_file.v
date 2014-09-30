@@ -17,17 +17,17 @@ module register_file(output reg [31:0] out, input [31:0] in, input enable, rw, C
 	//---WIRES---------------------------------------------------------------------------------------------------------
 	wire [3:0]  d_window_out; // 4-bit bus that is the output of the decoder in charge of choosing the current register window
 
-	wire [31:0] d_register_out0; // The output of the decoder used for choosing a register in window 0
-	wire [31:0] d_register_out1;
-	wire [31:0] d_register_out2;
-	wire [31:0] d_register_out3;
+	wire [31:0] d0_out; // The output of the decoder used for choosing a register in window 0
+	wire [31:0] d1_out;
+	wire [31:0] d2_out;
+	wire [31:0] d3_out;
 
-	wire [31:0] mux_r_global_out; // Output of the 8x1 mux used to multiplex values of the global registers
-	wire [31:0] mux_r_window_out; // Output of the 64x1 mux used to multiplex the values of the variable registers in the current window
+	// wire [31:0] mux_r_global_out; // Output of the 8x1 mux used to multiplex values of the global registers
+	// wire [31:0] mux_r_window_out; // Output of the 64x1 mux used to multiplex the values of the variable registers in the current window
 
 	wire [31:0] r_out[71:0]; // 72 32-bit buses corresponding to the outputs of the registers in one current register window
 
-	wire [7:0] global_r_chosen[3:0]; // 4 8-bit buses used to determine if a global register was selected or not
+	// wire [7:0] global_r_chosen[3:0]; // 4 8-bit buses used to determine if a global register was selected or not
 
 	// wire or0_out;
 	// wire or1_out;
@@ -42,17 +42,22 @@ module register_file(output reg [31:0] out, input [31:0] in, input enable, rw, C
 	decoder_2x4 d_window(d_window_out, current_window, enable); // Chooses the window
 
 	// Each one chooses one out of the 32 visible registers in the current window
-	decoder_5x32 d_register0(d_register_out0, r_num, d_window_out[0]);
-	decoder_5x32 d_register1(d_register_out1, r_num, d_window_out[1]);
-	decoder_5x32 d_register2(d_register_out2, r_num, d_window_out[2]);
-	decoder_5x32 d_register3(d_register_out3, r_num, d_window_out[3]);
+	decoder_5x32 d0(d0_out, r_num, d_window_out[0]);
+	decoder_5x32 d1(d1_out, r_num, d_window_out[1]);
+	decoder_5x32 d2(d2_out, r_num, d_window_out[2]);
+	decoder_5x32 d3(d3_out, r_num, d_window_out[3]);
+
+	wire [7:0] mux_global_out;
+
+	mux_8_4x1 mux_global(mux_global_out, current_window, d0_out[7:0], d1_out[7:0], d2_out[7:0], d3_out[7:0]);
 
 
 	//---REGISTERS-----------------------------------------------------------------------------------------------------
 
 	// Global Registers r0-r7
-	register_32 r0  (r_out[0],  in, rw, Clr, Clk); // we have to make this hardcoded to always be 0 TODO
-	register_32 r1  (r_out[1],  in, rw, Clr, Clk);
+	register_dummy_32 r0  (r_out[0], in, Clk); // r0 should always be 0. It is implemented with a dummy 32'b0 register
+
+	register_32 r1  (r_out[1],  in, d0_out[1], Clr, Clk);
 	register_32 r2  (r_out[2],  in, rw, Clr, Clk);
 	register_32 r3  (r_out[3],  in, rw, Clr, Clk);
 	register_32 r4  (r_out[4],  in, rw, Clr, Clk);
