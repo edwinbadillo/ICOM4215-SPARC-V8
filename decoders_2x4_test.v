@@ -21,7 +21,7 @@ module test_decoder_2x4;
 		in = 0;
 		enable = 1;
 		$display("In \t Out \t Enable");
-		$monitor("%b \t %b \t %b", in, out, enable)
+		$monitor("%b \t %b \t %b", in, out, enable);
 	end
 
 	// Change input every 5ns

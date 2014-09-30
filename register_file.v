@@ -50,7 +50,7 @@ module register_file(output reg [31:0] out, input [31:0] in, input enable, rw, C
 	wire [71:0] r_enable; // a 72-bit bus for enabling each of the registers
 
 
-	mux_8_4x1 mux_global(mux_global_out[7:0], current_window, d0_out[7:0], d1_out[7:0], d2_out[7:0], d3_out[7:0]);
+	mux_8_4x1 mux_global(r_enable[7:0], current_window, d0_out[7:0], d1_out[7:0], d2_out[7:0], d3_out[7:0]);
 
 	or  or8   (r_enable[8],  d3_out[24], d0_out[8]);
 	or  or9   (r_enable[9],  d3_out[25], d0_out[9]);
@@ -131,110 +131,89 @@ module register_file(output reg [31:0] out, input [31:0] in, input enable, rw, C
 	// Global Registers r0-r7
 	register_dummy_32 r0  (r_out[0], in, Clk); // r0 should always be 0. It is implemented with a dummy 32'b0 register
 
-	register_32 r1  (r_out[1],  in, mux_global_out[1], Clr, Clk);
-	register_32 r2  (r_out[2],  in, mux_global_out[2], Clr, Clk);
-	register_32 r3  (r_out[3],  in, mux_global_out[3], Clr, Clk);
-	register_32 r4  (r_out[4],  in, mux_global_out[4], Clr, Clk);
-	register_32 r5  (r_out[5],  in, mux_global_out[5], Clr, Clk);
-	register_32 r6  (r_out[6],  in, mux_global_out[6], Clr, Clk);
-	register_32 r7  (r_out[7],  in, mux_global_out[7], Clr, Clk);
+	register_32 r1  (r_out[1],  in, r_enable[1], Clr, Clk);
+	register_32 r2  (r_out[2],  in, r_enable[2], Clr, Clk);
+	register_32 r3  (r_out[3],  in, r_enable[3], Clr, Clk);
+	register_32 r4  (r_out[4],  in, r_enable[4], Clr, Clk);
+	register_32 r5  (r_out[5],  in, r_enable[5], Clr, Clk);
+	register_32 r6  (r_out[6],  in, r_enable[6], Clr, Clk);
+	register_32 r7  (r_out[7],  in, r_enable[7], Clr, Clk);
 	// Variable registers 
 	// r8-r15
-	register_32 r8  (r_out[8],  in, rw, Clr, Clk);
-	register_32 r9  (r_out[9],  in, rw, Clr, Clk);
-	register_32 r10 (r_out[10], in, rw, Clr, Clk);
-	register_32 r11 (r_out[11], in, rw, Clr, Clk);
-	register_32 r12 (r_out[12], in, rw, Clr, Clk);
-	register_32 r13 (r_out[13], in, rw, Clr, Clk);
-	register_32 r14 (r_out[14], in, rw, Clr, Clk);
-	register_32 r15 (r_out[15], in, rw, Clr, Clk);
+	register_32 r8  (r_out[8],  in, r_enable[8],  Clr, Clk);
+	register_32 r9  (r_out[9],  in, r_enable[9],  Clr, Clk);
+	register_32 r10 (r_out[10], in, r_enable[10], Clr, Clk);
+	register_32 r11 (r_out[11], in, r_enable[11], Clr, Clk);
+	register_32 r12 (r_out[12], in, r_enable[12], Clr, Clk);
+	register_32 r13 (r_out[13], in, r_enable[13], Clr, Clk);
+	register_32 r14 (r_out[14], in, r_enable[14], Clr, Clk);
+	register_32 r15 (r_out[15], in, r_enable[15], Clr, Clk);
 	// r16-r23
-	register_32 r16 (r_out[16], in, rw, Clr, Clk);
-	register_32 r17 (r_out[17], in, rw, Clr, Clk);
-	register_32 r18 (r_out[18], in, rw, Clr, Clk);
-	register_32 r19 (r_out[19], in, rw, Clr, Clk);
-	register_32 r20 (r_out[20], in, rw, Clr, Clk);
-	register_32 r21 (r_out[21], in, rw, Clr, Clk);
-	register_32 r22 (r_out[22], in, rw, Clr, Clk);
-	register_32 r23 (r_out[23], in, rw, Clr, Clk);
+	register_32 r16 (r_out[16], in, r_enable[16], Clr, Clk);
+	register_32 r17 (r_out[17], in, r_enable[17], Clr, Clk);
+	register_32 r18 (r_out[18], in, r_enable[18], Clr, Clk);
+	register_32 r19 (r_out[19], in, r_enable[19], Clr, Clk);
+	register_32 r20 (r_out[20], in, r_enable[20], Clr, Clk);
+	register_32 r21 (r_out[21], in, r_enable[21], Clr, Clk);
+	register_32 r22 (r_out[22], in, r_enable[22], Clr, Clk);
+	register_32 r23 (r_out[23], in, r_enable[23], Clr, Clk);
 	// r24-r31
-	register_32 r24 (r_out[24], in, rw, Clr, Clk);
-	register_32 r25 (r_out[25], in, rw, Clr, Clk);
-	register_32 r26 (r_out[26], in, rw, Clr, Clk);
-	register_32 r27 (r_out[27], in, rw, Clr, Clk);
-	register_32 r28 (r_out[28], in, rw, Clr, Clk);
-	register_32 r29 (r_out[29], in, rw, Clr, Clk);
-	register_32 r30 (r_out[30], in, rw, Clr, Clk);
-	register_32 r31 (r_out[31], in, rw, Clr, Clk);
+	register_32 r24 (r_out[24], in, r_enable[24], Clr, Clk);
+	register_32 r25 (r_out[25], in, r_enable[25], Clr, Clk);
+	register_32 r26 (r_out[26], in, r_enable[26], Clr, Clk);
+	register_32 r27 (r_out[27], in, r_enable[27], Clr, Clk);
+	register_32 r28 (r_out[28], in, r_enable[28], Clr, Clk);
+	register_32 r29 (r_out[29], in, r_enable[29], Clr, Clk);
+	register_32 r30 (r_out[30], in, r_enable[30], Clr, Clk);
+	register_32 r31 (r_out[31], in, r_enable[31], Clr, Clk);
 	// r32-r39
-	register_32 r32 (r_out[32], in, rw, Clr, Clk);
-	register_32 r33 (r_out[33], in, rw, Clr, Clk);
-	register_32 r34 (r_out[34], in, rw, Clr, Clk);
-	register_32 r35 (r_out[35], in, rw, Clr, Clk);
-	register_32 r36 (r_out[36], in, rw, Clr, Clk);
-	register_32 r37 (r_out[37], in, rw, Clr, Clk);
-	register_32 r38 (r_out[38], in, rw, Clr, Clk);
-	register_32 r39 (r_out[39], in, rw, Clr, Clk);
+	register_32 r32 (r_out[32], in, r_enable[32], Clr, Clk);
+	register_32 r33 (r_out[33], in, r_enable[33], Clr, Clk);
+	register_32 r34 (r_out[34], in, r_enable[34], Clr, Clk);
+	register_32 r35 (r_out[35], in, r_enable[35], Clr, Clk);
+	register_32 r36 (r_out[36], in, r_enable[36], Clr, Clk);
+	register_32 r37 (r_out[37], in, r_enable[37], Clr, Clk);
+	register_32 r38 (r_out[38], in, r_enable[38], Clr, Clk);
+	register_32 r39 (r_out[39], in, r_enable[39], Clr, Clk);
 	// r40-r47
-	register_32 r40 (r_out[40], in, rw, Clr, Clk);
-	register_32 r41 (r_out[41], in, rw, Clr, Clk);
-	register_32 r42 (r_out[42], in, rw, Clr, Clk);
-	register_32 r43 (r_out[43], in, rw, Clr, Clk);
-	register_32 r44 (r_out[44], in, rw, Clr, Clk);
-	register_32 r45 (r_out[45], in, rw, Clr, Clk);
-	register_32 r46 (r_out[46], in, rw, Clr, Clk);
-	register_32 r47 (r_out[47], in, rw, Clr, Clk);
+	register_32 r40 (r_out[40], in, r_enable[40], Clr, Clk);
+	register_32 r41 (r_out[41], in, r_enable[41], Clr, Clk);
+	register_32 r42 (r_out[42], in, r_enable[42], Clr, Clk);
+	register_32 r43 (r_out[43], in, r_enable[43], Clr, Clk);
+	register_32 r44 (r_out[44], in, r_enable[44], Clr, Clk);
+	register_32 r45 (r_out[45], in, r_enable[45], Clr, Clk);
+	register_32 r46 (r_out[46], in, r_enable[46], Clr, Clk);
+	register_32 r47 (r_out[47], in, r_enable[47], Clr, Clk);
 	// r48-r55
-	register_32 r48 (r_out[48], in, rw, Clr, Clk);
-	register_32 r49 (r_out[49], in, rw, Clr, Clk);
-	register_32 r50 (r_out[50], in, rw, Clr, Clk);
-	register_32 r51 (r_out[51], in, rw, Clr, Clk);
-	register_32 r52 (r_out[52], in, rw, Clr, Clk);
-	register_32 r53 (r_out[53], in, rw, Clr, Clk);
-	register_32 r54 (r_out[54], in, rw, Clr, Clk);
-	register_32 r55 (r_out[55], in, rw, Clr, Clk);
+	register_32 r48 (r_out[48], in, r_enable[48], Clr, Clk);
+	register_32 r49 (r_out[49], in, r_enable[49], Clr, Clk);
+	register_32 r50 (r_out[50], in, r_enable[50], Clr, Clk);
+	register_32 r51 (r_out[51], in, r_enable[51], Clr, Clk);
+	register_32 r52 (r_out[52], in, r_enable[52], Clr, Clk);
+	register_32 r53 (r_out[53], in, r_enable[53], Clr, Clk);
+	register_32 r54 (r_out[54], in, r_enable[54], Clr, Clk);
+	register_32 r55 (r_out[55], in, r_enable[55], Clr, Clk);
 	// r56-r63
-	register_32 r56 (r_out[56], in, rw, Clr, Clk);
-	register_32 r57 (r_out[57], in, rw, Clr, Clk);
-	register_32 r58 (r_out[58], in, rw, Clr, Clk);
-	register_32 r59 (r_out[59], in, rw, Clr, Clk);
-	register_32 r60 (r_out[60], in, rw, Clr, Clk);
-	register_32 r61 (r_out[61], in, rw, Clr, Clk);
-	register_32 r62 (r_out[62], in, rw, Clr, Clk);
-	register_32 r63 (r_out[63], in, rw, Clr, Clk);
+	register_32 r56 (r_out[56], in, r_enable[56], Clr, Clk);
+	register_32 r57 (r_out[57], in, r_enable[57], Clr, Clk);
+	register_32 r58 (r_out[58], in, r_enable[58], Clr, Clk);
+	register_32 r59 (r_out[59], in, r_enable[59], Clr, Clk);
+	register_32 r60 (r_out[60], in, r_enable[60], Clr, Clk);
+	register_32 r61 (r_out[61], in, r_enable[61], Clr, Clk);
+	register_32 r62 (r_out[62], in, r_enable[62], Clr, Clk);
+	register_32 r63 (r_out[63], in, r_enable[63], Clr, Clk);
 	// r64-r71
-	register_32 r64 (r_out[64], in, rw, Clr, Clk);
-	register_32 r65 (r_out[65], in, rw, Clr, Clk);
-	register_32 r66 (r_out[66], in, rw, Clr, Clk);
-	register_32 r67 (r_out[67], in, rw, Clr, Clk);
-	register_32 r68 (r_out[68], in, rw, Clr, Clk);
-	register_32 r69 (r_out[69], in, rw, Clr, Clk);
-	register_32 r70 (r_out[70], in, rw, Clr, Clk);
-	register_32 r71 (r_out[71], in, rw, Clr, Clk);
-
-
-	// register_32 r[71:0] (r_out[71:0], in, rw, Clr, Clk); // 64 32-bit registers to be used for the register windows
-
-
+	register_32 r64 (r_out[64], in, r_enable[64], Clr, Clk);
+	register_32 r65 (r_out[65], in, r_enable[65], Clr, Clk);
+	register_32 r66 (r_out[66], in, r_enable[66], Clr, Clk);
+	register_32 r67 (r_out[67], in, r_enable[67], Clr, Clk);
+	register_32 r68 (r_out[68], in, r_enable[68], Clr, Clk);
+	register_32 r69 (r_out[69], in, r_enable[69], Clr, Clk);
+	register_32 r70 (r_out[70], in, r_enable[70], Clr, Clk);
+	register_32 r71 (r_out[71], in, r_enable[71], Clr, Clk);
 
 
 	//---MULTIPLEXING-FOR-OUTPUT---------------------------------------------------------------------------------------
-
-	// Logic for determining whether or not a global register was selected or not
-	// The result of the combinatorial circuit will be used to drive the select pin of the final 2x1 mux
-	// or or0(or0_out, global_r_chosen[0]);
-	// or or1(or1_out, global_r_chosen[1]);
-	// or or2(or2_out, global_r_chosen[2]);
-	// or or3(or3_out, global_r_chosen[3]);
-
-	// nor nor0(nor0_out, or0_out, or1_out, or2_out, or3_out);
-
-	// Multiplexer logic to pipe the data fom registers in current window outside
-
-	// mux_8x1  mux_r_global(mux_r_global_out, r_num[2:0], [31: 0]I0, [31: 0]I1);
-	// mux_64x1 mux_r_window(mux_r_window_out, );
-
-	// mux_2x1  mux_result(mux_result_out, nor0_out, mux_r_global_out, mux_r_window_out);
 
 	wire [31:0] mux_window_out0;
 	wire [31:0] mux_window_out1;
@@ -269,7 +248,7 @@ module register_file(output reg [31:0] out, input [31:0] in, input enable, rw, C
 		r_out[8],  r_out[9],  r_out[10], r_out[11], r_out[12], r_out[13], r_out[14], r_out[15]
 		);
 
-	mux_4x1  mux_result(mux_result_out, current_window, mux_window_out[0], mux_window_out[1], mux_window_out[2], mux_window_out[3]);
+	mux_4x1  mux_result(mux_result_out, current_window, mux_window0_out, mux_window1_out, mux_window2_out, mux_window3_out);
 
 	mux_2x1  mux_final(out, rw, mux_result_out, 32'hzzzz_zzzz); // If read, output register value. If write, high impedance.
 
