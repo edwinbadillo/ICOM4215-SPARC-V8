@@ -245,6 +245,6 @@ module register_file(output [31:0] out, input [31:0] in, input enable, rw, Clr, 
 
 	// Output is not high impedance only when reading(rw = 0) and enable = 1
 	and and2(and2_out, !rw, enable);
-	mux_2x1  mux_final(out, and2, 32'hzzzz_zzzz, mux_result_out);
+	mux_2x1  mux_final(out, and2_out, 32'hzzzz_zzzz, mux_result_out);
 
 endmodule
