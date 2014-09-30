@@ -1,5 +1,5 @@
 module test_mux_8x1;
-reg [1:0]S;
+reg [3:0]S;
 reg signed [31:0]I0;
 reg signed [31:0]I1;
 reg signed [31:0]I2;
@@ -30,10 +30,10 @@ begin
 	I7 = 2034;
 end
 
-// Change Inputs 7 times with a 5ns delay
+// Change Inputs 8 times with a 5ns delay
 initial 
 begin
-	repeat(7)
+	repeat(8)
 	begin
 		#5
 		begin
