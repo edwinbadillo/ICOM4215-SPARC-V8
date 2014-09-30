@@ -1,62 +1,52 @@
 module test_memory_console;
 
 	// Inputs
-	reg [5:0]op; 
-	reg signed [31:0]a;
-	reg signed [31:0]b;
-	reg Cin = 1; 
+	reg [5:0]OpCode; 
+	reg signed [31:0]MDR_DataIn;
+	reg signed [6:0]MAR_Address;
+	reg enable;
 
 	// Outputs
-	wire signed [31:0]res;
-	wire N, Z, V, C;
+	wire signed [31:0]MDR_DataOut;
+	wire MFC;
 
 	// File handlers
 	integer opFile;
 	integer valueFile;
-
+	
 	// Constants
 	`define NULL 0
 	`define SEEK_SET 0
 	parameter sim_time = 690;
 
-	alu alu1 (res, N, Z, V, C, op, a, b, Cin);
-	ram ram1 (MDR_DataOut, Enable, OpCode, MAR_Address, MDR_DataIn)
+	ram128x32 ram (MDR_DataOut, MFC, enable, OpCode, MAR_Address, MDR_DataIn);
 
 	// End simulation at sim_time
 	initial #sim_time $finish;
 
 	// Initialize files and monitor
 	initial begin
+		enable = 1;
+		MAR_Address = 0;
 		opFile = $fopen("memoryTestCodes.txt", "r");
 		if (opFile == `NULL)
 			$display("Error reading memoryTestCodes.txt file");
 		else
 			$display("File open memoryTestCodes.txt");
-		valueFile = $fopen("memoryValues.txt", "r");
-		if (valueFile == `NULL)
-			$display("Error reading memoryValuestxt file");
-		else
-			$display("File open memoryValues.txt");
-		$monitor ("%b \t %0d \t %0d \t %0d \t %0d \t %0d \t %0d \t %0d \t %0d ",op, a, b, Cin, res, N, Z, V, C);
+		$display ("In \t Out \t MFC Enable");
+		$monitor ("%0b \t %0b \t %0b \t %0b", MDR_DataIn, MDR_DataOut, MFC, enable);
 	end
 
 	initial begin
-		repeat(5)
-		begin
-			$display("======================================================");
-			// Read values for a and b and display header
-			$fscanf(valueFile, "%d\n", a);
-			$fscanf(valueFile, "%d\n", b);
-			$display("\ta = %0d \t b = %0d",a, b);	
-			$display ("  op \t    a \t b \t Cin \t res \t N \t Z \t V \t C"); 
-			// Reset pointer of the op code file to the start of the file
-			$fseek(opFile, 0, `SEEK_SET);
-			// Read the 23 op codes instruction with a 5ns interval
-			repeat(23)
-			begin
-			#5 $fscanf(data_file, "%b\n", op);
-			end
-		end
+		// Load Word
+		OpCode = 6'b000000;
+		MDR_DataIn = -24;
+		$display("Address %0d Value %b", MAR_Address, ram.Mem[MAR_Address]);
+		$display("Address %0d Value %b", MAR_Address + 1, ram.Mem[MAR_Address + 1]);
+		$display("Address %0d Value %b", MAR_Address + 2, ram.Mem[MAR_Address + 2]);
+		$display("Address %0d Value %b", MAR_Address + 3, ram.Mem[MAR_Address + 3]);
+		MAR_Address = MAR_Address + 4;
+		// 
 	end
 
 endmodule
