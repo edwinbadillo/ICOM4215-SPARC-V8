@@ -47,9 +47,83 @@ module register_file(output reg [31:0] out, input [31:0] in, input enable, rw, C
 	decoder_5x32 d2(d2_out, r_num, d_window_out[2]);
 	decoder_5x32 d3(d3_out, r_num, d_window_out[3]);
 
-	wire [7:0] mux_global_out;
+	wire [71:0] r_enable; // a 72-bit bus for enabling each of the registers
 
-	mux_8_4x1 mux_global(mux_global_out, current_window, d0_out[7:0], d1_out[7:0], d2_out[7:0], d3_out[7:0]);
+
+	mux_8_4x1 mux_global(mux_global_out[7:0], current_window, d0_out[7:0], d1_out[7:0], d2_out[7:0], d3_out[7:0]);
+
+	or  or8   (r_enable[8],  d3_out[24], d0_out[8]);
+	or  or9   (r_enable[9],  d3_out[25], d0_out[9]);
+	or  or10  (r_enable[10], d3_out[26], d0_out[10]);
+	or  or11  (r_enable[11], d3_out[27], d0_out[11]);
+	or  or12  (r_enable[12], d3_out[28], d0_out[12]);
+	or  or13  (r_enable[13], d3_out[29], d0_out[13]);
+	or  or14  (r_enable[14], d3_out[30], d0_out[14]);
+	or  or15  (r_enable[15], d3_out[31], d0_out[15]);
+
+	buf buf16 (r_enable[16], d0_out[16]);
+	buf buf17 (r_enable[17], d0_out[17]);
+	buf buf18 (r_enable[18], d0_out[18]);
+	buf buf19 (r_enable[19], d0_out[19]);
+	buf buf20 (r_enable[20], d0_out[20]);
+	buf buf21 (r_enable[21], d0_out[21]);
+	buf buf22 (r_enable[22], d0_out[22]);
+	buf buf23 (r_enable[23], d0_out[23]);
+
+	or  or24  (r_enable[24], d0_out[24], d1_out[8]);
+	or  or25  (r_enable[25], d0_out[25], d1_out[9]);
+	or  or26  (r_enable[26], d0_out[26], d1_out[10]);
+	or  or27  (r_enable[27], d0_out[27], d1_out[11]);
+	or  or28  (r_enable[28], d0_out[28], d1_out[12]);
+	or  or29  (r_enable[29], d0_out[29], d1_out[13]);
+	or  or30  (r_enable[30], d0_out[30], d1_out[14]);
+	or  or31  (r_enable[31], d0_out[31], d1_out[15]);
+
+	buf buf32 (r_enable[32], d1_out[16]);
+	buf buf33 (r_enable[33], d1_out[17]);
+	buf buf34 (r_enable[34], d1_out[18]);
+	buf buf35 (r_enable[35], d1_out[19]);
+	buf buf36 (r_enable[36], d1_out[20]);
+	buf buf37 (r_enable[37], d1_out[21]);
+	buf buf38 (r_enable[38], d1_out[22]);
+	buf buf39 (r_enable[39], d1_out[23]);
+
+	or  or40  (r_enable[40], d1_out[24], d2_out[8]);
+	or  or41  (r_enable[41], d1_out[25], d2_out[9]);
+	or  or42  (r_enable[42], d1_out[26], d2_out[10]);
+	or  or43  (r_enable[43], d1_out[27], d2_out[11]);
+	or  or44  (r_enable[44], d1_out[28], d2_out[12]);
+	or  or45  (r_enable[45], d1_out[29], d2_out[13]);
+	or  or46  (r_enable[46], d1_out[30], d2_out[14]);
+	or  or47  (r_enable[47], d1_out[31], d2_out[15]);
+
+	buf buf48 (r_enable[48], d2_out[16]);
+	buf buf49 (r_enable[49], d2_out[17]);
+	buf buf50 (r_enable[50], d2_out[18]);
+	buf buf51 (r_enable[51], d2_out[19]);
+	buf buf52 (r_enable[52], d2_out[20]);
+	buf buf53 (r_enable[53], d2_out[21]);
+	buf buf54 (r_enable[54], d2_out[22]);
+	buf buf55 (r_enable[55], d2_out[23]);
+
+	or  or56  (r_enable[56], d2_out[24], d3_out[8]);
+	or  or57  (r_enable[57], d2_out[25], d3_out[9]);
+	or  or58  (r_enable[58], d2_out[26], d3_out[10]);
+	or  or59  (r_enable[59], d2_out[27], d3_out[11]);
+	or  or60  (r_enable[60], d2_out[28], d3_out[12]);
+	or  or61  (r_enable[61], d2_out[29], d3_out[13]);
+	or  or62  (r_enable[62], d2_out[30], d3_out[14]);
+	or  or63  (r_enable[63], d2_out[31], d3_out[15]);
+
+	buf buf64 (r_enable[64], d3_out[16]);
+	buf buf65 (r_enable[65], d3_out[17]);
+	buf buf66 (r_enable[66], d3_out[18]);
+	buf buf67 (r_enable[67], d3_out[19]);
+	buf buf68 (r_enable[68], d3_out[20]);
+	buf buf69 (r_enable[69], d3_out[21]);
+	buf buf70 (r_enable[70], d3_out[22]);
+	buf buf71 (r_enable[71], d3_out[23]);
+
 
 
 	//---REGISTERS-----------------------------------------------------------------------------------------------------
@@ -57,13 +131,13 @@ module register_file(output reg [31:0] out, input [31:0] in, input enable, rw, C
 	// Global Registers r0-r7
 	register_dummy_32 r0  (r_out[0], in, Clk); // r0 should always be 0. It is implemented with a dummy 32'b0 register
 
-	register_32 r1  (r_out[1],  in, d0_out[1], Clr, Clk);
-	register_32 r2  (r_out[2],  in, rw, Clr, Clk);
-	register_32 r3  (r_out[3],  in, rw, Clr, Clk);
-	register_32 r4  (r_out[4],  in, rw, Clr, Clk);
-	register_32 r5  (r_out[5],  in, rw, Clr, Clk);
-	register_32 r6  (r_out[6],  in, rw, Clr, Clk);
-	register_32 r7  (r_out[7],  in, rw, Clr, Clk);
+	register_32 r1  (r_out[1],  in, mux_global_out[1], Clr, Clk);
+	register_32 r2  (r_out[2],  in, mux_global_out[2], Clr, Clk);
+	register_32 r3  (r_out[3],  in, mux_global_out[3], Clr, Clk);
+	register_32 r4  (r_out[4],  in, mux_global_out[4], Clr, Clk);
+	register_32 r5  (r_out[5],  in, mux_global_out[5], Clr, Clk);
+	register_32 r6  (r_out[6],  in, mux_global_out[6], Clr, Clk);
+	register_32 r7  (r_out[7],  in, mux_global_out[7], Clr, Clk);
 	// Variable registers 
 	// r8-r15
 	register_32 r8  (r_out[8],  in, rw, Clr, Clk);
