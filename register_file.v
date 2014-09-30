@@ -40,12 +40,12 @@ module register_file(output reg [31:0] out, input [31:0] in, input enable, rw, C
 	decoder_2x4 d_window(d_window_out, current_window, enable); // Chooses the window
 
 	// Each one choose one out of the 32 visible registers in the current window
-	decoder_5x32 d_register0 (d_register_out0, r_num, d_window_out[0]);
-	decoder_5x32 d_register1 (d_register_out1, r_num, d_window_out[1]);
-	decoder_5x32 d_register2 (d_register_out2, r_num, d_window_out[2]);
-	decoder_5x32 d_register3 (d_register_out3, r_num, d_window_out[3]);
+	decoder_5x32 d_register0(d_register_out0, r_num, d_window_out[0]);
+	decoder_5x32 d_register1(d_register_out1, r_num, d_window_out[1]);
+	decoder_5x32 d_register2(d_register_out2, r_num, d_window_out[2]);
+	decoder_5x32 d_register3(d_register_out3, r_num, d_window_out[3]);
 
-
+	
 	//---REGISTERS-----------------------------------------------------------------------------------------------------
 
 	// Global Registers r0-r7
@@ -74,7 +74,7 @@ module register_file(output reg [31:0] out, input [31:0] in, input enable, rw, C
 
 	// Multiplexer logic to pipe the data fom registers in current window outside
 
-	mux_8x1  mux_r_global(mux_r_global_out, input [2:0]S, [31: 0]I0, [31: 0]I1);
+	mux_8x1  mux_r_global(mux_r_global_out, r_num[2:0], [31: 0]I0, [31: 0]I1);
 	mux_64x1 mux_r_window(mux_r_window_out, );
 
 	mux_2x1  mux_result(mux_result_out, nor0_out, mux_r_global_out, mux_r_window_out);
