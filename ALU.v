@@ -4,7 +4,7 @@ module alu(output reg [31:0]res, output reg N, Z, V, C,input wire [5:0]op, [31:0
 	reg carry;		// Used to save carry to not modify the C if S is low 
 	parameter CC = 5'h10; 	// Used to check the S in the opcode
 
-	always @ (op,a,b,Cin)
+	always @ (op, a, b, Cin)
 		begin
 		casex (op)
 
@@ -93,7 +93,7 @@ module alu(output reg [31:0]res, output reg N, Z, V, C,input wire [5:0]op, [31:0
 				res = $signed(a) >>> (b & 32'h0000001F);
 		endcase
 		end
-	
+
 	// Task used to modify the condition codes of logical instructions
 	task logicFlags;
 	begin

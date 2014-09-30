@@ -10,7 +10,7 @@ module test_decoder_2x4;
 	// Constants
 	parameter sim_time = 40;
 
-	decoder_2x4 decoder (out,in,enable);
+	decoder_2x4 decoder (out, in, enable);
 
 	// End simulation at sim_time
 	initial #sim_time $finish;
@@ -21,10 +21,10 @@ module test_decoder_2x4;
 		in = 0;
 		enable = 1;
 		$display("In \t Out \t Enable");
-		$monitor ("%b \t %b \t %b",in, out, enable);
+		$monitor("%b \t %b \t %b", in, out, enable)
 	end
 
-	// Change input each 5ns interval
+	// Change input every 5ns
 	initial 
 	begin
 		repeat(8)
