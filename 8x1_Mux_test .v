@@ -30,10 +30,10 @@ begin
 	I7 = 2034;
 end
 
-// Change Inputs 7 times with a 5ns delay
+// Change Inputs 8 times with a 5ns delay
 initial 
 begin
-	repeat(7)
+	repeat(8)
 	begin
 		#5
 		begin
