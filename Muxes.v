@@ -18,7 +18,7 @@ endmodule
 
 
 // 32 bit 8x1 Multiplexer
-module mux_8x1 (output reg [31: 0]Y, input [3:0]S, [31: 0]I0, [31:0]I1, [31:0]I2, [31:0]I3, [31:0]I4, [31:0]I5, [31:0]I6, [31:0]I7, [31:0]I8); 
+module mux_8x1 (output reg [31: 0]Y, input [3:0]S, [31: 0]I0, [31:0]I1, [31:0]I2, [31:0]I3, [31:0]I4, [31:0]I5, [31:0]I6, [31:0]I7); 
 always @ (S, I0, I1, I2, I3, I4, I5, I6, I7) 
 case(S)
 3'b000: Y = I0; 

@@ -1,5 +1,5 @@
 module test_mux_8x1;
-reg [1:0]S;
+reg [3:0]S;
 reg signed [31:0]I0;
 reg signed [31:0]I1;
 reg signed [31:0]I2;
