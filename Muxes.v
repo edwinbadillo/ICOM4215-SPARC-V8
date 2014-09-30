@@ -34,7 +34,7 @@ endcase
 endmodule
 
 // 32 bit 64x1 Multiplexer
-module mux_64x1 (output reg [31: 0]Y, input [5:0]S, reg[31:0] I[0:63]); 
+module mux_64x1 (output reg [31: 0]Y, input [5:0]S, reg[31:0] I[63:0]); 
 always @ (S, I) 
 case(S)
 6'b000000: Y = I[000000];
