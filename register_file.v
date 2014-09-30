@@ -1,7 +1,7 @@
 // Register file
 // Contains 72 registers and implements the register windows specification
 
-module register_file(output reg [31:0] out, input [31:0] in, input enable, rw, Clr, Clk, input [1:0] current_window, input [4:0] r_num); // still missing some arguments
+module register_file(output [31:0] out, input [31:0] in, input enable, rw, Clr, Clk, input [1:0] current_window, input [4:0] r_num); // still missing some arguments
 
 	//---PARAMETERS-SUMMARY--------------------------------------------------------------------------------------------
 	// out            : 32-bit bus that serves as the output ports of this module
@@ -210,28 +210,28 @@ module register_file(output reg [31:0] out, input [31:0] in, input enable, rw, C
 	wire [31:0] mux_window_out2;
 	wire [31:0] mux_window_out3;
 
-	mux_32x1 mux_window0(mux_window0_out, r_num, 
+	mux_32x1 mux_window0(mux_window_out0, r_num, 
 		r_out[0], r_out[1], r_out[2], r_out[3], r_out[4], r_out[5], r_out[6], r_out[7], 
 		r_out[8],  r_out[9],  r_out[10], r_out[11], r_out[12], r_out[13], r_out[14], r_out[15], 
 		r_out[16], r_out[17], r_out[18], r_out[19], r_out[20], r_out[21], r_out[22], r_out[23],
 		r_out[24], r_out[25], r_out[26], r_out[27], r_out[28], r_out[29], r_out[30], r_out[31]
 		);
 
-	mux_32x1 mux_window1(mux_window1_out, r_num, 
+	mux_32x1 mux_window1(mux_window_out1, r_num, 
 		r_out[0], r_out[1], r_out[2], r_out[3], r_out[4], r_out[5], r_out[6], r_out[7], 
 		r_out[24], r_out[25], r_out[26], r_out[27], r_out[28], r_out[29], r_out[30], r_out[31], 
 		r_out[32], r_out[33], r_out[34], r_out[35], r_out[36], r_out[37], r_out[38], r_out[39],
 		r_out[40], r_out[41], r_out[42], r_out[43], r_out[44], r_out[45], r_out[46], r_out[47]
 		);
 
-	mux_32x1 mux_window2(mux_window2_out, r_num, 
+	mux_32x1 mux_window2(mux_window_out2, r_num, 
 		r_out[0], r_out[1], r_out[2], r_out[3], r_out[4], r_out[5], r_out[6], r_out[7], 
 		r_out[40], r_out[41], r_out[42], r_out[43], r_out[44], r_out[45], r_out[46], r_out[47], 
 		r_out[48], r_out[49], r_out[50], r_out[51], r_out[52], r_out[53], r_out[54], r_out[55],
 		r_out[56], r_out[57], r_out[58], r_out[59], r_out[60], r_out[61], r_out[62], r_out[63]
 		);
 
-	mux_32x1 mux_window3(mux_window3_out, r_num, 
+	mux_32x1 mux_window3(mux_window_out3, r_num, 
 		r_out[0], r_out[1], r_out[2], r_out[3], r_out[4], r_out[5], r_out[6], r_out[7], 
 		r_out[56], r_out[57], r_out[58], r_out[59], r_out[60], r_out[61], r_out[62], r_out[63], 
 		r_out[64], r_out[65], r_out[66], r_out[67], r_out[68], r_out[69], r_out[70], r_out[71],
@@ -241,7 +241,7 @@ module register_file(output reg [31:0] out, input [31:0] in, input enable, rw, C
 	wire [31:0] mux_result_out;
 	wire and2_out;
 
-	mux_4x1  mux_result(mux_result_out, current_window, mux_window0_out, mux_window1_out, mux_window2_out, mux_window3_out);
+	mux_4x1  mux_result(mux_result_out, current_window, mux_window_out0, mux_window_out1, mux_window_out2, mux_window_out3);
 
 	// Output is not high impedance only when reading(rw = 0) and enable = 1
 	and and2(and2_out, !rw, enable);
