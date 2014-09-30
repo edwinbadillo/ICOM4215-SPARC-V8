@@ -1,20 +1,22 @@
 // Register file
+// Contains 72 registers and implements the register windows specification
 
 module register_file(output reg [31:0] out, input [31:0] in, input enable, rw, Clr, Clk, input [1:0] current_window, input [4:0] r_num); // still missing some arguments
 
 	//---PARAMETERS-SUMMARY--------------------------------------------------------------------------------------------
 	// out            : 32-bit bus that serves as the output ports of this module
 	// in             : 32-bit bus that will provide the value to be written to the chosen register as input to the module
-	// enable         : 
+	// enable         : Bit used to enable writing to a register in the register file
 	// rw             : Bit indicating whether the operation to be performed is a read or write. Read = 0, Write = 1
-	// Clr            : 
+	// Clr            : Asynchronous Clear Signal
 	// Clk            : System clock
 	// current_window : The current register window in play. Usually provided by the CU from the CWP (current window pointer) register
 	// r_num          : 5-bit address bus for choosing one of the 32 visible registers of the current window
 	//-----------------------------------------------------------------------------------------------------------------
 
 
-	//---WIRES---------------------------------------------------------------------------------------------------------
+	//---DECODER-LOGIC-FOR-CHOOSING-CORRECT-REGISTER-BASED-ON-CURRENT-WINDOW-------------------------------------------
+
 	wire [3:0]  d_window_out; // 4-bit bus that is the output of the decoder in charge of choosing the current register window
 
 	wire [31:0] d0_out; // The output of the decoder used for choosing a register in window 0
@@ -22,24 +24,11 @@ module register_file(output reg [31:0] out, input [31:0] in, input enable, rw, C
 	wire [31:0] d2_out;
 	wire [31:0] d3_out;
 
-	// wire [31:0] mux_r_global_out; // Output of the 8x1 mux used to multiplex values of the global registers
-	// wire [31:0] mux_r_window_out; // Output of the 64x1 mux used to multiplex the values of the variable registers in the current window
+	wire and1_out;
 
-	wire [31:0] r_out[71:0]; // 72 32-bit buses corresponding to the outputs of the registers in one current register window
-
-	// wire [7:0] global_r_chosen[3:0]; // 4 8-bit buses used to determine if a global register was selected or not
-
-	// wire or0_out;
-	// wire or1_out;
-	// wire or2_out;
-	// wire or3_out;
-
-	// wire nor0_out; // The output of the nor gate that takes in the output of the 4 or gates, the value of 
-
-	wire [31:0] mux_result_out;
-
-	//---DECODER-LOGIC-FOR-CHOOSING-CORRECT-REGISTER-BASED-ON-CURRENT-WINDOW-------------------------------------------
-	decoder_2x4 d_window(d_window_out, current_window, enable); // Chooses the window
+	// Permit writing only when rw = 1 and enable = 1
+	and and1(and1_out, enable, rw);
+	decoder_2x4 d_window(d_window_out, current_window, and1_out); // This decoder chooses the window
 
 	// Each one chooses one out of the 32 visible registers in the current window
 	decoder_5x32 d0(d0_out, r_num, d_window_out[0]);
@@ -49,9 +38,9 @@ module register_file(output reg [31:0] out, input [31:0] in, input enable, rw, C
 
 	wire [71:0] r_enable; // a 72-bit bus for enabling each of the registers
 
-
+	// Global registers r0-r7
 	mux_8_4x1 mux_global(r_enable[7:0], current_window, d0_out[7:0], d1_out[7:0], d2_out[7:0], d3_out[7:0]);
-
+	// r8-r15, 
 	or  or8   (r_enable[8],  d3_out[24], d0_out[8]);
 	or  or9   (r_enable[9],  d3_out[25], d0_out[9]);
 	or  or10  (r_enable[10], d3_out[26], d0_out[10]);
@@ -114,7 +103,7 @@ module register_file(output reg [31:0] out, input [31:0] in, input enable, rw, C
 	or  or61  (r_enable[61], d2_out[29], d3_out[13]);
 	or  or62  (r_enable[62], d2_out[30], d3_out[14]);
 	or  or63  (r_enable[63], d2_out[31], d3_out[15]);
-
+	// 
 	buf buf64 (r_enable[64], d3_out[16]);
 	buf buf65 (r_enable[65], d3_out[17]);
 	buf buf66 (r_enable[66], d3_out[18]);
@@ -125,8 +114,9 @@ module register_file(output reg [31:0] out, input [31:0] in, input enable, rw, C
 	buf buf71 (r_enable[71], d3_out[23]);
 
 
-
 	//---REGISTERS-----------------------------------------------------------------------------------------------------
+
+	wire [31:0] r_out[71:0]; // 72 32-bit buses corresponding to the outputs of the registers
 
 	// Global Registers r0-r7
 	register_dummy_32 r0  (r_out[0], in, Clk); // r0 should always be 0. It is implemented with a dummy 32'b0 register
@@ -248,8 +238,13 @@ module register_file(output reg [31:0] out, input [31:0] in, input enable, rw, C
 		r_out[8],  r_out[9],  r_out[10], r_out[11], r_out[12], r_out[13], r_out[14], r_out[15]
 		);
 
+	wire [31:0] mux_result_out;
+	wire and2_out;
+
 	mux_4x1  mux_result(mux_result_out, current_window, mux_window0_out, mux_window1_out, mux_window2_out, mux_window3_out);
 
-	mux_2x1  mux_final(out, rw, mux_result_out, 32'hzzzz_zzzz); // If read, output register value. If write, high impedance.
+	// Output is not high impedance only when reading(rw = 0) and enable = 1
+	and and2(and2_out, !rw, enable);
+	mux_2x1  mux_final(out, rw, mux_result_out, 32'hzzzz_zzzz);
 
 endmodule

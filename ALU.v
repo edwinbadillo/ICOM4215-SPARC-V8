@@ -8,7 +8,7 @@ module alu(output reg [31:0]res, output reg N, Z, V, C,input wire [5:0]op, [31:0
 		begin
 		casex (op)
 
-			// Notation: (op2 of the non modifying, op2 of the modifying) based on S bit
+			// Notation: Mnemonic(op2 with S bit = 0, op2 with S bit = 1)
 
 			// ADD (0 y 16)
 			6'b0?0000:
