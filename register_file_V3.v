@@ -38,7 +38,7 @@ module register_fileV3(output [31:0] out_PA, output [31:0] out_PB, input [31:0] 
 	decoder_5x32 d0(d0_out, in_PC, d_window_enable[0]);
 	decoder_5x32 d1(d1_out, in_PC, d_window_enable[1]);
 	decoder_5x32 d2(d2_out, in_PC, d_window_enable[2]);
-	decoder_5x32 d3(d3_out, in_PC, d_window_enable[2]);
+	decoder_5x32 d3(d3_out, in_PC, d_window_enable[3]);
 	
 	//---LOGIC-FOR-CHOOSING-CORRECT-REGISTER-BASED-ON-CURRENT-WINDOW FOR CLEARING-------------------------------------------
 	

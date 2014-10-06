@@ -15,7 +15,7 @@ module test_register_file_V3;
 	wire signed [31:0] PA_out;
 	wire signed [31:0] PB_out;
 	
-	parameter sim_time = 1935;
+	parameter sim_time = 2580;
 
 	register_fileV3 register_file(PA_out, PB_out, in, PA_in, PB_in, PC_in, enable, rw, Clr, Clk, current_window);
 	
@@ -88,6 +88,31 @@ module test_register_file_V3;
 		PC_in = 1;						// Clear register 1
 		Clr = ~Clr;
 		#5;
+		Clr = ~Clr;						// Disable clear
+		
+		// Clearing all registers
+		current_window = 4'b0001;
+		enable = 0;
+		// Iterate through the 4 windows reading and clearing each register
+		repeat(4)
+		begin
+			PA_in = 0;
+			PB_in = 31;
+			PC_in = 0;
+			// Iterate through the 32 register of each window
+			repeat(32)
+			begin
+				// Enable Clear of current Register
+				Clr = ~Clr;
+				#5;
+				// Disable Clear
+				Clr = ~Clr;
+				PA_in = PA_in + 1;
+				PB_in = PB_in - 1;
+				PC_in = PA_in;
+			end
+		current_window = current_window << 1;
+		end
 	end
 	
 /* 	initial 
