@@ -20,7 +20,7 @@ module test_register_file_V3;
 	register_fileV3 register_file(PA_out, PB_out, in, PA_in, PB_in, PC_in, enable, rw, Clr, Clk, current_window);
 	
 	initial begin
-		$monitor("\t Window = %0b \t In = %0d \t RW = %0d \t E = %0d \t Clr = %0d \t Clk = %0d\n\t RegisterPA = %0d \t RegisterPB = %0d \t RegisterPC = %0d \t PA_out = %0d \t PB_out = %0d", current_window, in, rw, enable, Clr, Clk, PA_in, PB_in, PC_in, PA_out, PB_out);
+		$monitor("\t Window = %b \t In = %0d \t RW = %0d \t E = %0d \t Clr = %0d \t Clk = %0d\n\t RegisterPA = %0d \t RegisterPB = %0d \t RegisterPC = %0d \t PA_out = %0d \t PB_out = %0d", current_window, in, rw, enable, Clr, Clk, PA_in, PB_in, PC_in, PA_out, PB_out);
 		repeat (2570) #5 Clk = ~Clk; // Emulate clock
 	end
 	
@@ -29,7 +29,7 @@ module test_register_file_V3;
 	
 		// Writing to every register in each window
 		
-		current_window = 1;
+		current_window = 4'b0001;
 		// Enable write
 		rw = 1;
 		in = 0;
@@ -55,7 +55,7 @@ module test_register_file_V3;
 		
 		// Reading every register in each window
 		
-		current_window = 1;
+		current_window = 4'b0001;
 		enable = 0;
 		rw = 0;
 		// Iterate through the 4 windows reading each register

@@ -1,7 +1,7 @@
 // Register file
 // Contains 72 registers and implements the register windows specification
 
-module register_fileV3(output [31:0] out_PA, output [31:0] out_PB, input [31:0] in,  input [4:0] in_PA, input [4:0] in_PB, input [4:0] in_PC, input enable, rw, Clr, Clk, input [3:0] cwp); // still missing some arguments
+module register_fileV3(output [31:0] out_PA, output [31:0] out_PB, input [31:0] in,  input [4:0] in_PA, input [4:0] in_PB, input [4:0] in_PC, input enable, rw, Clr, Clk, input [3:0] cwp);
 
 	//---PARAMETERS-SUMMARY--------------------------------------------------------------------------------------------
 	// out_PA         : 32-bit bus that serves as output for input PA
@@ -20,43 +20,47 @@ module register_fileV3(output [31:0] out_PA, output [31:0] out_PB, input [31:0] 
 
 	//---LOGIC-FOR-CHOOSING-CORRECT-REGISTER-BASED-ON-CURRENT-WINDOW FOR ENABLING-------------------------------------------
 
-	wire [3:0] d_window_out;	// Enables the decoder based on the CWP
+	wire [3:0] d_window_enable;	// Enables the decoder based on the CWP
 
 	wire [31:0] d0_out; // The output of the 5x32 decoder used for choosing a register in window 0
 	wire [31:0] d1_out;
 	wire [31:0] d2_out;
 	wire [31:0] d3_out;
 	
-	and eDecoder0 (d_window_out[0], enable, rw, cwp[0]);
-	and eDecoder1 (d_window_out[1], enable, rw, cwp[1]);
-	and eDecoder2 (d_window_out[2], enable, rw, cwp[2]);
-	and eDecoder3 (d_window_out[3], enable, rw, cwp[3]);
+	// Enables the decoder if the enable, rw, and cwp are active
+	
+	and eDecoder0 (d_window_enable[0], enable, rw, cwp[0]);
+	and eDecoder1 (d_window_enable[1], enable, rw, cwp[1]);
+	and eDecoder2 (d_window_enable[2], enable, rw, cwp[2]);
+	and eDecoder3 (d_window_enable[3], enable, rw, cwp[3]);
 
 	// Each one chooses one out of the 32 visible registers in the current window
-	decoder_5x32 d0(d0_out, in_PC, d_window_out[0]);
-	decoder_5x32 d1(d1_out, in_PC, d_window_out[1]);
-	decoder_5x32 d2(d2_out, in_PC, d_window_out[2]);
-	decoder_5x32 d3(d3_out, in_PC, d_window_out[2]);
+	decoder_5x32 d0(d0_out, in_PC, d_window_enable[0]);
+	decoder_5x32 d1(d1_out, in_PC, d_window_enable[1]);
+	decoder_5x32 d2(d2_out, in_PC, d_window_enable[2]);
+	decoder_5x32 d3(d3_out, in_PC, d_window_enable[2]);
 	
 	//---LOGIC-FOR-CHOOSING-CORRECT-REGISTER-BASED-ON-CURRENT-WINDOW FOR CLEARING-------------------------------------------
 	
-	wire [3:0]  d_window_out_clear; // Enables the decoder used for clearing based on the CWP
+	wire [3:0]  d_window_clear; // Enables the decoder used for clearing based on the CWP
 	
 	wire [31:0] d0_clear; // The output of the decoder used for clearing a register in window 0
 	wire [31:0] d1_clear;
 	wire [31:0] d2_clear;
 	wire [31:0] d3_clear;
+	
+	// Enables the decoder if the cwp and Clr are active
 
-	and eClearDecoder0 (d_window_out_clear[0], Clr, cwp[0]);
-	and eClearDecoder1 (d_window_out_clear[1], Clr, cwp[1]);
-	and eClearDecoder2 (d_window_out_clear[2], Clr, cwp[2]);
-	and eClearDecoder3 (d_window_out_clear[3], Clr, cwp[3]);
+	and eClearDecoder0 (d_window_clear[0], Clr, cwp[0]);
+	and eClearDecoder1 (d_window_clear[1], Clr, cwp[1]);
+	and eClearDecoder2 (d_window_clear[2], Clr, cwp[2]);
+	and eClearDecoder3 (d_window_clear[3], Clr, cwp[3]);
 
 	// Each one chooses one out of the 32 visible registers in the current window to be cleared
-	decoder_5x32 c0(d0_clear, in_PC, d_window_out_clear[0]);
-	decoder_5x32 c1(d1_clear, in_PC, d_window_out_clear[1]);
-	decoder_5x32 c2(d2_clear, in_PC, d_window_out_clear[2]);
-	decoder_5x32 c3(d3_clear, in_PC, d_window_out_clear[3]);
+	decoder_5x32 c0(d0_clear, in_PC, d_window_clear[0]);
+	decoder_5x32 c1(d1_clear, in_PC, d_window_clear[1]);
+	decoder_5x32 c2(d2_clear, in_PC, d_window_clear[2]);
+	decoder_5x32 c3(d3_clear, in_PC, d_window_clear[3]);
 	
 	//---INTERCONNECTION OF CLEAR AND ENABLE SIGNALS TO THE REGISTERS--------------------------------------------------------------------------------------
 	
