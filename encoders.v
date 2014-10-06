@@ -1,4 +1,4 @@
-module encoder4x2 (output reg [1:0]out, input[3:0] in);
+module encoder_4x2 (output reg [1:0]out, input[3:0] in);
 always@(in)
 begin
 case(in)
