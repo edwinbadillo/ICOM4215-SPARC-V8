@@ -5,15 +5,15 @@ module alu(output reg [31:0]res, output reg N, Z, V, C,input wire [5:0]op, [31:0
 	parameter CC = 5'h10; 	// Used to check the S in the opcode
 	
 	//----------------------------PARAMETERS-SUMMARY------------------------------------------------------------------
-	// res            : 32-bit bus that serves as the output port for the result of an operation
-	// N              : 1-bit output that serves as the Negative Flag
-	// Z              : 1-bit output that serves as the Zero Flag
-	// V              : 1-bit output that serves as the Overflow Flag
-	// C              : 1-bit output that serves as the Carry Flag
-	// op             : 6-bit input bus that serves as the Opcode
-	// a              : 6-bit input bus that serves as the first value for an operation
-	// b              : 6-bit input bus that serves as the second value for an operation
-	//Cin			  : 1-bit input that serves as the input carry
+	// res : 32-bit bus that serves as the output port for the result of an operation
+	// N   : 1-bit output that serves as the Negative Flag
+	// Z   : 1-bit output that serves as the Zero Flag
+	// V   : 1-bit output that serves as the Overflow Flag
+	// C   : 1-bit output that serves as the Carry Flag
+	// op  : 6-bit input bus that serves as the Opcode
+	// a   : 6-bit input bus that serves as the first value for an operation
+	// b   : 6-bit input bus that serves as the second value for an operation
+	// Cin : 1-bit input that serves as the input carry
 	//-----------------------------------------------------------------------------------------------------------------
 
 
