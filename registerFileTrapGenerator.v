@@ -1,21 +1,22 @@
-module registerFileTrapGenerator(output reg overFlow, output reg underFlow, output reg [31:0]wimReg, input [31:0]cwp, [31:0]wimIn, input bitDir, Clr, enable, Clk);
+module registerFileTrapGenerator(output reg overFlow, output reg underFlow, output reg [31:0]wimOut, input [31:0]cwp, [31:0]wimIn, input bitDir, Clr, enable, Clk);
 	
 	reg [1:0] out;
 	wire bitCheck = 0;
 	
-	wim wim(out,);
-	mux4x1 muxNext(bitCheck, out, wimReg[0],wimReg[1],wimReg[2],wimReg[3]);
+	
+	mux4x1 muxNext(bitCheck, out, wimOut[0],wimOut[1],wimOut[2],wimOut[3]);
 	
 	always @ (enable,Clr)
 	begin
 		if(Clr)
-			wimReg = 0;
+			wimOut = 0;
 		else if (enable)
 		begin
+		wimOut = wimIn;
 		overFlow = 0;
 		underFlow = 0;
+		
 		// Get the index of the bit to check
-
 		if(bitDir) out = ((cwp % 4) +1) %4;
 		else out = ((cwp % 4)-1) %4;
 		$display("bitcheck %d", bitCheck);
@@ -27,11 +28,11 @@ module registerFileTrapGenerator(output reg overFlow, output reg underFlow, outp
 			overFlow = 1;
 			
 		if(bitDir == 0)
-			wimReg[out] = 0;
+			wimOut[out] = 0;
 		else
 			begin
-			wimReg[out] = 0;
-			wimReg[cwp % 4] = 1;
+			wimOut[out] = 0;
+			wimOut[cwp % 4] = 1;
 			end
 		end
 	end
