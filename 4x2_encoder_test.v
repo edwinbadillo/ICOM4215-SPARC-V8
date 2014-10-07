@@ -6,20 +6,18 @@ parameter sim_time = 50;
 
 encoder_4x2 encoder_4x2 (out, in);
 
-initial #sim_time $finish; // Especifica cuando termina simulacion
+initial #sim_time $finish; // Specifies when to end simulation
 
 // Initialize inputs
 initial
 begin
-	in = 8;
+	in = 8; //Initial case of 4b'1000
 	
 end
 
-// Change Inputs 5 times with a 5ns delay
+// Changing Inputs for the remaining cases with a 5ns delay
 initial 
 begin
-
-	
 	begin
 	#5
 	in = 4;
@@ -32,7 +30,7 @@ begin
 end
 
 initial begin
-$display ("Out \t in \t"); //imprime header
-$monitor ("%0d \t %0d \t", out, in); //imprime las señales
+$display ("Out \t in \t"); //Printing Header
+$monitor ("%0d \t %0d \t", out, in); //Printing Signal
 end
 endmodule

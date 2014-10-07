@@ -37,7 +37,7 @@ module test_decoder_5x32;
 	initial 
 	begin
 		#30 enable = 0;
-		#10 enable = 1;
+		#10 enable = 1; 
 	end
 	
 endmodule

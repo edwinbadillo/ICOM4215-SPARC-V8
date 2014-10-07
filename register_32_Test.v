@@ -6,9 +6,9 @@ reg Clr, Clk;
 
 parameter sim_time = 50;
 
-register_32 register (out, in, enable, Clr, Clk); // Instanciación del módulo
+register_32 register (out, in, enable, Clr, Clk); // Instantiation of the module
 
-initial #sim_time $finish; // Especifica cuando termina simulacion
+initial #sim_time $finish; // Specifies when the simulation ends
 
 // Initialize control signals and emulate clock
 initial 
@@ -42,7 +42,7 @@ end
 initial repeat (10) #5 in = in + 1;
 
 initial begin
-$display ("in \tout \tenable \tclear \tclock"); //imprime header
-$monitor ("%0d \t %0d \t %0d \t %0d \t %0d", in, out, enable, Clr, Clk); //imprime las señales
+$display ("in \tout \tenable \tclear \tclock"); //Printing Header
+$monitor ("%0d \t %0d \t %0d \t %0d \t %0d", in, out, enable, Clr, Clk); //Printing the Signals
 end
 endmodule

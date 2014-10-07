@@ -10,7 +10,7 @@ parameter sim_time = 50;
 
 mux_4x1 mux_4x1 (Y, S, I0, I1, I2, I3);
 
-initial #sim_time $finish; // Especifica cuando termina simulacion
+initial #sim_time $finish; // Specifies when to end simulation
 
 // Initialize inputs
 initial
@@ -39,7 +39,7 @@ begin
 end
 
 initial begin
-$display ("Y \t S \t I0 \t I1 \t I2 \t I3"); //imprime header
-$monitor ("%0d \t %0d \t %0d \t %0d \t %0d \t %0d", Y, S, I0, I1, I2, I3); //imprime las señales
+$display ("Y \t S \t I0 \t I1 \t I2 \t I3"); //Printing Header 
+$monitor ("%0d \t %0d \t %0d \t %0d \t %0d \t %0d", Y, S, I0, I1, I2, I3); //Printing Signals
 end
 endmodule

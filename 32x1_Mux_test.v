@@ -38,7 +38,7 @@ parameter sim_time = 3550;
 
 mux_32x1 mux_32x1 (Y, S, I0, I1, I2, I3, I4, I5, I6, I7, I8, I9, I10, I11, I12, I13, I14, I15, I16, I17, I18, I19, I20, I21, I22, I23, I24, I25, I26, I27, I28, I29, I30, I31);
 
-initial #sim_time $finish; // Especifica cuando termina simulacion
+initial #sim_time $finish; // Specifies when to end simulation
 
 // Initialize inputs
 initial
@@ -78,7 +78,7 @@ begin
 	I31 = 31;
 end
 
-// Change Inputs 7 times with a 5ns delay
+// Change Input 32 times with a 5ns delay
 initial 
 begin
 	repeat(32)
@@ -91,7 +91,7 @@ begin
 end
 
 initial begin
-$display ("Y \t S \t"); //imprime header
-$monitor ("%0d \t %0d \t", Y, S); //imprime las señales
+$display ("Y \t S \t"); //printing header
+$monitor ("%0d \t %0d \t", Y, S); //printing output and inputs
 end
 endmodule

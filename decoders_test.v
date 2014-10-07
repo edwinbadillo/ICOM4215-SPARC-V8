@@ -19,8 +19,8 @@ module test_decoder_2x4;
 	initial 
 	begin
 		in = 0;
-		$display("In \t Out \t Enable");
-		$monitor ("%b \t %b \t %b",in, out, enable);
+		$display("In \t Out \t Enable"); //Printing Header
+		$monitor ("%b \t %b \t %b",in, out, enable); //Printing signals
 	end
 
 	initial 
