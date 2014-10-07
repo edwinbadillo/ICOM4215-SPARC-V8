@@ -1,7 +1,7 @@
 // Register file
 // Contains 72 registers and implements the register windows specification
 
-module register_file(output [31:0] out_PA, output [31:0] out_PB, input [31:0] in,  input [4:0] in_PA, input [4:0] in_PB, input [4:0] in_PC, input enable, rw, Clr, Clk, input [1:0] current_window); // still missing some arguments
+module register_file(output [31:0] out_PA, output [31:0] out_PB, input [31:0] in,  input [4:0] in_PA, input [4:0] in_PB, input [4:0] in_PC, input enable, Clr, Clk, input [1:0] current_window); // still missing some arguments
 
 	//---PARAMETERS-SUMMARY--------------------------------------------------------------------------------------------
 	// out_PA         : 32-bit bus that serves as output for input PA
@@ -11,7 +11,6 @@ module register_file(output [31:0] out_PA, output [31:0] out_PB, input [31:0] in
 	// in_PB          : 5-bit address that will choose the output of out_B
 	// in_PC          : 5-bit address bus that will choose which register will be written or cleared
 	// enable         : Bit used to enable writing to a register in the register file
-	// rw             : Bit indicating whether the operation to be performed is a read or write. Read = 0, Write = 1
 	// Clr            : Asynchronous Clear Signal
 	// Clk            : System clock
 	// current_window : The current register window in play. Usually provided by the CU from the CWP (current window pointer) register
@@ -27,11 +26,7 @@ module register_file(output [31:0] out_PA, output [31:0] out_PB, input [31:0] in
 	wire [31:0] d2_out;
 	wire [31:0] d3_out;
 
-	wire and1_out;
-
-	// Permit writing only when rw = 1 and enable = 1
-	and and1(and1_out, enable, rw);
-	decoder_2x4 d_window(d_window_out, current_window, and1_out); // This decoder chooses the window
+	decoder_2x4 d_window(d_window_out, current_window, enable); // This decoder chooses the window
 
 	// Each one chooses one out of the 32 visible registers in the current window
 	decoder_5x32 d0(d0_out, in_PC, d_window_out[0]);
