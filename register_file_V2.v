@@ -6,14 +6,14 @@ module register_file(output [31:0] out_PA, output [31:0] out_PB, input [31:0] in
 	//---PARAMETERS-SUMMARY--------------------------------------------------------------------------------------------
 	// out_PA         : 32-bit bus that serves as output for input PA
 	// out_PB         : 32-bit bus that serves as output for input PB
-	// in			  : 32-bit bus corresponding of the data to be written
-	// in_PA          : 5-bit address that will choose the output of out_A
-	// in_PB          : 5-bit address that will choose the output of out_B
+	// in			  : 32-bit bus corresponding to the data to be written
+	// in_PA          : 5-bit address bus that will choose the output of out_A
+	// in_PB          : 5-bit address bus that will choose the output of out_B
 	// in_PC          : 5-bit address bus that will choose which register will be written or cleared
 	// enable         : Bit used to enable writing to a register in the register file
 	// Clr            : Asynchronous Clear Signal
 	// Clk            : System clock
-	// current_window : The current register window in play. Usually provided by the CU from the CWP (current window pointer) register
+	// current_window : The current register window in play. Usually provided by the CU from the CWP (current window pointer)
 	//-----------------------------------------------------------------------------------------------------------------
 
 
