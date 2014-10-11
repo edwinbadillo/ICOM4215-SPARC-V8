@@ -22,7 +22,7 @@ module test_memory_console;
 	`define STORE_B 6'b000101
 	`define STORE_HW 6'b000110
 
-	ram255x8 ram (MDR_DataOut, MFC, enable, OpCode, MAR_Address, MDR_DataIn);
+	ram256x8 ram (MDR_DataOut, MFC, enable, OpCode, MAR_Address, MDR_DataIn);
 
 	// End simulation at sim_time
 	initial #sim_time $finish;

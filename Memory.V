@@ -1,4 +1,4 @@
-module ram255x8 (output reg[31:0] MDR_DataOut, output reg MFC, input Enable,input[5:0] OpCode, input[6:0] MAR_Address, input[31:0] MDR_DataIn); 
+module ram256x8 (output reg[31:0] MDR_DataOut, output reg MFC, input Enable,input[5:0] OpCode, input[6:0] MAR_Address, input[31:0] MDR_DataIn); 
 
 	reg[7:0] Mem[0:255]; //256 localizations  of 8 bits
 	
