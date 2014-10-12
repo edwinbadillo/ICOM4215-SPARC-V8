@@ -12,5 +12,7 @@ register_32 IR(IR_Out, RAM_Out, IR_Enable, Clr, Clk);
 
 mux_2x1 MDR_Mux(MDR_Mux_out, MDR_Mux_S, ALU_Out, RAM_Out);
 register_32 MDR(MDR_Out, MDR_Mux_out, MDR_Enable, Clr, Clk);
+
 register_32 MAR(MAR_Out, ALU_Out, MAR_Enable, Clr, Clk);
-psr PSR (PSR_out, {N,Z,V,C}, cwp_in, trap, rett, PSR_Enable, Clr, Clk);
+psr PSR (PSR_out, {N,Z,V,C}, cwp_in, trap, PSR_Enable, Clr, Clk);
+tbr TBR (TBR_Out, TBA, tt, enable, Clr, Clk);
