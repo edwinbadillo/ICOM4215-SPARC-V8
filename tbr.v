@@ -3,9 +3,9 @@ module tbr(output reg [31:0] out, input wire [19:0] TBA, input wire [7:0] tt, in
 	//---DESCRIPTION---------------------------------------------------------------------------------------------------
 	// This module represents the Trap Base Register(TBR) in the SPARC architecture version 8.
 	// The TBR contains 3 fields that together equal the address to which control is transferred when a trap occurs.
-	// +-----------------------------------+
+	// +------------+----------+-----------+
 	// | TBA[31:12] | tt[11:4] | zero[3:0] |
-	// +-----------------------------------+
+	// +------------+----------+-----------+
 	// 
 	// Trab Base Address(TBA) : Bits 31 through 12 are the trap base address, which is established by supervisor 
 	//                          software. It contains the most significant 20 bits of the trap table address. The
@@ -26,7 +26,7 @@ module tbr(output reg [31:0] out, input wire [19:0] TBA, input wire [7:0] tt, in
 	//-----------------------------------------------------------------------------------------------------------------
 
 	initial
-		out[3:0]=0;
+		out[3:0] = 0;
 	always @ (posedge Clk, posedge Clr)
 		if (Clr) out <= 32'h00000000; // Clr = 1, clears register by writing '0' to all 32 bits
 		else if (enable) begin
