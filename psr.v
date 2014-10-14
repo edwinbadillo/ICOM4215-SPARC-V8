@@ -23,7 +23,7 @@ module psr(output reg [31:0] out, input wire [3:0] icc_in, input wire [4:0] cwp_
 	// ET       : Bit 5 determines whether traps are enabled(1=enabled). A trap automatically sets ET to 0.
 	// CWP      : Bits 4 through 0 represent the current window pointer.
 	//-----------------------------------------------------------------------------------------------------------------
-
+	
 	//---PARAMETERS-SUMMARY--------------------------------------------------------------------------------------------
 	// out    : 32-bit output bus that serves as the output of the PSR contents
 	// icc_in : 4-bit input bus for the integer unit condition codes {N,Z,V,C}
@@ -33,7 +33,7 @@ module psr(output reg [31:0] out, input wire [3:0] icc_in, input wire [4:0] cwp_
 	// Clr    : 1-bit asynchronous clear signal
 	// Clk    : 1-bit system clock signal
 	//-----------------------------------------------------------------------------------------------------------------
-
+	
 	initial
 		out <= 32'hf6000020;
 		/*
