@@ -1,13 +1,13 @@
-module ram256x8 (output reg[31:0] MDR_DataOut, output reg MFC, input Enable,input[5:0] OpCode, input[6:0] MAR_Address, input[31:0] MDR_DataIn); 
+module ram512x8 (output reg[31:0] MDR_DataOut, output reg MFC, input Enable,input[5:0] OpCode, input[31:0] MAR_Address, input[31:0] MDR_DataIn); 
 
-	reg[7:0] Mem[0:255]; //256 localizations  of 8 bits
+	reg[7:0] Mem[0:511]; //512 localizations  of 1 byte
 	
 	//----------------------------PARAMETERS-SUMMARY------------------------------------------------------------------
 	// MDR_DataOut : 32-bit bus that serves as the output port for the 32-bits sent to the MDR
 	// MFC         : 1-bit output that serves as the bit used to tell the CU that the operation has been completed
 	// Enable      : 1-bit input used for enabling the ram
 	// OpCode      : 6-bit input bus that serves as the Opcode
-	// MAR_Address : 7-bit input bus that serves as the address given by the MAR to indicate where to write
+	// MAR_Address : 32-bit input bus that serves as the address given by the MAR to indicate where to write
 	// MDR_DataIn  : 32-bit input bus that serves as the input port for the 32-bits to be written to memory
 	//-----------------------------------------------------------------------------------------------------------------
 	
