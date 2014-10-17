@@ -38,12 +38,12 @@ module sign_extender_30to32(output reg [31:0] out, input[29:0] in);
 endmodule
 
 
-module sign_extender_magic_box(output reg [31:0] out, input [31:0] IR, input [1:0] S);
+module sign_extender_magic_box(output [31:0] out, input [31:0] IR, input [1:0] S);
 	wire [31:0] se13_out, se22_out, se30_out;
 
 	sign_extender_13to32 se13(se13_out, IR[12:0]);
 	sign_extender_22to32 se22(se22_out, IR[21:0]);
 	sign_extender_30to32 se30(se30_out, IR[29:0]);
 
-	mux_4x1 mux(out, S, se13_out, se22_out, se30_out, IR);
+	mux_32_4x1 mux(out, S, se13_out, se22_out, se30_out, IR);
 endmodule

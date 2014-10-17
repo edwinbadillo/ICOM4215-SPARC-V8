@@ -19,10 +19,11 @@ module alu(output reg [31:0]res, output reg N, Z, V, C,input wire [5:0]op, [31:0
 
 	always @ (op, a, b, Cin)
 		begin
+		if(a === 32'hxxxxxxxx || b === 32'hxxxxxxxx || Cin === 1'bx)
+			res = 32'h00000000;
+		else
 		casex (op)
-
 			// Notation: Mnemonic(op2 with S bit = 0, op2 with S bit = 1)
-
 			// ADD (0 y 16)
 			6'b0?0000:
 				begin
@@ -54,6 +55,7 @@ module alu(output reg [31:0]res, output reg N, Z, V, C,input wire [5:0]op, [31:0
 			// SUB (4 y 20)
 			6'b0?0100:
 				begin
+				$display("a = %d, b = %d",a,b);
 				{carry, res} = a - b;
 				if(CC & op)
 					subFlags();
