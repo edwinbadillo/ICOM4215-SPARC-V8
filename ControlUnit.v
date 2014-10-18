@@ -1,6 +1,6 @@
 module ControlUnit(
 	// Enables
-	output reg NPC_enable, PC_enable, IR_Enable, MDR_Enable, MAR_Enable, register_file, RAM_enable, PSR_Enable,
+	output reg NPC_enable, PC_enable, MDR_Enable, MAR_Enable, register_file, RAM_enable, PSR_Enable,
 	// Select Lines Muxes
 	output reg [1:0]extender_select, [1:0]ALUB_Mux_select,
 	output reg MDR_Mux_select,
@@ -27,7 +27,7 @@ module ControlUnit(
 			ALU_op = IR_Out[24:19];
 			in_PA  = IR_Out[18:14];
 			register_file = 1;
-			
+			PSR_Enable = 1;
 			if (IR_Out[13]) begin 
 				//B is an immediate argument in IR
 				ALUB_Mux_select = 2'b01;
