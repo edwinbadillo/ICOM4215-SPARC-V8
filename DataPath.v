@@ -73,6 +73,8 @@ module DataPath(
 	
 	// Mux for the input of MDR (Memory out or ALU out)
 	// mux_2x1 MDR_Mux(MDR_Mux_out, MDR_Mux_select, ALU_out, RAM_Out);
+
+	
 	
 	// Mux for selecting second operand for ALU
 	mux_32_4x1 ALUB_Mux(ALUB_Mux_out, ALUB_Mux_select, out_PB, extender_out, MDR_Out, 32'h00000000);

@@ -25,9 +25,11 @@ module test_Arithmetic;
 	RAM_enable, PSR_Enable, Clk, Clr);
 	
 	initial begin
-		$monitor(" IR_out = %x, ALU_Out = %d, sign extender = %d \n in_PA = %d, in_PB = %d, in_PC = %d, ALU_Mux_Out = %d\n out_PA = %d, out_PB = %d", IR_Out, ALU_Out, extender_out, in_PA, in_PB, in_PC, ALUB_Mux_out, out_PA, out_PB);
+		//$monitor(" IR_out = %x, ALU_Out = %d, sign extender = %d \n in_PA = %d, in_PB = %d, in_PC = %d, ALU_Mux_Out = %d\n out_PA = %d, out_PB = %d", IR_Out, ALU_Out, extender_out, in_PA, in_PB, in_PC, ALUB_Mux_out, out_PA, out_PB);
 		repeat (2570)
 		begin
+			$display(" IR_out = %x, ALU_Out = %d, sign extender = %d \n in_PA = %d, in_PB = %d, in_PC = %d, ALU_Mux_Out = %d\n out_PA = %d, out_PB = %d", IR_Out, ALU_Out, extender_out, in_PA, in_PB, in_PC, ALUB_Mux_out, out_PA, out_PB);
+		
 			#5 Clk = ~Clk; // Emulate clock
 		end
 	end
@@ -50,16 +52,25 @@ module test_Arithmetic;
 		// Performing instruction add r[1] = r[4] + simm13 = 0 + 4
 		IR_Enable = 1;
 		IR_In = 32'b10_00001_000000_00100_1_0000000000100;
-		// Selecting mux outputs
+		// Selecting mux outputs, i.e. selecting B
+	
 		extender_select = 2'b00;
 		ALUB_Mux_select = 2'b01;
-		#5;
+		in_PA = 1;
 		in_PC = 1;
 		register_file_enable = 1;
+		#5; // Finished add instruction, including store
+		IR_In = 32'b10_00001_000000_00100_1_0000000001111;
+		extender_select = 2'b00;
+		ALUB_Mux_select = 2'b01;
+		in_PA = 2;
+		in_PC = 1;
+		register_file_enable = 1;
+
+		
+		//Next instruction
 		#5;
-		in_PA = 1;
 		register_file_enable = 0;
-		#5;
 		// Performing instruction add r[1] = r[1] + r[1] = 8
 		// IR_Enable = 1;
 		// IR_In = 32'b10_00001_000000_00001_0_00000000_00001;

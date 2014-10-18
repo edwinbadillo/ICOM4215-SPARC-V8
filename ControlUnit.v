@@ -15,6 +15,7 @@ module ControlUnit(
 	input MFC);
 	
 	always @ (MFC)
+		
 	begin
 		
 		
