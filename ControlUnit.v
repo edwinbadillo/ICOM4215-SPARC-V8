@@ -14,8 +14,34 @@ module ControlUnit(
 	input [31:0]IR_Out,
 	input MFC);
 	
-	always @ (MFC)
-		
+	always @ (IR_Out, MFC)
+		if (IR_Out[31:30] === 2'b00 ) begin 
+			// do nothing
+		end
+		else if (IR_Out[31:30] === 2'b01) begin 
+			// do nothing
+		end
+		else if (IR_Out[31:30] === 2'b10) begin 
+			// Arithmetic and Logic Instructions Family
+			in_PC  = IR_Out[29:25];
+			ALU_op = IR_Out[24:19];
+			in_PA  = IR_Out[18:14];
+			register_file = 1;
+			
+			if (IR_Out[13]) begin 
+				//B is an immediate argument in IR
+				ALUB_Mux_select = 2'b01;
+				extender_select = 2'b00;
+			end
+			else begin 
+				//B is a register
+				ALUB_Mux_select = 2'b00;
+				in_PB = IR_Out[4:0];
+			end
+		end
+		else if (IR_Out[31:30] === 2'b10) begin 
+			// do nothing
+		end
 	begin
 		
 		
