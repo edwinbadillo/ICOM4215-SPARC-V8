@@ -5,6 +5,7 @@ module DataPath(
 	output [31:0]IR_Out,
 	
 	// ALU
+	input [5:0]ALU_op,
 	output [31:0]ALU_out,
 	
 	// register file
@@ -23,17 +24,24 @@ module DataPath(
 	// MDR Mux
 	input MDR_Mux_select,
 	
-	// Ram input
+	// Ram
 	input [5:0]RAM_OpCode,
 	output MFC,
+	
+	// PSR
+	output [31:0]PSR_out,
 	
 	// Enables
 	input NPC_enable, PC_enable, MDR_Enable, MAR_Enable, RAM_enable, PSR_Enable,
 	input Clk, Clr); //Missing shit like crazy
 	
 	
-	wire trap, rett;
-	wire N,Z,C,V,Cin;
+	wire rett, N, Z, C, V;
+	wire [4:0] cwp_in;
+	
+	wire [1:0] trap;
+	
+	wire psr_clr;
 
 	wire [31:0] MDR_Mux_out, MDR_Out, MAR_Out, RAM_Out;
 	
@@ -52,22 +60,22 @@ module DataPath(
 	
 	/* Components */
 	
-	register_file register_file(out_PA, out_PB, ALU_out, in_PA, in_PB, in_PC, register_file_enable, Clr, Clk, 2'b00);
+	register_file register_file(out_PA, out_PB, ALU_out, in_PA, in_PB, in_PC, register_file_enable, register_file_Clr, Clk, 2'b00);
 	
 	// ALU
-	alu alu(ALU_out, N, Z, V, C, IR_Out[24:19], out_PA, ALUB_Mux_out, Cin);
+	alu alu(ALU_out, N, Z, V, C, ALU_op, out_PA, ALUB_Mux_out, PSR_out[20]);
 	
 	// Sign Extender for immediate values: 00 = 12 bit, 01 = 22 bit, 10 = 30 bit
 	sign_extender_magic_box s_extender(extender_out, IR_Out, extender_select);
 
 	// RAM
-	// ram512x8 ram(RAM_Out, MFC, RAM_enable, RAM_OpCode, MAR_Out, MDR_Out);
+	ram512x8 ram(RAM_Out, MFC, RAM_enable, RAM_OpCode, MAR_Out, MDR_Out);
 
-/* 	// Process State Register
-	psr PSR (PSR_out, {N,Z,V,C}, cwp_in, trap, PSR_Enable, Clr, Clk);
+	// Process State Register
+	psr PSR (PSR_out, {N,Z,V,C}, 5'b00000, trap, PSR_Enable, psr_clr, Clk);
 	
 	// Trap Base Register
-	tbr TBR (TBR_Out, TBA, tt, enable, Clr, Clk); */
+	//tbr TBR (TBR_Out, TBA, tt, enable, trap_Clr, Clk);
 	
 	/* Muxes */
 	

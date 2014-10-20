@@ -16,7 +16,55 @@ module ControlUnit(
 	
 	always @ (IR_Out, MFC)
 		if (IR_Out[31:30] === 2'b00 ) begin 
-			// do nothing
+			// Branch Instructions Family
+
+			// The address is included in the instruction in the least significant 22 bits
+
+			// checking cond field, to determine the type of branch
+			casex (IR_Out[28:25])
+				4'b1000:
+					// Branch always, ba
+				4'b0000:
+					// Branch never, bn
+
+				4'b1001:
+					// Branch on not equal, bne
+				4'b0001:
+					// Branch on equal, be
+
+				4'b1010:
+					// Branch on greater, bg
+				4'b0010:
+					// Branch on less or equal, ble
+
+				4'b1011:
+					// Branch on greater or equal, bge
+				4'b0011:
+					// Branch on less, bl
+
+				4'b1100:
+					// Branch on greater unsigned, bgu
+				4'b0100:
+					// Branch on less or equal unsigned, bleu
+
+				4'b1101:
+					// Branch on carry = 0, bcc
+				4'b0101:
+					// Branch on carry = 1, bcs
+
+				4'b1110:
+					// Branch on positive, bpos
+				4'b0110:
+					// Branch on negative, bneg
+
+				4'b1111:
+					// Branch on overflow = 0, bvc
+				4'b0111:
+					// Branch on overflow = 1, bvs
+
+			endcase
+
+
 		end
 		else if (IR_Out[31:30] === 2'b01) begin 
 			// do nothing

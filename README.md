@@ -1,12 +1,19 @@
+ICOM4215 - SPARC V8
+=====================
 This is a project for our Computer Architecture and Organization course, under the professor Nestor Rodríguez.
 
-Contributors:
+The project consists of designing and simulating an architecture that is compliant with SPARC V8.
 
-Rafael Pol
+Some of the components designed include:
 
-Edwin Badillo
+* ALU
+* RAM
+* Register File with Register Windows
+* Auxiliary modules such as Muxes and Decoders
 
-Carlos N. Abreu Takemura
+-----------------------------
+**Contributors:**
 
-
-T_T
+* Rafael Pol
+* Edwin Badillo
+* Carlos N. Abreu Takemura
