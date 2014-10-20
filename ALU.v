@@ -20,10 +20,10 @@ module alu(output reg [31:0]res, output reg N, Z, V, C,input wire [5:0]op, [31:0
 		if(a === 32'hxxxxxxxx || b === 32'hxxxxxxxx || Cin === 1'bx)
 		begin
 			res = 32'h00000000;
-			N = 0;
-			Z = 0;
-			V = 0;
-			C = 0;
+			N   = 0;
+			Z   = 0;
+			V   = 0;
+			C   = 0;
 		end
 		else
 		casex (op)
