@@ -20,6 +20,13 @@ module ControlUnit(
 
 			// The address is included in the instruction in the least significant 22 bits
 
+			register_file = 0; // Not writing to a register during a branch.
+			in_PA         = 0; // Choosing A as r0, to pass the address unchanged through the ALU
+
+			extender_select = 2'b01;
+			ALUB_Mux_select = 2'b01;
+			ALU_op          = 6'b000000;
+
 			// checking cond field, to determine the type of branch
 			casex (IR_Out[28:25])
 				4'b1000:
