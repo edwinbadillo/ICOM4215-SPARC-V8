@@ -33,7 +33,7 @@ module test_memory_path;
 	initial begin
 		repeat (2570)
 		begin
-			$display(" IR_out = %b \n ALU_Out = %d, sign extender = %d \n in_PA = %d, in_PB = %d, in_PC = %d, ALU_Mux_Out = %d\n out_PA = %d, out_PB = %d\n PSR_out = %b, MDR_Mux_select = %d, MDR_Out = %b \n MAR_Out = %b, RAM_Out = %b \n Ram address 11 = %d \n ---------------------------------------\n", IR_Out, ALU_Out, extender_out, in_PA, in_PB, in_PC, ALUB_Mux_out, out_PA, out_PB, PSR_out, MDR_Mux_select, DataPath.MDR.out, DataPath.MAR.out, DataPath.ram.MDR_DataOut, DataPath.ram.Mem[11]);
+			$display(" IR_out = %b \n ALU_Out = %d, sign extender = %d \n in_PA = %d, in_PB = %d, in_PC = %d, ALU_Mux_Out = %d\n out_PA = %d, out_PB = %d\n PSR_out = %b, MDR_Mux_select = %d, MDR_Out = %b \n MAR_Out = %b, RAM_Out = %b \n Ram address 08 = %d \n Ram address 09 = %d \n Ram address 10 = %d \n Ram address 11 = %d \n---------------------------------------\n", IR_Out, ALU_Out, extender_out, in_PA, in_PB, in_PC, ALUB_Mux_out, out_PA, out_PB, PSR_out, MDR_Mux_select, DataPath.MDR.out, DataPath.MAR.out, DataPath.ram.MDR_DataOut, DataPath.ram.Mem[8], DataPath.ram.Mem[9], DataPath.ram.Mem[10], DataPath.ram.Mem[11]);
 			#5 Clk = ~Clk; // Emulate clock
 		end
 	end
@@ -46,8 +46,6 @@ module test_memory_path;
 			#5;
 			dest = dest + 1;
 		end
-		dest = 6;
-		IR_In = {2'b10,dest,25'b010000000001000000000001};
 		IR_Enable = 1;
 		#5;
 		DataPath.ram.Mem[8] = 8'hFF;
@@ -56,7 +54,7 @@ module test_memory_path;
 		DataPath.ram.Mem[11] = 8'hFF;
 		$display(" MY ISNTRUCTION~~~~~~~~~~~~~~~~~~~~~`");
 		//IR_In = 32'b11_00110_000000_00100_0_xxxxxxxx_00101; //Load Word
-		  IR_In = 32'b11_00110_000100_00100_0_xxxxxxxx_00101; //Store Word
+		IR_In = 32'b11_00110_000100_00100_0_xxxxxxxx_00101; //Store Word
 		#5;
 		IR_Enable = 0;
 		#15;
