@@ -11,10 +11,10 @@ module ram512x8 (output reg[31:0] MDR_DataOut, output reg MFC, input Enable,inpu
 	// MDR_DataIn  : 32-bit input bus that serves as the input port for the 32-bits to be written to memory
 	//-----------------------------------------------------------------------------------------------------------------
 	
-	always@(Enable, OpCode)
+	always@(Enable)
 	begin
 		MFC <= 0;
-		if(Enable)
+		//if(Enable)
 			case(OpCode)
 			//Load Word 
 				6'b000000:begin
@@ -124,6 +124,6 @@ module ram512x8 (output reg[31:0] MDR_DataOut, output reg MFC, input Enable,inpu
 			//Implemented using the Control Unit and previous operations
 				default : $display("Error in RAM");
 			endcase
-		else MDR_DataOut= 32'bz; 
+		//else MDR_DataOut= 32'bz; 
 	end
 endmodule

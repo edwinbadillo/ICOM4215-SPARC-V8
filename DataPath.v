@@ -18,7 +18,7 @@ module DataPath(
 	output [31:0]extender_out,
 	
 	// ALUB Mux
-	input [1:0]ALUB_Mux_select,
+	input [2:0]ALUB_Mux_select,
 	output [31:0]ALUB_Mux_out,
 	
 	// MDR Mux
@@ -55,8 +55,8 @@ module DataPath(
 	register_32 IR(IR_Out, IR_In, IR_Enable, IR_Clr, Clk);
 	
 	// Memory registers
-	/* register_32 MDR(MDR_Out, MDR_Mux_out, MDR_Enable, Clr, Clk);
-	register_32 MAR(MAR_Out, ALU_out, MAR_Enable, Clr, Clk); */
+	 register_32 MDR(MDR_Out, MDR_Mux_out, MDR_Enable, Clr, Clk);
+	register_32 MAR(MAR_Out, ALU_out, MAR_Enable, Clr, Clk); 
 	
 	/* Components */
 	
@@ -80,11 +80,11 @@ module DataPath(
 	/* Muxes */
 	
 	// Mux for the input of MDR (Memory out or ALU out)
-	// mux_2x1 MDR_Mux(MDR_Mux_out, MDR_Mux_select, ALU_out, RAM_Out);
+	mux_2x1 MDR_Mux(MDR_Mux_out, MDR_Mux_select, ALU_out, RAM_Out);
 
 	
 	
 	// Mux for selecting second operand for ALU
-	mux_32_4x1 ALUB_Mux(ALUB_Mux_out, ALUB_Mux_select, out_PB, extender_out, MDR_Out, 32'h00000000);
+	mux_8x1 ALUB_Mux(ALUB_Mux_out, ALUB_Mux_select, out_PB, extender_out, MDR_Out, 32'h00000000, 32'h00000000, 32'h00000000, 32'h00000000, 32'h00000000);
 
 endmodule
