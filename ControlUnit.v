@@ -28,7 +28,7 @@ module ControlUnit(
 			in_PA         = 0; // Choosing A as r0, to pass the address unchanged through the ALU
 
 			extender_select = 2'b01;
-			ALUB_Mux_select = 2'b01;
+			ALUB_Mux_select = 3'b001;
 			ALU_op          = 6'b000000;
 
 			// checking cond field, to determine the type of branch
