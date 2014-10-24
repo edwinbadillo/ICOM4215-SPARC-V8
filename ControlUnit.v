@@ -2,7 +2,8 @@ module ControlUnit(
 	// Enables
 	output reg NPC_enable, PC_enable, MDR_Enable, MAR_Enable, register_file, RAM_enable, PSR_Enable,
 	// Select Lines Muxes
-	output reg [1:0]extender_select, [2:0]ALUB_Mux_select,
+	output reg [1:0]extender_select, ALUA_Mux_select,
+	output reg [2:0]ALUB_Mux_select,
 	output reg MDR_Mux_select,
 	// Register file input
 	output reg [4:0]in_PC, [4:0]in_PA, [4:0]in_PB,
@@ -15,6 +16,7 @@ module ControlUnit(
 	input MFC);
 	initial begin
 	RAM_enable = 0;
+	register_file = 0;
 	end
 	
 	reg TEMP_Enable;
@@ -88,6 +90,7 @@ module ControlUnit(
 			in_PA  = IR_Out[18:14];
 			register_file = 1;
 			PSR_Enable = 1;
+			ALUA_Mux_select = 2'b00;
 			if (IR_Out[13]) begin 
 				//B is an immediate argument in IR
 				ALUB_Mux_select = 3'b001;

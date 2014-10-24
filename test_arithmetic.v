@@ -24,35 +24,35 @@ module test_Arithmetic;
 	// Local variables
 	reg [31:0]IR_In;
 	reg IR_Enable;
+	reg register_file_Clr = 0;
 	reg Clk = 0;
-	reg [4:0]dest = 1;
-	reg register_file_Clr =0;
 	
 	parameter sim_time = 2580;
+	reg [4:0]dest = 1;
 
 
 DataPath DataPath(IR_Enable, IR_In, IR_Out, PC_enable, PC_Clr, NPC_enable, NPC_Clr, PSR_Enable, PSR_Clr, PSR_out, TEMP_Enable, TEMP_Clr, MDR_Enable, MDR_Clr,
-	MAR_Enable, MAR_Clr, TBR_enable, TBR_Clr, ALU_op, ALU_Out, register_file_enable, register_file_Clr, in_PA, in_PB, in_PC, out_PA, out_PB, extender_select, extender_out, 
+	MAR_Enable, MAR_Clr, TBR_enable, TBR_Clr, ALU_op, ALU_Out, register_file_enable, in_PA, in_PB, in_PC, out_PA, out_PB, extender_select, extender_out, 
 	ALUA_Mux_select, ALUA_Mux_out, ALUB_Mux_select, ALUB_Mux_out, MDR_Mux_select, PC_In_Mux_select, RAM_OpCode, RAM_enable, MFC, Clk);
 	
-	ControlUnit ControlUnit(NPC_enable, PC_enable, MDR_Enable, MAR_Enable, register_file_enable, RAM_enable, PSR_Enable, extender_select, ALUB_Mux_select,
+	ControlUnit ControlUnit(NPC_enable, PC_enable, MDR_Enable, MAR_Enable, register_file_enable, RAM_enable, PSR_Enable, extender_select,ALUA_Mux_select, ALUB_Mux_select,
 		MDR_Mux_select, in_PC, in_PA, in_PB, ALU_op, RAM_OpCode, IR_Out, MFC);
 		
 		
 	initial begin
 		repeat (2570)
 		begin
-			$display(" IR_out = %x, ALU_Out = %d, sign extender = %d \n in_PA = %d, in_PB = %d, in_PC = %d, ALUB_Mux_Out = %d\n out_PA = %d, out_PB = %d\n PSR_out = %b", IR_Out, ALU_Out, extender_out, in_PA, in_PB, in_PC, ALUB_Mux_out, out_PA, out_PB, PSR_out);
+			$display(" IR_out = %x, ALU_Out = %d, sign extender = %d \n in_PA = %d, in_PB = %d, in_PC = %d, ALU_AMux_Out = %d, ALUB_Mux_out = %d\n out_PA = %d, out_PB = %d\n PSR_out = %b", IR_Out, ALU_Out, extender_out, in_PA, in_PB, in_PC, ALUA_Mux_out, ALUB_Mux_out, out_PA, out_PB, PSR_out);
 			#5 Clk = ~Clk; // Emulate clock
 		end
 	end
 	
 	initial begin
+		IR_Enable = 1;
 		repeat(31)
 		begin
-			register_file_Clr = ~register_file_Clr;
+			IR_In = {2'b10,dest,25'b0100000000110000000000100};
 			#5;
-			register_file_Clr = ~register_file_Clr;
 			dest = dest + 1;
 		end
 		#5;

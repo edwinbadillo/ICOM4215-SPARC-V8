@@ -31,7 +31,7 @@ module DataPath(
 	output [31:0]ALU_out,
 	
 	// register file
-	input register_file_enable, register_file_Clr,
+	input register_file_enable,
 	input [4:0] in_PA, in_PB, in_PC,
 	output [31:0]out_PA, out_PB,
 	
