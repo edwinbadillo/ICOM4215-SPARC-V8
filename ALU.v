@@ -1,6 +1,6 @@
 // 32-bit Arithmetic Logic Unit
 
-module alu(output reg [31:0]res, output reg N, Z, V, C,input wire [5:0]op, [31:0]a, [31:0]b, input wire Cin);
+module alu(output reg [31:0]res, output reg N, Z, V, C,input wire [5:0]op, input wire [31:0]a, input wire [31:0]b, input wire Cin);
 	reg carry;		// Used to save carry to not modify the C if S is low 
 	
 	//----------------------------PARAMETERS-SUMMARY------------------------------------------------------------------

@@ -122,7 +122,7 @@ module ram512x8 (output reg[31:0] MDR_DataOut, output reg MFC, input Enable,inpu
 			//SWAP register with memory
 			//	6'b001111:
 			//Implemented using the Control Unit and previous operations
-				default : $display("Error in RAM");
+				default: $display("Error in RAM");
 			endcase
 		//else MDR_DataOut= 32'bz; 
 	end

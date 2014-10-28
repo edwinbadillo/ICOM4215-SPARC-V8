@@ -349,7 +349,7 @@ module register_file(output [31:0] out_PA, output [31:0] out_PB, input [31:0] in
 		);
 	
 	// Output for PA
-	mux_4x1  mux_resultA(out_PA, current_window, mux_window_out0A, mux_window_out1A, mux_window_out2A, mux_window_out3A);
+	mux_32_4x1  mux_resultA(out_PA, current_window, mux_window_out0A, mux_window_out1A, mux_window_out2A, mux_window_out3A);
 	
 	// Port B
 	
@@ -387,6 +387,6 @@ module register_file(output [31:0] out_PA, output [31:0] out_PB, input [31:0] in
 		);
 	
 	// Output for PB
-	mux_4x1  mux_resultB(out_PB, current_window, mux_window_out0B, mux_window_out1B, mux_window_out2B, mux_window_out3B);
+	mux_32_4x1  mux_resultB(out_PB, current_window, mux_window_out0B, mux_window_out1B, mux_window_out2B, mux_window_out3B);
 
 endmodule

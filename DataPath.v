@@ -90,7 +90,7 @@ module DataPath(
 	psr PSR (PSR_out, {N,Z,V,C}, 5'b00000, trap, PSR_Enable, PSR_clr, Clk);
 	
 	// Trap Base Register
-	tbr TBR (TBR_Out, TBA, tt, TBR_enable, TBR_Clr, Clk);	
+	tbr TBR (TBR_Out, TBA, tt, TBR_enable, TBR_Clr, Clk);
 	
 	/* Components */
 	
