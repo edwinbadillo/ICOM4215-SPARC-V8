@@ -21,7 +21,7 @@ module test_memory_path;
 	reg [31:0]IR_In;
 	reg IR_Enable;
 	
-	parameter sim_time = 2580;
+	parameter sim_time = 250;
 	reg [4:0]dest = 1;
 
 	reg RESET = 0;
@@ -31,12 +31,12 @@ module test_memory_path;
 		ALUA_Mux_select, ALUA_Mux_out, ALUB_Mux_select, ALUB_Mux_out, MDR_Mux_select, PC_In_Mux_select, RAM_OpCode, RAM_enable, MFC, Clk);
 	
 	ControlUnit ControlUnit(NPC_enable, PC_enable, MDR_Enable, MAR_Enable, register_file_enable, RAM_enable, PSR_Enable, extender_select, ALUA_Mux_select, ALUB_Mux_select,
-		MDR_Mux_select, in_PC, in_PA, in_PB, ALU_op, RAM_OpCode, IR_Out, MFC, RESET);
+		MDR_Mux_select, in_PC, in_PA, in_PB, ALU_op, RAM_OpCode, IR_Out, MFC, RESET, Clk);
 		
 	initial begin
-		repeat (200)
+		repeat (70)
 		begin
-			$display(" IR_out = %b \n ALU_Out = %d, sign extender = %d \n in_PA = %d, in_PB = %d, in_PC = %d, ALU_Mux_Out = %d\n out_PA = %d, out_PB = %d\n PSR_out = %b, MDR_Mux_select = %d, MDR_Out = %b \n MAR_Out = %b, RAM_Out = %b \n Ram address 08 = %d \n Ram address 09 = %d \n Ram address 10 = %d \n Ram address 11 = %d \n---------------------------------------\n", IR_Out, ALU_Out, extender_out, in_PA, in_PB, in_PC, ALUB_Mux_out, out_PA, out_PB, PSR_out, MDR_Mux_select, DataPath.MDR.out, DataPath.MAR.out, DataPath.ram.MDR_DataOut, DataPath.ram.Mem[8], DataPath.ram.Mem[9], DataPath.ram.Mem[10], DataPath.ram.Mem[11]);
+			$display("Time: %t\n IR_out = %b \n ALU_Out = %d, sign extender = %d \n in_PA = %d, in_PB = %d, in_PC = %d, ALU_Mux_Out = %d\n out_PA = %d, out_PB = %d\n PSR_out = %b, MDR_Mux_select = %d, MDR_Out = %b \n MAR_Out = %b, RAM_Out = %b \n Ram address 08 = %d \n Ram address 09 = %d \n Ram address 10 = %d \n Ram address 11 = %d \n---------------------------------------\n", $time, IR_Out, ALU_Out, extender_out, in_PA, in_PB, in_PC, ALUB_Mux_out, out_PA, out_PB, PSR_out, MDR_Mux_select, DataPath.MDR.out, DataPath.MAR.out, DataPath.ram.MDR_DataOut, DataPath.ram.Mem[8], DataPath.ram.Mem[9], DataPath.ram.Mem[10], DataPath.ram.Mem[11]);
 			#5 Clk = ~Clk; // Emulate clock
 		end
 	end
@@ -61,8 +61,6 @@ module test_memory_path;
 		#5;
 		IR_Enable = 0;
 		#15;
-		
-		
 	end
 	
 	// End simulation at sim_time

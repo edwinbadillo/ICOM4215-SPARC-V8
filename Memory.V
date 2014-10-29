@@ -27,7 +27,7 @@ module ram512x8 (output reg[31:0] MDR_DataOut, output reg MFC, input Enable,inpu
 				end
 
 			//Load Unsigned Byte
-			6'b000001: begin
+				6'b000001: begin
 					#5;
 					MDR_DataOut[31:8] <= 24'h00000;
 					MDR_DataOut[7:0]  <= Mem[MAR_Address + 3];

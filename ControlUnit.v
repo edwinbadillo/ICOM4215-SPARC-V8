@@ -1,37 +1,46 @@
 module ControlUnit(
+
+	// Control Signals
 	// Enables
 	output reg NPC_enable, PC_enable, MDR_Enable, MAR_Enable, register_file, RAM_enable, PSR_Enable,
 	// Select Lines Muxes
 	output reg [1:0]extender_select, ALUA_Mux_select,
 	output reg [2:0]ALUB_Mux_select,
 	output reg MDR_Mux_select,
-	// Register file input
+	// Register file control
 	output reg [4:0]in_PC, output reg [4:0]in_PA, output reg [4:0]in_PB,
-	// Alu inputs
+	// Alu control
 	output reg [5:0]ALU_op,
-	// Ram input
+	// Ram control
 	output reg [5:0]RAM_OpCode,
 	
+	// Status Signals
 	input [31:0]IR_Out,
 	input MFC,
-	input RESET);
 
+	// Input Signals
+	input RESET,
+	input Clk);
+
+	// Local variables
 	reg [31:0] State, nextState;
 	
 	initial begin
-	RAM_enable = 0;
-	register_file = 0;
+		RAM_enable = 0;
+		register_file = 0;
 	end
 	
 	reg TEMP_Enable;
 	always @ (IR_Out, MFC, RESET)
 		if (RESET) begin 
-
+			State = 0;
+			// Supposed to be either a state that simply moves towards fetch state, or it's the fetch state itself
+			// And everything else pertaining output signals in state 0
 		end
-		else 
+		else begin 
 			if (IR_Out[31:30] === 2'b00 ) begin 
 				// Branch Instructions Family
-
+				
 				// The address is included in the instruction in the least significant 22 bits
 
 				register_file = 0; // Not writing to a register during a branch.
@@ -85,8 +94,6 @@ module ControlUnit(
 
 				endcase
 				*/
-
-
 			end
 			else if (IR_Out[31:30] === 2'b01) begin 
 				// do nothing
@@ -120,10 +127,9 @@ module ControlUnit(
 				IR_Out[29:25] = IR_Out[29:25] + 1; //choosing the following register
 				IR_Out[18:14] = IR_Out[18:14] + 4; //adding 4 to PA in order to choose corresponding address
 				load();*/
-			
+				
 				end
 				else if(IR_Out[24:19] == 6'b000000||IR_Out[24:19] == 6'b000001||IR_Out[24:19] == 6'b000010||IR_Out[24:19] == 6'b001001||IR_Out[24:19] == 6'b001010) begin
-
 					load();
 				end
 				else if(IR_Out[24:19] == 6'b000111)begin
@@ -131,56 +137,54 @@ module ControlUnit(
 				
 				end
 				else if(IR_Out[24:19] == 6'b000100||IR_Out[24:19] == 6'b000101||IR_Out[24:19] == 6'b000110) begin
-				store();
+					store();
 				end
 				else if(IR_Out[24:19] == 6'b001111) begin
-				//SWAP THEM REGISTERS
-				
-				ALU_op = 6'b000000;
-				in_PA  = IR_Out[18:14];
-				if (IR_Out[13]) begin 
-					//B is an immediate argument in IR
-					ALUB_Mux_select = 3'b001;
-					extender_select = 2'b00;
-				end
-				else begin 
-					//B is a register
+					//SWAP THEM REGISTERS
+					
+					ALU_op = 6'b000000;
+					in_PA  = IR_Out[18:14];
+					if (IR_Out[13]) begin 
+						//B is an immediate argument in IR
+						ALUB_Mux_select = 3'b001;
+						extender_select = 2'b00;
+					end
+					else begin 
+						//B is a register
+						ALUB_Mux_select = 3'b000;
+						in_PB = IR_Out[4:0];
+					end
+					MAR_Enable =1;
+					#5;
+					MAR_Enable =0;
+					RAM_enable = 1;
+					MDR_Mux_select = 1;
+					MDR_Enable =1;
+					#5;
+					MDR_Enable =0;
+					TEMP_Enable = 1;
+					#5;
+					TEMP_Enable=0;
+					in_PA  = IR_Out[29:25];
 					ALUB_Mux_select = 3'b000;
-					in_PB = IR_Out[4:0];
-				end
-				MAR_Enable =1;
-				#5;
-				MAR_Enable =0;
-				RAM_enable = 1;
-				MDR_Mux_select = 1;
-				MDR_Enable =1;
-				#5;
-				MDR_Enable =0;
-				TEMP_Enable = 1;
-				#5;
-				TEMP_Enable=0;
-				in_PA  = IR_Out[29:25];
-				ALUB_Mux_select = 3'b000;
-				in_PB = 0;
-				MDR_Mux_select = 0;
-				MDR_Enable =1;
-				#5;
-				MDR_Enable =0;
-				RAM_enable = 1;
-				#5;
-				RAM_enable = 0;
-				ALUB_Mux_select = 3'b100;
-				in_PC  = IR_Out[29:25];
-				in_PA  = 5'b00000;
-				ALU_op = 6'b000000;
-				register_file = 1;			
-				#5;
-				register_file = 0;
-				
-				
+					in_PB = 0;
+					MDR_Mux_select = 0;
+					MDR_Enable =1;
+					#5;
+					MDR_Enable =0;
+					RAM_enable = 1;
+					#5;
+					RAM_enable = 0;
+					ALUB_Mux_select = 3'b100;
+					in_PC  = IR_Out[29:25];
+					in_PA  = 5'b00000;
+					ALU_op = 6'b000000;
+					register_file = 1;			
+					#5;
+					register_file = 0;
 				end
 			end
-	
+		end
 	
 	//TASKS
 	
