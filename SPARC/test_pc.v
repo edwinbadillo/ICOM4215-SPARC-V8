@@ -69,10 +69,21 @@ module test_pc;
 		ControlUnit.NPC_enable = 0;
 		#10;
 		
+		IR_Enable = 0;
+		IR_In     = 32'b10_00001_000000_00000_1_0000000000011; // mov %r1, #3   ---> add %r1, %r0, #3
+		// IR value to be loaded is ready
+		IR_Enable = 1;
+		#10; // Instruction loaded in IR
+		IR_Enable = 0;
+		#10;
+		
 		/* jmpl instruction */
 		
 		IR_Enable = 1;
-		IR_In     = 32'b10_00001_111000_00000_1_0000000001111; // jmpl %r1, 15
+		IR_In     = 32'b10_00001_111000_00000_1_0000000001111; // jmpl %r0, 15, r1
+		
+		// IR_Enable = 1;
+		// IR_In     = 32'b10_00010_111000_00001_0_0000000000001; // jmpl %r1, r1, r2
 	end
 	
 	// End simulation at sim_time
@@ -91,7 +102,7 @@ module test_pc;
 		$display("out_PA: %d\tout_PB: %d", out_PA, out_PB);
 		$display("PSR_out: %b", PSR_out);
 		$display("R1 = %d", DataPath.register_file.r_out[1]);
-		$display("PC = %d", DataPath.PC.PC_out);
+		$display("PC = %d", DataPath.PC.out);
 		$display("nPC = %d", DataPath.NPC.out);
 		$display("RF_enable: %d", register_file_enable);
 		$display("PC in = %d", DataPath.PC_In_Mux.Y);

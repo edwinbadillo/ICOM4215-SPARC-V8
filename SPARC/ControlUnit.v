@@ -118,15 +118,15 @@ module ControlUnit(
 					register_file = 1;
 					#10;
 					register_file = 0;
-					PC_enable = 1;
 					#10;
 					// PC = nPC
 					PC_In_Mux_select = 2'b00;
+					#10;
+					PC_enable = 1;
 					$display("PC = nPC");
 					#10;
 					PC_enable = 0;
 					$display("PC disable");
-					#10;
 					$display("nPC = rs1 + rs2 or rs1 + simm13");
 					in_PA = IR_Out[18:14]; // Get rs1
 					// nPC = rs1 + rs2 or rs1 + simm13
