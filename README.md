@@ -14,6 +14,14 @@ Some of the components designed include:
 * Auxiliary modules such as Muxes and Decoders
 
 -----------------------------
+Tools utilized:
+
+* Verilog
+* iverilog compiler with vvp
+* ModelSim
+* SublimeText Editor
+
+-----------------------------
 **Contributors:**
 
 * Rafael Pol
