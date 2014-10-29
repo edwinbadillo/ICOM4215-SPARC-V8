@@ -99,7 +99,7 @@ module DataPath(
 	// ALU
 	alu alu(ALU_out, N, Z, V, C, ALU_op, ALUA_Mux_out, ALUB_Mux_out, PSR_out[20]);
 	
-	// Sign Extender for immediate values: 00 = 12 bit, 01 = 22 bit, 10 = 30 bit
+	// Sign Extender for immediate values: 00 = 13 bit, 01 = 22 bit, 10 = 30 bit
 	sign_extender_magic_box s_extender(extender_out, IR_Out, extender_select);
 
 	// RAM

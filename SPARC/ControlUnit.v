@@ -32,7 +32,7 @@ module ControlUnit(
 	
 	reg TEMP_Enable;
 
-	always @ (IR_Out, MFC, RESET)
+	always @ (posedge Clk, posedge RESET)
 		if (RESET) begin 
 			State         = 0;
 			RAM_enable    = 0;
@@ -103,16 +103,16 @@ module ControlUnit(
 			end
 			else if (IR_Out[31:30] === 2'b10) begin 
 				// Arithmetic and Logic Instructions Family
-				in_PC  = IR_Out[29:25];
-				ALU_op = IR_Out[24:19];
-				in_PA  = IR_Out[18:14];
+				in_PC  = IR_Out[29:25]; // Get rd
+				ALU_op = IR_Out[24:19]; // Get op3
+				in_PA  = IR_Out[18:14]; // Get rs1
 				register_file = 1;
 				PSR_Enable = 1;
-				ALUA_Mux_select = 2'b00;
+				ALUA_Mux_select = 2'b00; // Choose rs1 from register file with in_PA for A argument for ALU.
 				if (IR_Out[13]) begin 
 					//B is an immediate argument in IR
-					ALUB_Mux_select = 3'b001;
-					extender_select = 2'b00;
+					ALUB_Mux_select = 3'b001; // Select output of sign extender as B for ALU
+					extender_select = 2'b00;  // Select 13bit to 32bit extender
 				end
 				else begin 
 					//B is a register

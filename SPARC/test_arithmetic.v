@@ -27,8 +27,8 @@ module test_Arithmetic;
 	reg register_file_Clr = 0;
 	reg Clk = 0;
 	
-	parameter sim_time = 200;
-	reg [4:0]dest = 1;
+	parameter sim_time = 80;
+	// reg [4:0]dest = 1;
 
 
 	reg RESET = 0;
@@ -44,32 +44,51 @@ module test_Arithmetic;
 	/* Make a regular pulsing clock. */
 	// reg clk = 0;
 	always begin 
-		$display("Time: %t\nIR_out = %x, ALU_Out = %d, sign_extender = %d \n in_PA = %d, in_PB = %d, in_PC = %d, ALU_AMux_Out = %d, ALUB_Mux_out = %d\n out_PA = %d, out_PB = %d\n PSR_out = %b\n--------------------", $time, IR_Out, ALU_Out, extender_out, in_PA, in_PB, in_PC, ALUA_Mux_out, ALUB_Mux_out, out_PA, out_PB, PSR_out);
 		#5 Clk = !Clk;
+		printValues();
 	end
-		
-	// initial begin
-	// 	repeat (200)
-	// 	begin
-	// 		$display(" IR_out = %x, ALU_Out = %d, sign_extender = %d \n in_PA = %d, in_PB = %d, in_PC = %d, ALU_AMux_Out = %d, ALUB_Mux_out = %d\n out_PA = %d, out_PB = %d\n PSR_out = %b\n--------------------", IR_Out, ALU_Out, extender_out, in_PA, in_PB, in_PC, ALUA_Mux_out, ALUB_Mux_out, out_PA, out_PB, PSR_out);
-	// 		#5 Clk = ~Clk; // Emulate clock
-	// 	end
-	// end
-	
-	initial begin // 155ns
+
+	initial begin
+		// Magicks to emulate the two cycles within the arithmetic/logic instruction execution state
+		// When CU has states, the magicks is simply another state.
+		printValues();
+
 		IR_Enable = 1;
-		repeat(31)
-		begin
-			IR_In = {2'b10,dest,25'b0100000000110000000000100};
-			#5;
-			dest = dest + 1;
-		end
-		#5;
+		IR_In     = 32'b10_00001_000000_00000_1_0000000000011; // mov %r1, #3   ---> add %r1, %r0, #3
+		#10;
+		ControlUnit.register_file = 0;
+		#10;
 		IR_Enable = 1;
-		IR_In     = 32'b10000010100000001010000000000100;
-		#5;
+		IR_In     = 32'b10_00010_000000_00000_1_0000000000110; // mov %r2, #6   ---> add %r2, %r0, #6
+		#10;
+		ControlUnit.register_file = 0;
+		#10;
+		IR_Enable = 1;
+		IR_In     = 32'b10_00010_000000_00001_0_xxxxxxxx_00010; // add %r2, %r1, %r2
+		#10;
+		ControlUnit.register_file = 0;
 	end
 	
 	// End simulation at sim_time
 	initial #sim_time $finish;
+
+	task printValues;
+	begin
+		$display("Time: %tns", $time);
+		$display("Clock: %d", Clk);
+		$display("IR_Out: %b", IR_Out);
+		$display("extender_out: %d", extender_out);
+		$display("ALU_Out: %d", ALU_Out);
+		$display("in_PA: %d\tin_PB: %d\tin_PC: %d", in_PA, in_PB, in_PC);
+		$display("ALUA_Mux_select: %d\tALUB_Mux_select: %d", ALUA_Mux_select, ALUA_Mux_select);
+		$display("ALUA_Mux_out: %d\tALUB_Mux_out: %d", ALUA_Mux_out, ALUB_Mux_out);
+		$display("out_PA: %d\tout_PB: %d", out_PA, out_PB);
+		$display("PSR_out: %b", PSR_out);
+		$display("R1 = %d", DataPath.register_file.r_out[1]);
+		$display("R2 = %d", DataPath.register_file.r_out[2]);
+		$display("RF_enable: %d", register_file_enable);
+		$display("--------------------------------------------------------------------------\n");
+	end
+	endtask
+
 endmodule
