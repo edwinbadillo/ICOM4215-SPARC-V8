@@ -20,13 +20,13 @@ module ControlUnit(
 	// Input Signals
 	input RESET,
 	input Clk);
-
+	
 	// Local variables
 	reg [31:0] State, nextState;
 	
 	// initial begin
-	// 	RAM_enable    = 0;
-	// 	register_file = 0;
+	// RAM_enable    = 0;
+	// register_file = 0;
 	// end
 	
 	reg TEMP_Enable;

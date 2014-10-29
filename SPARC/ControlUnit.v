@@ -32,7 +32,7 @@ module ControlUnit(
 	
 	reg TEMP_Enable;
 
-	always @ (posedge Clk, posedge RESET)
+	always @ (/*posedge Clk*/IR_Out, posedge RESET)
 		if (RESET) begin 
 			State         = 0;
 			RAM_enable    = 0;
@@ -103,12 +103,12 @@ module ControlUnit(
 			end
 			else if (IR_Out[31:30] === 2'b10) begin 
 				// Arithmetic and Logic Instructions Family
-				in_PC  = IR_Out[29:25]; // Get rd
-				ALU_op = IR_Out[24:19]; // Get op3
-				in_PA  = IR_Out[18:14]; // Get rs1
-				register_file = 1;
-				PSR_Enable = 1;
+
+				in_PC           = IR_Out[29:25]; // Get rd
+				ALU_op          = IR_Out[24:19]; // Get op3
+				in_PA           = IR_Out[18:14]; // Get rs1
 				ALUA_Mux_select = 2'b00; // Choose rs1 from register file with in_PA for A argument for ALU.
+				
 				if (IR_Out[13]) begin 
 					//B is an immediate argument in IR
 					ALUB_Mux_select = 3'b001; // Select output of sign extender as B for ALU
@@ -117,8 +117,17 @@ module ControlUnit(
 				else begin 
 					//B is a register
 					ALUB_Mux_select = 3'b000;
-					in_PB = IR_Out[4:0];
+					in_PB           = IR_Out[4:0];
 				end
+				// Result of operation outputted from ALU
+				#10;
+				register_file   = 1;
+				PSR_Enable      = 1;
+				#10; // Result of operation loaded into register of choice
+				register_file   = 0;
+				PSR_Enable      = 0;
+
+
 			end
 			else if (IR_Out[31:30] === 2'b11) begin 
 				// Load and Store operations
@@ -193,39 +202,44 @@ module ControlUnit(
 	
 	task load;
 	begin
-		in_PC  = IR_Out[29:25];
-		RAM_OpCode = IR_Out[24:19];
-		ALU_op = 6'b000000;
-		in_PA  = IR_Out[18:14];
+		in_PC           = IR_Out[29:25];
+		RAM_OpCode      = IR_Out[24:19];
+		ALU_op          = 6'b000000;
+		in_PA           = IR_Out[18:14];
+		ALUA_Mux_select = 2'b00;
+
 		if (IR_Out[13]) begin 
 			//B is an immediate argument in IR
 			ALUB_Mux_select = 3'b001;
 			extender_select = 2'b00;
 		end
-		else begin 
+		else begin
 			//B is a register
 			ALUB_Mux_select = 3'b000;
-			in_PB = IR_Out[4:0];
+			in_PB           = IR_Out[4:0];
 		end
-		MAR_Enable =1;
-		#6;
-		MAR_Enable =0;
-		RAM_enable = 1;
+		// Now, ALU is outputing the address from where to load the value in RAM to a register
+		#10;
+		MAR_Enable     = 1;
+		#10; // Address loaded into MAR
+		MAR_Enable     = 0;
+		RAM_enable     = 1;
 		MDR_Mux_select = 1;
-		#2;
-		MDR_Enable =1;
-		
-		#9;
-		MDR_Enable =0;
+		#10; // Initiate load instruction in RAM
 		RAM_enable = 0;
+		#10; // Waiting for memory to respond in 5ns meh.
+		MDR_Enable = 1;
+		#10; // Data loaded into MDR
+		MDR_Enable      = 0;
 		ALUB_Mux_select = 3'b010;
-		in_PA  = 5'b00000;
-		ALU_op = 6'b000000;
+		in_PA           = 5'b00000;
+		ALU_op          = 6'b000000;
+		// Now, ALU outputs the value retrieved from memory
+		#10;
 		register_file = 1;
-		#6;
+		#10; // Value loaded into destination register
 		register_file = 0;
-		#2;
-		
+
 	end
 	endtask
 	
@@ -234,31 +248,36 @@ module ControlUnit(
 		RAM_OpCode = IR_Out[24:19];
 		ALU_op = 6'b000000;
 		in_PA  = IR_Out[18:14];
+		ALUA_Mux_select = 2'b00;
+
 		if (IR_Out[13]) begin 
 			//B is an immediate argument in IR
 			ALUB_Mux_select = 3'b001;
 			extender_select = 2'b00;
+			$display("\n\n\n\n\nHULULUULULULULULULULULULULULU\n\n\n\n\n\n\n");
 		end
 		else begin 
 			//B is a register
 			ALUB_Mux_select = 3'b000;
-			in_PB = IR_Out[4:0];
+			in_PB           = IR_Out[4:0];
 		end
-		MAR_Enable =1;
-		#6;
-		MAR_Enable =0;
-		in_PA  = IR_Out[29:25];
+		// Now, ALU_out is outputting the address where to write in RAM
+		#10;
+		MAR_Enable = 1;
+		#10; // MAR loaded with address on this posedge
+		MAR_Enable      = 0;
+		in_PA           = IR_Out[29:25];
 		ALUB_Mux_select = 3'b000;
-		in_PB = 0;
-		MDR_Mux_select = 0;
-		MDR_Enable =1;
-		#5;
-		MDR_Enable =0;
-		#2;
+		in_PB           = 0;
+		MDR_Mux_select  = 0;
+		#10;
+		MDR_Enable      = 1;
+		#10; // MDR loaded with data to be written to memory
+		MDR_Enable = 0;
 		RAM_enable = 1;
-		#5;
+		#10;
 		RAM_enable = 0;
-	
+		#10; // Wait for the #5ns delay of the memory
 	end
 	endtask
 	

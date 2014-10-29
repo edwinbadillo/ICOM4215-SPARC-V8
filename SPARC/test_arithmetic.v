@@ -1,5 +1,5 @@
 module test_Arithmetic;
-
+	
 	/* Inputs */
 	wire [4:0]in_PC, in_PA, in_PB;
 	
@@ -30,7 +30,6 @@ module test_Arithmetic;
 	parameter sim_time = 80;
 	// reg [4:0]dest = 1;
 
-
 	reg RESET = 0;
 
 
@@ -53,20 +52,21 @@ module test_Arithmetic;
 		// When CU has states, the magicks is simply another state.
 		printValues();
 
-		IR_Enable = 1;
+		IR_Enable = 0;
 		IR_In     = 32'b10_00001_000000_00000_1_0000000000011; // mov %r1, #3   ---> add %r1, %r0, #3
-		#10;
-		ControlUnit.register_file = 0;
-		#10;
+		// IR value to be loaded is ready
 		IR_Enable = 1;
+		#10; // Instruction loaded in IR
+		IR_Enable = 0;
 		IR_In     = 32'b10_00010_000000_00000_1_0000000000110; // mov %r2, #6   ---> add %r2, %r0, #6
 		#10;
-		ControlUnit.register_file = 0;
-		#10;
 		IR_Enable = 1;
+		#10; // Instruction loaded in IR
+		IR_Enable = 0;
 		IR_In     = 32'b10_00010_000000_00001_0_xxxxxxxx_00010; // add %r2, %r1, %r2
 		#10;
-		ControlUnit.register_file = 0;
+		IR_Enable = 1;
+		#10; // Instruction loaded into IR
 	end
 	
 	// End simulation at sim_time
@@ -75,12 +75,12 @@ module test_Arithmetic;
 	task printValues;
 	begin
 		$display("Time: %tns", $time);
-		$display("Clock: %d", Clk);
+		$display("Clock: %d",  Clk);
 		$display("IR_Out: %b", IR_Out);
 		$display("extender_out: %d", extender_out);
 		$display("ALU_Out: %d", ALU_Out);
 		$display("in_PA: %d\tin_PB: %d\tin_PC: %d", in_PA, in_PB, in_PC);
-		$display("ALUA_Mux_select: %d\tALUB_Mux_select: %d", ALUA_Mux_select, ALUA_Mux_select);
+		$display("ALUA_Mux_select: %d\tALUB_Mux_select: %d", ALUA_Mux_select, ALUB_Mux_select);
 		$display("ALUA_Mux_out: %d\tALUB_Mux_out: %d", ALUA_Mux_out, ALUB_Mux_out);
 		$display("out_PA: %d\tout_PB: %d", out_PA, out_PB);
 		$display("PSR_out: %b", PSR_out);

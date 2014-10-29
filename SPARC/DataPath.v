@@ -70,7 +70,7 @@ module DataPath(
 
 	wire [31:0] MDR_Mux_out, MDR_Out, MAR_Out, RAM_Out, TEMP_Out, NPC_out, PC_out, TBR_Out, PC_Mux_out;
 	wire [19:0] TBA;
-	wire [7:0] tt;
+	wire [7:0]  tt;
 	
 	/* Registers */
 
