@@ -33,7 +33,7 @@ module ram512x8 (output reg[31:0] MDR_DataOut, output reg MFC, input Enable,inpu
 					MDR_DataOut[7:0]  <= Mem[MAR_Address + 3];
 					MFC <= 1;
 				end
-
+				
 			//Load Unsigned Halfword
 				6'b000010: begin
 					#5;

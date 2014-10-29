@@ -31,16 +31,19 @@ module ControlUnit(
 	end
 	
 	reg TEMP_Enable;
+
 	always @ (IR_Out, MFC, RESET)
 		if (RESET) begin 
-			State = 0;
+			State         = 0;
+			RAM_enable    = 0;
+			register_file = 0;
 			// Supposed to be either a state that simply moves towards fetch state, or it's the fetch state itself
 			// And everything else pertaining output signals in state 0
 		end
 		else begin 
 			if (IR_Out[31:30] === 2'b00 ) begin 
 				// Branch Instructions Family
-				
+
 				// The address is included in the instruction in the least significant 22 bits
 
 				register_file = 0; // Not writing to a register during a branch.
