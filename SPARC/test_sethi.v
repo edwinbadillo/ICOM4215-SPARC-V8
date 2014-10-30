@@ -1,5 +1,5 @@
-module test_pc;
-
+module test_sethi;
+	
 	/* Inputs */
 	wire [4:0]in_PC, in_PA, in_PB;
 	
@@ -27,7 +27,8 @@ module test_pc;
 	reg register_file_Clr = 0;
 	reg Clk = 0;
 	
-	parameter sim_time = 200;
+	parameter sim_time = 120;
+	// reg [4:0]dest = 1;
 
 	reg RESET = 0;
 
@@ -51,39 +52,31 @@ module test_pc;
 		// When CU has states, the magicks is simply another state.
 		printValues();
 
-		/* Init PC and nPC */
-		
-		// Select input of pc from ALU
-		ControlUnit.PC_In_Mux_select = 2'b01;
-		#10;
-		// Enable PC
-		ControlUnit.PC_enable = 1;
-		#10;
-		// Disable PC and pass output of PC to ALUA and 4 through ALUB
-		ControlUnit.PC_enable = 0;
-		ControlUnit.ALUA_Mux_select = 2'b01;
-		ControlUnit.ALUB_Mux_select = 3'b110;
-		ControlUnit.ALU_op = 6'b000000;
-		ControlUnit.NPC_enable = 1;
-		#10;
-		ControlUnit.NPC_enable = 0;
-		#10;
-		
 		IR_Enable = 0;
 		IR_In     = 32'b10_00001_000000_00000_1_0000000000011; // mov %r1, #3   ---> add %r1, %r0, #3
 		// IR value to be loaded is ready
 		IR_Enable = 1;
 		#10; // Instruction loaded in IR
 		IR_Enable = 0;
+		IR_In     = 32'b10_00010_000000_00000_1_0000000000110; // mov %r2, #6   ---> add %r2, %r0, #6
 		#10;
-		
-		/* jmpl instruction */
-		
 		IR_Enable = 1;
-		IR_In     = 32'b10_00001_111000_00000_1_0000000001111; // jmpl %r0, 15, r1
-		
-		// IR_Enable = 1;
-		// IR_In     = 32'b10_00010_111000_00001_0_0000000000001; // jmpl %r1, r1, r2
+		#10; // Instruction loaded in IR
+		IR_Enable = 0;
+		IR_In     = 32'b10_00010_000000_00001_0_xxxxxxxx_00010; // add %r2, %r1, %r2
+		#10;
+		IR_Enable = 1;
+		#10; // Instruction loaded into IR
+		IR_Enable = 0;
+		IR_In     = 32'b00_00010_100_0000000000000011111111; // sethi 255 into r2
+		#10;
+		IR_Enable = 1;
+		#10; // Instruction loaded into IR
+		IR_Enable = 0;
+		IR_In     = 32'b00_00010_100_1000000000000000000000; // sethi 2^21 = 2097152 into r2
+		#10;
+		IR_Enable = 1;
+		#10; // Instruction loaded into IR
 	end
 	
 	// End simulation at sim_time
@@ -92,7 +85,7 @@ module test_pc;
 	task printValues;
 	begin
 		$display("Time: %tns", $time);
-		$display("Clock: %d", Clk);
+		$display("Clock: %d",  Clk);
 		$display("IR_Out: %b", IR_Out);
 		$display("extender_out: %d", extender_out);
 		$display("ALU_Out: %d", ALU_Out);
@@ -102,10 +95,8 @@ module test_pc;
 		$display("out_PA: %d\tout_PB: %d", out_PA, out_PB);
 		$display("PSR_out: %b", PSR_out);
 		$display("R1 = %d", DataPath.register_file.r_out[1]);
-		$display("PC = %d", DataPath.PC.out);
-		$display("nPC = %d", DataPath.NPC.out);
+		$display("R2 = %d", DataPath.register_file.r_out[2]);
 		$display("RF_enable: %d", register_file_enable);
-		$display("PC in = %d", DataPath.PC_In_Mux.Y);
 		$display("--------------------------------------------------------------------------\n");
 	end
 	endtask
