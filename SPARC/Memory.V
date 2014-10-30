@@ -60,20 +60,15 @@ module ram512x8 (output reg[31:0] MDR_DataOut, output reg MFC, input Enable,inpu
 			//Store Byte
 				6'b000101: begin
 					#5;
-					Mem[MAR_Address]     <= 8'h00; 
-					Mem[MAR_Address + 1] <= 8'h00;
-					Mem[MAR_Address + 2] <= 8'h00;
-					Mem[MAR_Address + 3] <= MDR_DataIn[7:0];
-					MFC                  <= 1;
+					Mem[MAR_Address] <= MDR_DataIn[7:0];
+					MFC              <= 1;
 				end
 
 			//Store Halfword
 				6'b000110: begin
 					#5;	
-					Mem[MAR_Address]     <= 8'h00; 
-					Mem[MAR_Address + 1] <= 8'h00;
-					Mem[MAR_Address + 2] <= MDR_DataIn[15:8];
-					Mem[MAR_Address + 3] <= MDR_DataIn[7:0];
+					Mem[MAR_Address]     <= MDR_DataIn[15:8];
+					Mem[MAR_Address + 1] <= MDR_DataIn[7:0];
 					MFC                  <= 1;
 				end
 
