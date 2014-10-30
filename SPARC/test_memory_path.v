@@ -21,7 +21,7 @@ module test_memory_path;
 
 	/* Outputs */
 	wire signed [31:0]IR_Out, ALU_Out, extender_out, out_PA, out_PB, ALUB_Mux_out, PSR_out, ALUA_Mux_out;
-	wire MFC, MSET;
+	wire MFC, MSET, cond, BA_O, BN_O;
 	
 	// Local variables
 	reg [31:0]IR_In;
@@ -38,7 +38,7 @@ module test_memory_path;
 		ALUA_Mux_select, ALUA_Mux_out, ALUB_Mux_select, ALUB_Mux_out, MDR_Mux_select, PC_In_Mux_select, TBR_Mux_select, RAM_OpCode, RAM_enable, MFC, MSET, Clk);
 	
 	ControlUnit ControlUnit(NPC_enable, PC_enable, MDR_Enable, MAR_Enable, register_file_enable, RAM_enable, PSR_Enable, TBR_enable, extender_select, PC_In_Mux_select, ALUA_Mux_select, ALUB_Mux_select,
-		MDR_Mux_select, TBR_Mux_select, in_PC, in_PA, in_PB, ALU_op, RAM_OpCode, tt, TBR_Clr, IR_Out, MFC, MSET, RESET, Clk);
+		MDR_Mux_select, TBR_Mux_select, in_PC, in_PA, in_PB, ALU_op, RAM_OpCode, tt, TBR_Clr, IR_Out, MFC, MSET, cond, BA_O, BN_O, RESET, Clk);
 		
 	always begin
 		#5 Clk = !Clk;
