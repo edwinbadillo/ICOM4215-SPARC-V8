@@ -12,6 +12,7 @@ module test_bla_path;
 	wire [1:0]PC_In_Mux_select;
 	wire [1:0]ALUA_Mux_select;
 	wire [2:0]ALUB_Mux_select;
+	wire [1:0]PSR_Mux_select;
 	
 	// Enables
 	wire PC_enable, NPC_enable, MDR_Enable, MAR_Enable, register_file_enable, RAM_enable, PSR_Enable, TEMP_Enable, TBR_enable;
