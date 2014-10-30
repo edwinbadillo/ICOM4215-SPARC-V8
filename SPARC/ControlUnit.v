@@ -60,17 +60,22 @@ module ControlUnit(
 				register_file = 0; // Not writing to a register during a branch.
 				extender_select = 2'b01;
 				ALU_op          = 6'b000000;
+				PC_enable =0;
+				NPC_enable =0;
 
 				if (cond) begin 
 					if (BA_O) begin
-						if(IR_Out[9]) begin
+						if(IR_Out[29]) begin
 						
 							//the delay instruction is annulled
 							ALUA_Mux_select = 2'b10;
 							ALUB_Mux_select = 3'b110;
+							#10;
 							NPC_enable =1;
 							#10;
 							NPC_enable = 0;
+							PC_enable =1;
+							#10;
 							PC_enable =1;
 							#10;
 							ALUA_Mux_select = 2'b10;
@@ -83,12 +88,14 @@ module ControlUnit(
 						else begin
 							
 							PC_In_Mux_select = 2'b00;
+							#10;
 							PC_enable = 1;
 							#10;
 							PC_enable = 0;
 							extender_select = 3'b101;
 							ALUA_Mux_select = 2'b01;
 							ALUB_Mux_select = 3'b001;
+							#10;
 							NPC_enable = 1;
 							#10;
 							NPC_enable = 0;
@@ -97,18 +104,21 @@ module ControlUnit(
 					end
 					else if (BN_O) begin
 					
-						if(IR_Out[9]) begin
+						if(IR_Out[29]) begin
 						
 							//the delay instruction is annulled
 							ALUA_Mux_select = 2'b10;
 							ALUB_Mux_select = 3'b110;
+							#10;
 							NPC_enable =1;
 							#10;
 							NPC_enable = 0;
+							#10;
 							PC_enable =1;
 							#10;
 							ALUA_Mux_select = 2'b10;
 							ALUB_Mux_select = 3'b110;
+							#10;
 							NPC_enable =1;
 							#10;
 							NPC_enable = 0;
@@ -119,12 +129,14 @@ module ControlUnit(
 					else begin
 					//the delay instruction is annulled
 						PC_In_Mux_select = 2'b00;
+						#10;
 						PC_enable = 1;
 						#10;
 						PC_enable = 0;
 						extender_select = 3'b101;
 						ALUA_Mux_select = 2'b01;
 						ALUB_Mux_select = 3'b001;
+						#10;
 						NPC_enable = 1;
 						#10;
 						NPC_enable = 0;
@@ -134,17 +146,20 @@ module ControlUnit(
 				end
 				else begin
 					
-					if(IR_Out[9]) begin
+					if(IR_Out[29]) begin
 					//the delay instruction is annulled
 							ALUA_Mux_select = 2'b10;
 							ALUB_Mux_select = 3'b110;
+							#10;
 							NPC_enable =1;
 							#10;
 							NPC_enable = 0;
+							#10;
 							PC_enable =1;
 							#10;
 							ALUA_Mux_select = 2'b10;
 							ALUB_Mux_select = 3'b110;
+							#10;
 							NPC_enable =1;
 							#10;
 							NPC_enable = 0;
@@ -153,11 +168,13 @@ module ControlUnit(
 					else begin
 					
 						PC_In_Mux_select = 2'b00;
+						#10;
 						PC_enable = 1;
 						#10;
 						PC_enable = 0;
 						ALUA_Mux_select = 2'b10;
 						ALUB_Mux_select = 3'b110;
+						#10;
 						NPC_enable =1;
 						#10;
 						NPC_enable = 0;					

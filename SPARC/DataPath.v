@@ -62,6 +62,9 @@ module DataPath(
 	input RAM_enable,
 	output MFC, MSET,
 	
+	//BLA
+	input out_BLA, BA_O, BN_O,
+	
 	input Clk); //Missing shit like crazy
 	
 	
@@ -128,5 +131,8 @@ module DataPath(
 	
 	// Mux for the input of TBR. Used for writing TBA or TT
 	mux_2x1 TBR_Mux(TBR_Mux_out, TBR_Mux_select, {ALU_out[31:7], TBR_Out[6:0]}, {TBR_Out[31:7], tt,TBR_Out[3:0]});
+	
+	BLA bla(out_BLA, BA_O, BN_O, IR_In[28:25], PSR_out[23:20]);
+
 	
 endmodule
