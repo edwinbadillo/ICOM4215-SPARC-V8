@@ -99,7 +99,21 @@ module ControlUnit(
 				*/
 			end
 			else if (IR_Out[31:30] === 2'b01) begin 
-				// do nothing
+				// Call
+				in_PC  = 5'b01111;  // Value of Program Counter is to be stored in R15
+				// Just moving the value of Program Counter to R15, so add 0
+				ALU_op = 6'b000000; // add
+				in_PA  = 5'b00000; // choose r0 as A
+
+				ALUA_Mux_select = 2'b00;  // Selecting port A of regfile
+				ALUB_Mux_select = 3'b011; // Selecting output of Program Counter
+
+
+
+
+
+
+
 			end
 			else if (IR_Out[31:30] === 2'b10) begin 
 				// Arithmetic and Logic Instructions Family
@@ -254,7 +268,6 @@ module ControlUnit(
 			//B is an immediate argument in IR
 			ALUB_Mux_select = 3'b001;
 			extender_select = 2'b00;
-			$display("\n\n\n\n\nHULULUULULULULULULULULULULULU\n\n\n\n\n\n\n");
 		end
 		else begin 
 			//B is a register
