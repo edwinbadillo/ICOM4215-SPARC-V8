@@ -21,6 +21,7 @@ module ControlUnit(
 	// Status Signals
 	input [31:0]IR_Out,
 	input MFC,
+	input MSET,
 
 	// Input Signals
 	input RESET,
@@ -36,13 +37,16 @@ module ControlUnit(
 	
 	reg TEMP_Enable;
 
-	always @ (/*posedge Clk*/IR_Out, posedge RESET)
+	always @ (/*posedge Clk*/IR_Out, posedge RESET, posedge MSET)
 		if (RESET) begin 
 			State         = 0;
 			RAM_enable    = 0;
 			register_file = 0;
 			// Supposed to be either a state that simply moves towards fetch state, or it's the fetch state itself
 			// And everything else pertaining output signals in state 0
+		end
+		else if (MSET) begin
+			$display("\n\n\n\n\n\n\n\n\n\nWell. MSET fired off. That means you messed up.\n\n\n\n\n\n\n\n\n\n");
 		end
 		else begin 
 			if (IR_Out[31:30] === 2'b00 ) begin 
@@ -360,6 +364,10 @@ module ControlUnit(
 					#5;
 					register_file = 0;
 				end
+			end
+			else begin
+				$display("\n\n\nILLEGAL INSTRUCTION DETECTED\n\n\n");
+				// Set the TBR and do all the magicks to PC <- TBR, nPC <- TBR + 4
 			end
 		end
 	

@@ -60,7 +60,7 @@ module DataPath(
 	// Ram
 	input [5:0]RAM_OpCode,
 	input RAM_enable,
-	output MFC,
+	output MFC, MSET,
 	
 	input Clk); //Missing shit like crazy
 	
@@ -110,7 +110,7 @@ module DataPath(
 	sign_extender_magic_box s_extender(extender_out, IR_Out, extender_select);
 
 	// RAM
-	ram512x8 ram(RAM_Out, MFC, RAM_enable, RAM_OpCode, MAR_Out, MDR_Out);
+	ram512x8 ram(RAM_Out, MFC, MSET, RAM_enable, RAM_OpCode, MAR_Out, MDR_Out);
 	
 	/* Muxes */
 	
