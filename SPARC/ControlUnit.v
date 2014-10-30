@@ -4,7 +4,7 @@ module ControlUnit(
 	// Enables
 	output reg NPC_enable, PC_enable, MDR_Enable, MAR_Enable, register_file, RAM_enable, PSR_Enable,
 	// Select Lines Muxes
-	output reg [1:0]extender_select, ALUA_Mux_select,
+	output reg [1:0]extender_select, PC_In_Mux_select, ALUA_Mux_select,
 	output reg [2:0]ALUB_Mux_select,
 	output reg MDR_Mux_select,
 	// Register file control
@@ -52,7 +52,7 @@ module ControlUnit(
 				extender_select = 2'b01;
 				ALUB_Mux_select = 3'b001;
 				ALU_op          = 6'b000000;
-
+				
 				// checking cond field, to determine the type of branch
 				/*casex (IR_Out[28:25])
 					4'b1000:
@@ -99,35 +99,117 @@ module ControlUnit(
 				*/
 			end
 			else if (IR_Out[31:30] === 2'b01) begin 
-				// do nothing
+				// Call
+				in_PC  = 5'b01111;  // Value of Program Counter is to be stored in R15
+				// Just moving the value of Program Counter to R15, so add 0
+				ALU_op = 6'b000000; // add
+				in_PA  = 5'b00000;  // choose r0 as A
+
+				ALUA_Mux_select = 2'b00;  // Selecting port A of regfile
+				ALUB_Mux_select = 3'b011; // Selecting output of Program Counter
+				// So far, value of PC is at the entrance of R15
+				PC_In_Mux_select = 2'b00; // nPC --> PC
+				// Now, nPC is at the entrance of PC as well
+				#10;
+				PC_enable     = 1;
+				register_file = 1;
+				#10; // Load PC output to R15 and nPC output to PC
+				PC_enable     = 0;
+				register_file = 0;
+
+				// Now to perform nPC <= PC(which is R15) + 4*disp30
+				in_PA = 5'b01111; // A = R15
+				ALUA_Mux_select = 2'b00;  // redundant, but helps readability
+				ALUB_Mux_select = 3'b001; // select output from magicbox <- IR
+
+				extender_select = 2'b11; // Choose the shifter to perform B = 4*disp30
+
+				ALU_op = 6'b000000; // redundant, add again: R15 + 4*disp30
+				//ALU_out has the value needed, knocking at the door of nPC
+				#10;
+				NPC_enable = 1;
+				#10; // Loads ALU output to nPC
+				NPC_enable = 0;
+
+
+
+
+
+
 			end
 			else if (IR_Out[31:30] === 2'b10) begin 
-				// Arithmetic and Logic Instructions Family
-
-				in_PC           = IR_Out[29:25]; // Get rd
-				ALU_op          = IR_Out[24:19]; // Get op3
-				in_PA           = IR_Out[18:14]; // Get rs1
-				ALUA_Mux_select = 2'b00; // Choose rs1 from register file with in_PA for A argument for ALU.
-				
-				if (IR_Out[13]) begin 
-					//B is an immediate argument in IR
-					ALUB_Mux_select = 3'b001; // Select output of sign extender as B for ALU
-					extender_select = 2'b00;  // Select 13bit to 32bit extender
+			// JMPL
+				if(IR_Out[24:19] == 6'b111000)
+				begin
+					// Saving PC in rd
+					// rd = r0 + PC;
+					in_PA = 5'b00000;			// Get r0 from PA
+					ALUA_Mux_select = 2'b00;	// Choose rs1 from register file
+					ALUB_Mux_select = 3'b011;	// Select PC
+					ALU_op = 6'b000000;			// r0 + PC
+					in_PC = IR_Out[29:25];		// Store in rd
+					$display("rd = r0 + PC;");
+					#10;
+					$display("Enable Register File");
+					register_file = 1;
+					#10;
+					register_file = 0;
+					#10;
+					// PC = nPC
+					PC_In_Mux_select = 2'b00;
+					#10;
+					PC_enable = 1;
+					$display("PC = nPC");
+					#10;
+					PC_enable = 0;
+					$display("PC disable");
+					$display("nPC = rs1 + rs2 or rs1 + simm13");
+					in_PA = IR_Out[18:14]; // Get rs1
+					// nPC = rs1 + rs2 or rs1 + simm13
+					if (IR_Out[13]) begin 
+						//B is an immediate argument in IR
+						ALUB_Mux_select = 3'b001; // Select output of sign extender as B for ALU
+						extender_select = 2'b00;  // Select 13bit to 32bit extender
+					end
+					else begin 
+						//B is a register
+						ALUB_Mux_select = 3'b000;
+						in_PB = IR_Out[4:0];
+					end
+					#10;
+					$display("nPC enable");
+					NPC_enable = 1;
+					#10;
+					$display("nPC disable");
+					NPC_enable = 0;
+					#10;
 				end
-				else begin 
-					//B is a register
-					ALUB_Mux_select = 3'b000;
-					in_PB           = IR_Out[4:0];
+				else
+				begin
+					// Arithmetic and Logic Instructions Family
+					in_PC           = IR_Out[29:25]; // Get rd
+					ALU_op          = IR_Out[24:19]; // Get op3
+					in_PA           = IR_Out[18:14]; // Get rs1
+					ALUA_Mux_select = 2'b00; // Choose rs1 from register file with in_PA for A argument for ALU.
+					
+					if (IR_Out[13]) begin 
+						//B is an immediate argument in IR
+						ALUB_Mux_select = 3'b001; // Select output of sign extender as B for ALU
+						extender_select = 2'b00;  // Select 13bit to 32bit extender
+					end
+					else begin 
+						//B is a register
+						ALUB_Mux_select = 3'b000;
+						in_PB           = IR_Out[4:0];
+					end
+					// Result of operation outputted from ALU
+					#10;
+					register_file   = 1;
+					PSR_Enable      = 1;
+					#10; // Result of operation loaded into register of choice
+					register_file   = 0;
+					PSR_Enable      = 0;
 				end
-				// Result of operation outputted from ALU
-				#10;
-				register_file   = 1;
-				PSR_Enable      = 1;
-				#10; // Result of operation loaded into register of choice
-				register_file   = 0;
-				PSR_Enable      = 0;
-
-
 			end
 			else if (IR_Out[31:30] === 2'b11) begin 
 				// Load and Store operations
@@ -254,7 +336,6 @@ module ControlUnit(
 			//B is an immediate argument in IR
 			ALUB_Mux_select = 3'b001;
 			extender_select = 2'b00;
-			$display("\n\n\n\n\nHULULUULULULULULULULULULULULU\n\n\n\n\n\n\n");
 		end
 		else begin 
 			//B is a register

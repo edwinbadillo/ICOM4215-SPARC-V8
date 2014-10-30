@@ -1,0 +1,14 @@
+ControlUnit.v
+DataPath.v
+Memory.v
+Muxes.v
+register_32.v
+decoders.v
+ALU.v
+register_dummy_32.v
+register_file_V2.v
+psr.v
+wim.v
+tbr.v
+sign_extender.v
+test_memory_path.v
