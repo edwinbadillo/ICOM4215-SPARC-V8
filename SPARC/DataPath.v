@@ -12,6 +12,7 @@ module DataPath(
 	
 	// PSR
 	input PSR_Enable,PSR_Clr,
+	input S, PS, ET,
 	output [31:0]PSR_out,
 	
 	// Temp
@@ -57,6 +58,9 @@ module DataPath(
 	// TBR Mux
 	input TBR_Mux_select,
 	
+	// PSR Mux
+	input [1:0]PSR_Mux_select,
+	
 	// Ram
 	input [5:0]RAM_OpCode,
 	input RAM_enable,
@@ -69,10 +73,8 @@ module DataPath(
 	wire [4:0] cwp_in;
 	
 	wire [1:0] trap;
-	
-	wire psr_clr;
 
-	wire [31:0] MDR_Mux_out, MDR_Out, MAR_Out, RAM_Out, TEMP_Out, NPC_out, PC_out, TBR_Out, PC_Mux_out, TBR_Mux_out;
+	wire [31:0] MDR_Mux_out, MDR_Out, MAR_Out, RAM_Out, TEMP_Out, NPC_out, PC_out, TBR_Out, PC_Mux_out, TBR_Mux_out, PSR_Mux_out;
 	wire [19:0] TBA;
 	
 	/* Registers */
@@ -89,15 +91,10 @@ module DataPath(
 	register_32 MAR(MAR_Out, ALU_out, MAR_Enable, MAR_Clr, Clk); 
 	register_32 TEMP(TEMP_Out, RAM_Out, TEMP_Enable, TEMP_Clr, Clk);
 
-	// Process State Register TODO: CWP, traps
-	psr PSR (PSR_out, {N,Z,V,C}, 5'b00000, trap, PSR_Enable, PSR_clr, Clk);
-	
-	//register_32 PSR(PC_out,
+	// Process State Register
+	register_32 PSR(PSR_out, PSR_Mux_out, PSR_Enable, PSR_Clr, Clk);
 	
 	register_32 TBR (TBR_Out, TBR_Mux_out, TBR_enable, TBR_Clr, Clk);
-	
-	// Trap Base Register
-	//tbr TBR (TBR_Out, TBA, tt, TBR_enable, TBR_Clr, Clk);
 	
 	/* Components */
 	
@@ -127,6 +124,9 @@ module DataPath(
 	mux_32_4x1 PC_In_Mux(PC_Mux_out, PC_In_Mux_select, NPC_out, ALU_out, TBR_Out, 32'h00000000);
 	
 	// Mux for the input of TBR. Used for writing TBA or TT
-	mux_2x1 TBR_Mux(TBR_Mux_out, TBR_Mux_select, {ALU_out[31:7], TBR_Out[6:0]}, {TBR_Out[31:7], tt, TBR_Out[3:0]});
+	mux_2x1 TBR_Mux(TBR_Mux_out, TBR_Mux_select, {ALU_out[31:7], TBR_Out[6:0]}, {TBR_Out[31:7], tt,TBR_Out[3:0]});
+	
+	// Mux for the input of PSR
+	mux_32_4x1 PSR_Mux(PSR_Mux_out, PSR_Mux_select, {PSR_out[31:24],N,Z,V,C,PSR_out[19:0]}, {PSR_out[31:8],S,PS,PSR_out[5:0]}, {PSR_out[31:6],ET,PSR_out[4:0]}, {PSR_out[31:5], ALU_out[4:0]});
 	
 endmodule

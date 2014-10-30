@@ -5,7 +5,7 @@ module ControlUnit(
 	output reg NPC_enable, PC_enable, MDR_Enable, MAR_Enable, register_file, RAM_enable, PSR_Enable, TBR_enable,
 	// Select Lines Muxes
 	output reg [2:0]extender_select,
-	output reg [1:0]	PC_In_Mux_select, ALUA_Mux_select,
+	output reg [1:0]	PC_In_Mux_select, ALUA_Mux_select, PSR_Mux_select,
 	output reg [2:0]ALUB_Mux_select,
 	output reg MDR_Mux_select, TBR_Mux_select,
 	// Register file control
@@ -15,8 +15,10 @@ module ControlUnit(
 	// Ram control
 	output reg [5:0]RAM_OpCode,
 	// tt
-	output reg [2:0] tt,
-	output reg TBR_Clr,
+	output reg [2:0] tt, 
+	output reg TBR_Clr, PSR_Clr,
+	// PSR
+	output reg S, PS, ET,
 	
 	// Status Signals
 	input [31:0]IR_Out,
@@ -50,12 +52,9 @@ module ControlUnit(
 		end
 		else if (MSET) begin
 			$display("\n\n\n\n\n\n\n\n\n\nWell. MSET fired off. That means you messed up.\n\n\n\n\n\n\n\n\n\n");
-
-
-
 		end
 		else begin 
-			if (IR_Out[31:30] === 2'b00 ) begin
+			if (IR_Out[31:30] === 2'b00 ) begin 
 				if (IR_Out[24:22] === 3'b100) begin
 					// Sethi instruction
 					in_PA  = 5'b00000;      // A = r0
@@ -71,38 +70,73 @@ module ControlUnit(
 					#10; // Loaded 
 					register_file = 0;
 				end
-				
 				else
 				begin
-				// Branch Instructions Family
+					// Branch Instructions Family
 
-				// The address is included in the instruction in the least significant 22 bits
+					// The address is included in the instruction in the least significant 22 bits
 
-				register_file = 0; // Not writing to a register during a branch.
-				extender_select = 2'b01;
-				ALU_op          = 6'b000000;
+					register_file = 0; // Not writing to a register during a branch.
+					extender_select = 2'b01;
+					ALU_op          = 6'b000000;
 
-				if (cond) begin 
-					if (BA_O) begin
-						if(IR_Out[9]) begin
+					if (cond) begin 
+						if (BA_O) begin
+							if(IR_Out[9]) begin
+							
+								//the delay instruction is annulled
+								ALUA_Mux_select = 2'b10;
+								ALUB_Mux_select = 3'b110;
+								NPC_enable =1;
+								#10;
+								NPC_enable = 0;
+								PC_enable =1;
+								#10;
+								ALUA_Mux_select = 2'b10;
+								ALUB_Mux_select = 3'b110;
+								NPC_enable =1;
+								#10;
+								NPC_enable = 0;
+
+							end
+							else begin
+								
+								PC_In_Mux_select = 2'b00;
+								PC_enable = 1;
+								#10;
+								PC_enable = 0;
+								extender_select = 3'b101;
+								ALUA_Mux_select = 2'b01;
+								ALUB_Mux_select = 3'b001;
+								NPC_enable = 1;
+								#10;
+								NPC_enable = 0;
+							end
 						
-							//the delay instruction is annulled
-							ALUA_Mux_select = 2'b10;
-							ALUB_Mux_select = 3'b110;
-							NPC_enable =1;
-							#10;
-							NPC_enable = 0;
-							PC_enable =1;
-							#10;
-							ALUA_Mux_select = 2'b10;
-							ALUB_Mux_select = 3'b110;
-							NPC_enable =1;
-							#10;
-							NPC_enable = 0;
+						end
+						else if (BN_O) begin
+						
+							if(IR_Out[9]) begin
+							
+								//the delay instruction is annulled
+								ALUA_Mux_select = 2'b10;
+								ALUB_Mux_select = 3'b110;
+								NPC_enable =1;
+								#10;
+								NPC_enable = 0;
+								PC_enable =1;
+								#10;
+								ALUA_Mux_select = 2'b10;
+								ALUB_Mux_select = 3'b110;
+								NPC_enable =1;
+								#10;
+								NPC_enable = 0;
 
+							end
+						
 						end
 						else begin
-							
+						//the delay instruction is annulled
 							PC_In_Mux_select = 2'b00;
 							PC_enable = 1;
 							#10;
@@ -114,80 +148,42 @@ module ControlUnit(
 							#10;
 							NPC_enable = 0;
 						end
+						
 					
 					end
-					else if (BN_O) begin
-					
-						if(IR_Out[9]) begin
+					else begin
 						
-							//the delay instruction is annulled
+						if(IR_Out[9]) begin
+						//the delay instruction is annulled
+								ALUA_Mux_select = 2'b10;
+								ALUB_Mux_select = 3'b110;
+								NPC_enable =1;
+								#10;
+								NPC_enable = 0;
+								PC_enable =1;
+								#10;
+								ALUA_Mux_select = 2'b10;
+								ALUB_Mux_select = 3'b110;
+								NPC_enable =1;
+								#10;
+								NPC_enable = 0;
+							
+						end
+						else begin
+						
+							PC_In_Mux_select = 2'b00;
+							PC_enable = 1;
+							#10;
+							PC_enable = 0;
 							ALUA_Mux_select = 2'b10;
 							ALUB_Mux_select = 3'b110;
 							NPC_enable =1;
 							#10;
-							NPC_enable = 0;
-							PC_enable =1;
-							#10;
-							ALUA_Mux_select = 2'b10;
-							ALUB_Mux_select = 3'b110;
-							NPC_enable =1;
-							#10;
-							NPC_enable = 0;
-
+							NPC_enable = 0;					
 						end
 					
 					end
-					else begin
-					//the delay instruction is annulled
-						PC_In_Mux_select = 2'b00;
-						PC_enable = 1;
-						#10;
-						PC_enable = 0;
-						extender_select = 3'b101;
-						ALUA_Mux_select = 2'b01;
-						ALUB_Mux_select = 3'b001;
-						NPC_enable = 1;
-						#10;
-						NPC_enable = 0;
-					end
-					
-				
 				end
-				else begin
-					
-					if(IR_Out[9]) begin
-					//the delay instruction is annulled
-							ALUA_Mux_select = 2'b10;
-							ALUB_Mux_select = 3'b110;
-							NPC_enable =1;
-							#10;
-							NPC_enable = 0;
-							PC_enable =1;
-							#10;
-							ALUA_Mux_select = 2'b10;
-							ALUB_Mux_select = 3'b110;
-							NPC_enable =1;
-							#10;
-							NPC_enable = 0;
-						
-					end
-					else begin
-					
-						PC_In_Mux_select = 2'b00;
-						PC_enable = 1;
-						#10;
-						PC_enable = 0;
-						ALUA_Mux_select = 2'b10;
-						ALUB_Mux_select = 3'b110;
-						NPC_enable =1;
-						#10;
-						NPC_enable = 0;					
-					end
-				
-				end
-			end
-
-
 			end
 			else if (IR_Out[31:30] === 2'b01) begin 
 				$display("CALLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
@@ -392,7 +388,6 @@ module ControlUnit(
 			else begin
 				$display("\n\n\nILLEGAL INSTRUCTION DETECTED\n\n\n");
 				// Set the TBR and do all the magicks to PC <- TBR, nPC <- TBR + 4
-
 			end
 		end
 	
