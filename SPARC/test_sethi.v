@@ -1,6 +1,6 @@
-module test_Arithmetic;
+module test_sethi;
 	
-		/* Inputs */
+	/* Inputs */
 	wire [4:0]in_PC, in_PA, in_PB;
 	
 	wire [5:0]RAM_OpCode, ALU_op;
@@ -29,9 +29,10 @@ module test_Arithmetic;
 	reg register_file_Clr = 0;
 	reg Clk = 0;
 	
-	parameter sim_time = 80;
+	parameter sim_time = 200;
 
 	reg RESET = 0;
+
 
 	DataPath DataPath(IR_Enable, IR_In, IR_Out, PC_enable, PC_Clr, NPC_enable, NPC_Clr, PSR_Enable, PSR_Clr, PSR_out, TEMP_Enable, TEMP_Clr, MDR_Enable, MDR_Clr,
 		MAR_Enable, MAR_Clr, TBR_enable, TBR_Clr, tt, ALU_op, ALU_Out, register_file_enable, in_PA, in_PB, in_PC, out_PA, out_PB, extender_select, extender_out, 
@@ -64,6 +65,16 @@ module test_Arithmetic;
 		#10; // Instruction loaded in IR
 		IR_Enable = 0;
 		IR_In     = 32'b10_00010_000000_00001_0_xxxxxxxx_00010; // add %r2, %r1, %r2
+		#10;
+		IR_Enable = 1;
+		#10; // Instruction loaded into IR
+		IR_Enable = 0;
+		IR_In     = 32'b00_00010_100_0000000000000011111111; // sethi 255 into r2
+		#10;
+		IR_Enable = 1;
+		#10; // Instruction loaded into IR
+		IR_Enable = 0;
+		IR_In     = 32'b00_00010_100_1000000000000000000000; // sethi 2^21 = 2097152 into r2
 		#10;
 		IR_Enable = 1;
 		#10; // Instruction loaded into IR

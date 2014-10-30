@@ -2,17 +2,21 @@ module ControlUnit(
 
 	// Control Signals
 	// Enables
-	output reg NPC_enable, PC_enable, MDR_Enable, MAR_Enable, register_file, RAM_enable, PSR_Enable,
+	output reg NPC_enable, PC_enable, MDR_Enable, MAR_Enable, register_file, RAM_enable, PSR_Enable, TBR_enable,
 	// Select Lines Muxes
-	output reg [1:0]extender_select, PC_In_Mux_select, ALUA_Mux_select,
+	output reg [2:0]extender_select,
+	output reg [1:0]	PC_In_Mux_select, ALUA_Mux_select,
 	output reg [2:0]ALUB_Mux_select,
-	output reg MDR_Mux_select,
+	output reg MDR_Mux_select, TBR_Mux_select,
 	// Register file control
 	output reg [4:0]in_PC, output reg [4:0]in_PA, output reg [4:0]in_PB,
 	// Alu control
 	output reg [5:0]ALU_op,
 	// Ram control
 	output reg [5:0]RAM_OpCode,
+	// tt
+	output reg [2:0] tt,
+	output reg TBR_Clr,
 	
 	// Status Signals
 	input [31:0]IR_Out,
@@ -42,6 +46,24 @@ module ControlUnit(
 		end
 		else begin 
 			if (IR_Out[31:30] === 2'b00 ) begin 
+				if (IR_Out[24:22] === 3'b100) begin
+					// Sethi instruction
+					in_PA  = 5'b00000;      // A = r0
+					in_PC  = IR_Out[29:25]; // getting rd
+					ALU_op = 6'b000000;     // add, won't alter flags
+
+					ALUA_Mux_select = 2'b00;
+					ALUB_Mux_select = 3'b001; // need immediate value
+					extender_select = 3'b100;  // pass disp22 with 31:23 as zeros
+					// Value should be ready
+					#10;
+					register_file = 1;
+					#10; // Loaded 
+					register_file = 0;
+				end
+				
+				else
+				begin
 				// Branch Instructions Family
 
 				// The address is included in the instruction in the least significant 22 bits
@@ -52,7 +74,7 @@ module ControlUnit(
 				extender_select = 2'b01;
 				ALUB_Mux_select = 3'b001;
 				ALU_op          = 6'b000000;
-				
+
 				// checking cond field, to determine the type of branch
 				/*casex (IR_Out[28:25])
 					4'b1000:
@@ -97,8 +119,10 @@ module ControlUnit(
 
 				endcase
 				*/
+				end
 			end
 			else if (IR_Out[31:30] === 2'b01) begin 
+				$display("CALLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL");
 				// Call
 				in_PC  = 5'b01111;  // Value of Program Counter is to be stored in R15
 				// Just moving the value of Program Counter to R15, so add 0
@@ -130,12 +154,6 @@ module ControlUnit(
 				NPC_enable = 1;
 				#10; // Loads ALU output to nPC
 				NPC_enable = 0;
-
-
-
-
-
-
 			end
 			else if (IR_Out[31:30] === 2'b10) begin 
 			// JMPL
@@ -183,6 +201,31 @@ module ControlUnit(
 					$display("nPC disable");
 					NPC_enable = 0;
 					#10;
+				end
+				// WRTBR
+				else if(IR_Out[24:19] == 6'b110011)
+				begin
+					ALU_op          = 6'b000011; // Xor opcode
+					in_PA           = IR_Out[18:14]; // Get rs1
+					ALUA_Mux_select = 2'b00; // Choose rs1 from register file with in_PA for A argument for ALU.
+					if (IR_Out[13]) begin 
+						//B is an immediate argument in IR
+						ALUB_Mux_select = 3'b001; // Select output of sign extender as B for ALU
+						extender_select = 2'b00;  // Select 13bit to 32bit extender
+					end
+					else begin 
+						//B is a register
+						ALUB_Mux_select = 3'b000;
+						in_PB           = IR_Out[4:0];
+					end
+					// Result of operation outputted from ALU
+					#10;
+					// Choose mux pin 0 for writing TBA
+					TBR_Mux_select = 0;	
+					#10;
+					TBR_enable = 1;
+					#10; // Result of operation loaded into register of choice
+					TBR_enable = 0;
 				end
 				else
 				begin
@@ -336,6 +379,7 @@ module ControlUnit(
 			//B is an immediate argument in IR
 			ALUB_Mux_select = 3'b001;
 			extender_select = 2'b00;
+			$display("\n\n\n\n\nHULULUULULULULULULULULULULULU\n\n\n\n\n\n\n");
 		end
 		else begin 
 			//B is a register
