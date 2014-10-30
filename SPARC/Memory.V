@@ -63,7 +63,6 @@ module ram512x8 (output reg[31:0] MDR_DataOut, output reg MFC, MSET, input Enabl
 					MFC                  <= 1;
 				end
 				else begin
-					$display("\n\n\n\nI ARE CULPRIT?\n\n\n\n\n");
 					MSET = 1; // address used to store a word not a factor of 4, illegal
 				end
 			end

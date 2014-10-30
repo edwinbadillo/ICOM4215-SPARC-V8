@@ -325,6 +325,10 @@ module ControlUnit(
 					register_file = 0;
 				end
 			end
+			else begin
+				$display("\n\n\nILLEGAL INSTRUCTION DETECTED\n\n\n");
+				// Set the TBR and do all the magicks to PC <- TBR, nPC <- TBR + 4
+			end
 		end
 	
 	//TASKS
