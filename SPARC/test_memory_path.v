@@ -21,7 +21,7 @@ module test_memory_path;
 
 	/* Outputs */
 	wire signed [31:0]IR_Out, ALU_Out, extender_out, out_PA, out_PB, ALUB_Mux_out, PSR_out, ALUA_Mux_out;
-	wire MFC;
+	wire MFC, MSET;
 	
 	// Local variables
 	reg [31:0]IR_In;
@@ -35,10 +35,10 @@ module test_memory_path;
 
 	DataPath DataPath(IR_Enable, IR_In, IR_Out, PC_enable, PC_Clr, NPC_enable, NPC_Clr, PSR_Enable, PSR_Clr, PSR_out, TEMP_Enable, TEMP_Clr, MDR_Enable, MDR_Clr,
 		MAR_Enable, MAR_Clr, TBR_enable, TBR_Clr, tt, ALU_op, ALU_Out, register_file_enable, in_PA, in_PB, in_PC, out_PA, out_PB, extender_select, extender_out, 
-		ALUA_Mux_select, ALUA_Mux_out, ALUB_Mux_select, ALUB_Mux_out, MDR_Mux_select, PC_In_Mux_select, TBR_Mux_select, RAM_OpCode, RAM_enable, MFC, Clk);
+		ALUA_Mux_select, ALUA_Mux_out, ALUB_Mux_select, ALUB_Mux_out, MDR_Mux_select, PC_In_Mux_select, TBR_Mux_select, RAM_OpCode, RAM_enable, MFC, MSET, Clk);
 	
 	ControlUnit ControlUnit(NPC_enable, PC_enable, MDR_Enable, MAR_Enable, register_file_enable, RAM_enable, PSR_Enable, TBR_enable, extender_select, PC_In_Mux_select, ALUA_Mux_select, ALUB_Mux_select,
-		MDR_Mux_select, TBR_Mux_select, in_PC, in_PA, in_PB, ALU_op, RAM_OpCode, tt, TBR_Clr, IR_Out, MFC, RESET, Clk);
+		MDR_Mux_select, TBR_Mux_select, in_PC, in_PA, in_PB, ALU_op, RAM_OpCode, tt, TBR_Clr, IR_Out, MFC, MSET, RESET, Clk);
 		
 	always begin
 		#5 Clk = !Clk;
@@ -64,13 +64,13 @@ module test_memory_path;
 		IR_Enable = 1;
 		#10; // Instruction loaded into IR
 		IR_Enable = 0;
-		IR_In     = 32'b11_00010_000100_00000_1_0000000011110; // store word in r2 to RAM[30:33]
+		IR_In     = 32'b11_00010_000100_00000_1_0000000100000; // store word in r2 to RAM[32:35]
 		#10;
 		IR_Enable = 1; 
 		#10; // Instruction loaded into IR
 		IR_Enable = 0;
 		#60; // Waiting for store to finish
-		IR_In     = 32'b11_00011_000000_00000_1_0000000011110; // load value from RAM[30:33] to r3
+		IR_In     = 32'b11_00011_000000_00000_1_0000000100000; // load value from RAM[32:35] to r3
 		#10;
 		IR_Enable = 1;
 		#10; // Instruction loaded into IR
@@ -98,11 +98,12 @@ module test_memory_path;
 		$display("R2 = %d", DataPath.register_file.r_out[2]);
 		$display("R3 = %d", DataPath.register_file.r_out[3]);
 		$display("RF_enable: %d", register_file_enable);
-		$display("RAM[30]: %hh", DataPath.ram.Mem[30]);
-		$display("RAM[31]: %hh", DataPath.ram.Mem[31]);
 		$display("RAM[32]: %hh", DataPath.ram.Mem[32]);
 		$display("RAM[33]: %hh", DataPath.ram.Mem[33]);
+		$display("RAM[34]: %hh", DataPath.ram.Mem[34]);
+		$display("RAM[35]: %hh", DataPath.ram.Mem[35]);
 		$display("MFC: %d", MFC);
+		$display("MSET %d", MSET);
 		$display("--------------------------------------------------------------------------\n");
 	end
 	endtask
