@@ -6,7 +6,7 @@ module test_Arithmetic;
 	wire [5:0]RAM_OpCode, ALU_op;
 	
 	wire MDR_Mux_select;
-	wire [1:0]extender_select;
+	wire [2:0]extender_select;
 	wire [1:0]PC_In_Mux_select;
 	wire [1:0]ALUA_Mux_select;
 	wire [2:0]ALUB_Mux_select;

@@ -36,7 +36,7 @@ module DataPath(
 	output [31:0]out_PA, out_PB,
 	
 	// Sign Extender
-	input [1:0]extender_select,
+	input [2:0]extender_select,
 	output [31:0]extender_out,
 	
 	// ALUA Mux

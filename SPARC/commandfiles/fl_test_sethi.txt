@@ -11,4 +11,4 @@ psr.v
 wim.v
 tbr.v
 sign_extender.v
-test_memory_path.v
+test_sethi.v

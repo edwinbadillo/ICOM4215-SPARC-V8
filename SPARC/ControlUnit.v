@@ -4,8 +4,9 @@ module ControlUnit(
 	// Enables
 	output reg NPC_enable, PC_enable, MDR_Enable, MAR_Enable, register_file, RAM_enable, PSR_Enable,
 	// Select Lines Muxes
-	output reg [1:0]extender_select, PC_In_Mux_select, ALUA_Mux_select,
-	output reg [2:0]ALUB_Mux_select,
+	output reg [2:0] extender_select, 
+	output reg [1:0] PC_In_Mux_select, ALUA_Mux_select,
+	output reg [2:0] ALUB_Mux_select,
 	output reg MDR_Mux_select,
 	// Register file control
 	output reg [4:0]in_PC, output reg [4:0]in_PA, output reg [4:0]in_PB,
@@ -42,61 +43,85 @@ module ControlUnit(
 		end
 		else begin 
 			if (IR_Out[31:30] === 2'b00 ) begin 
-				// Branch Instructions Family
 
-				// The address is included in the instruction in the least significant 22 bits
+				if (IR_Out[24:22] === 3'b100) begin
+					// Sethi instruction
+					in_PA  = 5'b00000;      // A = r0
+					in_PC  = IR_Out[29:25]; // getting rd
+					ALU_op = 6'b000000;     // add, won't alter flags
 
-				register_file = 0; // Not writing to a register during a branch.
-				in_PA         = 0; // Choosing A as r0, to pass the address unchanged through the ALU
+					ALUA_Mux_select = 2'b00;
+					ALUB_Mux_select = 3'b001; // need immediate value
+					extender_select = 3'b100;  // pass disp22 with 31:23 as zeros
+					// Value should be ready
+					#10;
+					register_file = 1;
+					#10; // Loaded 
+					register_file = 0;
 
-				extender_select = 2'b01;
-				ALUB_Mux_select = 3'b001;
-				ALU_op          = 6'b000000;
+
+
+
+				end
+				else begin
+					// Branch Instructions Family
+
+					// The address is included in the instruction in the least significant 22 bits
+
+					register_file = 0; // Not writing to a register during a branch.
+					in_PA         = 0; // Choosing A as r0, to pass the address unchanged through the ALU
+
+					extender_select = 3'b001;
+					ALUB_Mux_select = 3'b001;
+					ALU_op          = 6'b000000;
+
+					// checking cond field, to determine the type of branch
+					/*casex (IR_Out[28:25])
+						4'b1000:
+							// Branch always, ba
+						4'b0000:
+							// Branch never, bn
+
+						4'b1001:
+							// Branch on not equal, bne
+						4'b0001:
+							// Branch on equal, be
+
+						4'b1010:
+							// Branch on greater, bg
+						4'b0010:
+							// Branch on less or equal, ble
+
+						4'b1011:
+							// Branch on greater or equal, bge
+						4'b0011:
+							// Branch on less, bl
+
+						4'b1100:
+							// Branch on greater unsigned, bgu
+						4'b0100:
+							// Branch on less or equal unsigned, bleu
+
+						4'b1101:
+							// Branch on carry = 0, bcc
+						4'b0101:
+							// Branch on carry = 1, bcs
+
+						4'b1110:
+							// Branch on positive, bpos
+						4'b0110:
+							// Branch on negative, bneg
+
+						4'b1111:
+							// Branch on overflow = 0, bvc
+						4'b0111:
+							// Branch on overflow = 1, bvs
+
+					endcase
+					*/
+				end
+
 				
-				// checking cond field, to determine the type of branch
-				/*casex (IR_Out[28:25])
-					4'b1000:
-						// Branch always, ba
-					4'b0000:
-						// Branch never, bn
-
-					4'b1001:
-						// Branch on not equal, bne
-					4'b0001:
-						// Branch on equal, be
-
-					4'b1010:
-						// Branch on greater, bg
-					4'b0010:
-						// Branch on less or equal, ble
-
-					4'b1011:
-						// Branch on greater or equal, bge
-					4'b0011:
-						// Branch on less, bl
-
-					4'b1100:
-						// Branch on greater unsigned, bgu
-					4'b0100:
-						// Branch on less or equal unsigned, bleu
-
-					4'b1101:
-						// Branch on carry = 0, bcc
-					4'b0101:
-						// Branch on carry = 1, bcs
-
-					4'b1110:
-						// Branch on positive, bpos
-					4'b0110:
-						// Branch on negative, bneg
-
-					4'b1111:
-						// Branch on overflow = 0, bvc
-					4'b0111:
-						// Branch on overflow = 1, bvs
-
-				endcase
-				*/
 			end
 			else if (IR_Out[31:30] === 2'b01) begin 
 				// Call
@@ -122,7 +147,7 @@ module ControlUnit(
 				ALUA_Mux_select = 2'b00;  // redundant, but helps readability
 				ALUB_Mux_select = 3'b001; // select output from magicbox <- IR
 
-				extender_select = 2'b11; // Choose the shifter to perform B = 4*disp30
+				extender_select = 3'b011; // Choose the shifter to perform B = 4*disp30
 
 				ALU_op = 6'b000000; // redundant, add again: R15 + 4*disp30
 				//ALU_out has the value needed, knocking at the door of nPC
@@ -169,7 +194,7 @@ module ControlUnit(
 					if (IR_Out[13]) begin 
 						//B is an immediate argument in IR
 						ALUB_Mux_select = 3'b001; // Select output of sign extender as B for ALU
-						extender_select = 2'b00;  // Select 13bit to 32bit extender
+						extender_select = 3'b000;  // Select 13bit to 32bit extender
 					end
 					else begin 
 						//B is a register
@@ -195,7 +220,7 @@ module ControlUnit(
 					if (IR_Out[13]) begin 
 						//B is an immediate argument in IR
 						ALUB_Mux_select = 3'b001; // Select output of sign extender as B for ALU
-						extender_select = 2'b00;  // Select 13bit to 32bit extender
+						extender_select = 3'b000;  // Select 13bit to 32bit extender
 					end
 					else begin 
 						//B is a register
@@ -241,7 +266,7 @@ module ControlUnit(
 					if (IR_Out[13]) begin 
 						//B is an immediate argument in IR
 						ALUB_Mux_select = 3'b001;
-						extender_select = 2'b00;
+						extender_select = 3'b000;
 					end
 					else begin 
 						//B is a register
@@ -293,7 +318,7 @@ module ControlUnit(
 		if (IR_Out[13]) begin 
 			//B is an immediate argument in IR
 			ALUB_Mux_select = 3'b001;
-			extender_select = 2'b00;
+			extender_select = 3'b000;
 		end
 		else begin
 			//B is a register
@@ -335,7 +360,7 @@ module ControlUnit(
 		if (IR_Out[13]) begin 
 			//B is an immediate argument in IR
 			ALUB_Mux_select = 3'b001;
-			extender_select = 2'b00;
+			extender_select = 3'b000;
 		end
 		else begin 
 			//B is a register
