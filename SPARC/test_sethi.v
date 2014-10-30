@@ -69,12 +69,12 @@ module test_sethi;
 		IR_Enable = 1;
 		#10; // Instruction loaded into IR
 		IR_Enable = 0;
-		IR_In     = 32'b00_00010_100_0000000000000011111111; // sethi 255 into r2
+		IR_In     = 32'b00_00010_100_0000000000000011111111; // sethi
 		#10;
 		IR_Enable = 1;
 		#10; // Instruction loaded into IR
 		IR_Enable = 0;
-		IR_In     = 32'b00_00010_100_1000000000000000000000; // sethi 2^21 = 2097152 into r2
+		IR_In     = 32'b00_00010_100_1000000000000000000000; // sethi 
 		#10;
 		IR_Enable = 1;
 		#10; // Instruction loaded into IR

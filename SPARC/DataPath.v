@@ -127,6 +127,6 @@ module DataPath(
 	mux_32_4x1 PC_In_Mux(PC_Mux_out, PC_In_Mux_select, NPC_out, ALU_out, TBR_Out, 32'h00000000);
 	
 	// Mux for the input of TBR. Used for writing TBA or TT
-	mux_2x1 TBR_Mux(TBR_Mux_out, TBR_Mux_select, {ALU_out[31:7], TBR_Out[6:0]}, {TBR_Out[31:7], tt,TBR_Out[3:0]});
+	mux_2x1 TBR_Mux(TBR_Mux_out, TBR_Mux_select, {ALU_out[31:7], TBR_Out[6:0]}, {TBR_Out[31:7], tt, TBR_Out[3:0]});
 	
 endmodule

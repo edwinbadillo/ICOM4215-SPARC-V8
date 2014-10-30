@@ -47,6 +47,9 @@ module ControlUnit(
 		end
 		else if (MSET) begin
 			$display("\n\n\n\n\n\n\n\n\n\nWell. MSET fired off. That means you messed up.\n\n\n\n\n\n\n\n\n\n");
+
+
+
 		end
 		else begin 
 			if (IR_Out[31:30] === 2'b00 ) begin 
@@ -58,7 +61,7 @@ module ControlUnit(
 
 					ALUA_Mux_select = 2'b00;
 					ALUB_Mux_select = 3'b001; // need immediate value
-					extender_select = 3'b100;  // pass disp22 with 31:23 as zeros
+					extender_select = 3'b100; // pass disp22 with 9:0 as zeros
 					// Value should be ready
 					#10;
 					register_file = 1;
@@ -328,6 +331,7 @@ module ControlUnit(
 			else begin
 				$display("\n\n\nILLEGAL INSTRUCTION DETECTED\n\n\n");
 				// Set the TBR and do all the magicks to PC <- TBR, nPC <- TBR + 4
+
 			end
 		end
 	
@@ -387,7 +391,6 @@ module ControlUnit(
 			//B is an immediate argument in IR
 			ALUB_Mux_select = 3'b001;
 			extender_select = 2'b00;
-			$display("\n\n\n\n\nHULULUULULULULULULULULULULULU\n\n\n\n\n\n\n");
 		end
 		else begin 
 			//B is a register

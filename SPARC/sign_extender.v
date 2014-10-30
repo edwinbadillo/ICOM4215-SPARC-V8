@@ -27,8 +27,8 @@ endmodule
 
 // pass disp22 with other bits equal to zero
 module pass_disp22(output[31:0] out, input[21:0] in);
-	assign out[31:22] = 10'b0000000000;
-	assign out[21:0]  = in;
+	assign out[31:10] = in;
+	assign out[9:0]  = 10'b0000000000;
 endmodule
 
 // multiplies a 22-bit field by 4
