@@ -1,45 +1,28 @@
 
 // 12-bit to 32-bit sign extender
-module sign_extender_13to32(output reg [31:0] out, input[12:0] in);
-	always @ (in)
-	begin
-	if (in[12]) out[31:13] <= 19'b111_1111_1111_1111_1111;
-	else
-		out[31:13] <= 19'b000_0000_0000_0000_0000;
-	out[12:0] <= in;
-	end
+module sign_extender_13to32(output[31:0] out, input[12:0] in);
+	assign out[31:13] = {19{in[12]}};
+	assign out[12:0]  = in[12:0];
 endmodule
 
 
 // 22-bit to 32-bit sign extender
-module sign_extender_22to32(output reg [31:0] out, input[21:0] in);
-	always @ (in)
-	begin
-	if (in[21]) out[31:22] <= 10'b11_1111_1111;
-	else begin
-		out[31:22] <= 10'b00_0000_0000;
-	end
-	out[21:0] <= in;
-	end
+module sign_extender_22to32(output[31:0] out, input[21:0] in);
+	assign out[31:22] = {10{in[21]}};
+	assign out[21:0]  = in[21:0];
 endmodule
 
 
 // 30-bit to 32-bit sign extender
-module sign_extender_30to32(output reg [31:0] out, input[29:0] in);
-	always @ (in)
-	begin
-	if (in[29]) out[31:30] <= 2'b11;
-	else begin
-		out[31:30] <= 2'b00;
-	end
-	out[29:0] <= in;
-	end
+module sign_extender_30to32(output[31:0] out, input[29:0] in);
+	assign out[31:30] = {2{in[29]}};
+	assign out[29:0]  = in[29:0];
 endmodule
 
 // doubleshifter for multiplying a number by 4
 module shift_left_twice(output[31:0] out, input[29:0] in);
-	out[31:2] <= in;
-	out[1:0]  <= 2'b00;
+	assign out[31:2] = in;
+	assign out[1:0]  = 2'b00;
 endmodule
 
 
