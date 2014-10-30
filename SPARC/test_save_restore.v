@@ -1,5 +1,5 @@
-module test_TBR;
-
+module test_save_restore;
+	
 	/* Inputs */
 	wire [4:0]in_PC, in_PA, in_PB;
 	
@@ -32,7 +32,7 @@ module test_TBR;
 	reg register_file_Clr = 0;
 	reg Clk = 0;
 	
-	parameter sim_time = 200;
+	parameter sim_time = 250;
 
 	reg RESET = 0;
 
@@ -59,46 +59,29 @@ module test_TBR;
 		ControlUnit.PSR_Clr = 0;
 		#10;
 		ControlUnit.PSR_Clr = 1;
-		
-		/* Init PC and nPC */
-		
-		// Select input of pc from ALU
-		ControlUnit.PC_In_Mux_select = 2'b01;
-		#10;
-		// Enable PC
-		ControlUnit.PC_enable = 1;
-		#10;
-		// Disable PC and pass output of PC to ALUA and 4 through ALUB
-		ControlUnit.PC_enable = 0;
-		ControlUnit.ALUA_Mux_select = 2'b01;
-		ControlUnit.ALUB_Mux_select = 3'b110;
-		ControlUnit.ALU_op = 6'b000000;
-		ControlUnit.NPC_enable = 1;
-		#10;
-		ControlUnit.NPC_enable = 0;
 		#10;
 		
-		// Clearing TBR
-		ControlUnit.TBR_Clr = 1;
-		#10;
-		ControlUnit.TBR_Clr = 0;
-
 		IR_Enable = 0;
-		IR_In     = 32'b10_00001_000000_00000_1_0000110000000; // mov %r1, #384   ---> add %r1, %r0, #3
+		IR_In     = 32'b10_00001_000000_00000_1_0000000000011; // mov %r1, #3   ---> add %r1, %r0, #3
 		// IR value to be loaded is ready
 		IR_Enable = 1;
 		#10; // Instruction loaded in IR
 		IR_Enable = 0;
-		IR_In     = 32'b10_00010_000000_00000_1_0000100000110; // mov %r2, #262   ---> add %r2, %r0, #6
+		IR_In     = 32'b10_00010_000000_00000_1_0000000000110; // mov %r2, #6   ---> add %r2, %r0, #6
 		#10;
 		IR_Enable = 1;
 		#10; // Instruction loaded in IR
 		IR_Enable = 0;
-		IR_In     = 32'b10_00010_110011_00001_0_0000000000010; // WRTBR rs1 + rs2 = 128
+		IR_In     = 32'b10_01000_111100_00001_0_xxxxxxxx_00010; // save rd=%r8(really r24 due to new window), %r1, %r2
 		#10;
 		IR_Enable = 1;
-		#10; // Instruction loaded in IR
+		#60; // Instruction loaded into IR
 		IR_Enable = 0;
+		IR_In     = 32'b10_01000_111101_01000_1_0000001000000; // restore rd=%r8(window 1), %r8(r24 really), #64
+		#10;
+		IR_Enable = 1;
+		#60; // Instruction loaded into IR
+
 	end
 	
 	// End simulation at sim_time
@@ -107,7 +90,7 @@ module test_TBR;
 	task printValues;
 	begin
 		$display("Time: %tns", $time);
-		$display("Clock: %d", Clk);
+		$display("Clock: %d",  Clk);
 		$display("IR_Out: %b", IR_Out);
 		$display("extender_out: %d", extender_out);
 		$display("ALU_Out: %d", ALU_Out);
@@ -118,9 +101,11 @@ module test_TBR;
 		$display("PSR_out: %b", PSR_out);
 		$display("R1 = %d", DataPath.register_file.r_out[1]);
 		$display("R2 = %d", DataPath.register_file.r_out[2]);
-		$display("PC = %d", DataPath.PC.out);
-		$display("nPC = %d", DataPath.NPC.out);
-		$display("TBR = %d", DataPath.TBR.out);
+		$display("R8(1st window) = %d", DataPath.register_file.r_out[8]);
+		$display("R8(2nd window) = %d", DataPath.register_file.r_out[24]);
+		$display("MDR: %d", DataPath.MDR_Out);
+		$display("PSR_Mux_out: %b", DataPath.PSR_Mux_out);
+		$display("PSR_Enable: %d", PSR_Enable);
 		$display("RF_enable: %d", register_file_enable);
 		$display("--------------------------------------------------------------------------\n");
 	end

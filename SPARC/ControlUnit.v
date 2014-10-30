@@ -5,7 +5,7 @@ module ControlUnit(
 	output reg NPC_enable, PC_enable, MDR_Enable, MAR_Enable, register_file, RAM_enable, PSR_Enable, TBR_enable,
 	// Select Lines Muxes
 	output reg [2:0]extender_select,
-	output reg [1:0]	PC_In_Mux_select, ALUA_Mux_select,
+	output reg [1:0]	PC_In_Mux_select, ALUA_Mux_select, PSR_Mux_select,
 	output reg [2:0]ALUB_Mux_select,
 	output reg MDR_Mux_select, TBR_Mux_select,
 	// Register file control
@@ -15,8 +15,10 @@ module ControlUnit(
 	// Ram control
 	output reg [5:0]RAM_OpCode,
 	// tt
-	output reg [2:0] tt,
-	output reg TBR_Clr,
+	output reg [2:0] tt, 
+	output reg TBR_Clr, PSR_Clr,
+	// PSR
+	output reg S, PS, ET,
 	
 	// Status Signals
 	input [31:0]IR_Out,
@@ -219,8 +221,8 @@ module ControlUnit(
 				#10; // Loads ALU output to nPC
 				NPC_enable = 0;
 			end
-			else if (IR_Out[31:30] === 2'b10) begin 
-			// JMPL
+			else if (IR_Out[31:30] === 2'b10) begin
+				// JMPL
 				if(IR_Out[24:19] == 6'b111000)
 				begin
 					// Saving PC in rd
@@ -267,8 +269,7 @@ module ControlUnit(
 					#10;
 				end
 				// WRTBR
-				else if(IR_Out[24:19] == 6'b110011)
-				begin
+				else if(IR_Out[24:19] == 6'b110011) begin
 					ALU_op          = 6'b000011; // Xor opcode
 					in_PA           = IR_Out[18:14]; // Get rs1
 					ALUA_Mux_select = 2'b00; // Choose rs1 from register file with in_PA for A argument for ALU.
@@ -291,8 +292,100 @@ module ControlUnit(
 					#10; // Result of operation loaded into register of choice
 					TBR_enable = 0;
 				end
-				else
-				begin
+				//SAVE
+				else if (IR_Out[24:19] == 6'b111100) begin
+					PSR_Clr = 0;
+					ALU_op          = 6'b000000;     // add, no change in flags
+					ALUA_Mux_select = 2'b00;         // choose port A of regfile in muxA
+					in_PC           = IR_Out[29:25]; // get rd
+					in_PA           = IR_Out[18:14]; // get rs1
+
+					if (IR_Out[13]) begin 
+						//B is an immediate argument in IR
+						ALUB_Mux_select = 3'b001; // Select output of sign extender as B for ALU
+						extender_select = 2'b00;  // Select 13bit to 32bit extender
+					end
+					else begin 
+						//B is a register
+						ALUB_Mux_select = 3'b000;
+						in_PB           = IR_Out[4:0];
+					end
+					// Result of operation outputted from ALU
+					MDR_Mux_select = 0; // Choose MDR to store the result while we move windows
+					//ready to enter MDR
+					#10;
+					MDR_Enable = 1;
+					#10; // Loaded result into MDR
+					// Now, we must sum 1 to CWP
+					MDR_Enable = 0;
+					ALUA_Mux_select = 2'b11;  // Select CWP as A
+					ALUB_Mux_select = 3'b111; // B <- 1
+					//Value ready
+					PSR_Mux_select  = 2'b11;
+					PSR_Clr = 0;
+					//Value knocking the door on psr
+					#10;
+					PSR_Enable = 1;
+					#10; // Loaded new value of CWP into PSR
+					PSR_Enable = 0;
+					// now we must store the value in mdr in rd in new window
+					ALUA_Mux_select = 2'b00; // choose portA as A, intending to use r0
+					in_PA = 5'b00000;
+					ALUB_Mux_select = 3'b010; // Choose output of MDR as B, which is our value of rs1+rs2 from last window
+					// Value knocking at regfile's door
+					#10;
+					register_file = 1;
+					#10; // Loads value into rd in new window in regfile
+					register_file = 0;
+				end
+				//RESTORE
+				else if (IR_Out[24:19] == 6'b111101) begin
+					PSR_Clr = 0;
+					ALU_op          = 6'b000000;     // add, no change in flags
+					ALUA_Mux_select = 2'b00;         // choose port A of regfile in muxA
+					in_PC           = IR_Out[29:25]; // get rd
+					in_PA           = IR_Out[18:14]; // get rs1
+
+					if (IR_Out[13]) begin 
+						//B is an immediate argument in IR
+						ALUB_Mux_select = 3'b001; // Select output of sign extender as B for ALU
+						extender_select = 2'b00;  // Select 13bit to 32bit extender
+					end
+					else begin 
+						//B is a register
+						ALUB_Mux_select = 3'b000;
+						in_PB           = IR_Out[4:0];
+					end
+					// Result of operation outputted from ALU
+					MDR_Mux_select = 0; // Choose MDR to store the result while we move windows
+					//ready to enter MDR
+					#10;
+					MDR_Enable = 1;
+					#10; // Loaded result into MDR
+					// Now, we must subtract 1 from CWP
+					MDR_Enable = 0;
+					ALU_op = 6'b000100; // subtract
+					ALUA_Mux_select = 2'b11;  // Select CWP as A
+					ALUB_Mux_select = 3'b111; // B <- 1
+					//Value ready
+					PSR_Mux_select  = 2'b11;
+					//Value knocking the door on psr
+					#10;
+					PSR_Enable = 1;
+					#10; // Loaded new value of CWP into PSR
+					PSR_Enable = 0;
+					// now we must store the value in mdr in rd in new window
+					ALU_op          = 6'b000000;
+					ALUA_Mux_select = 2'b00; // choose portA as A, intending to use r0
+					in_PA = 5'b00000;
+					ALUB_Mux_select = 3'b010; // Choose output of MDR as B, which is our value of rs1+rs2 from last window
+					// Value knocking at regfile's door
+					#10;
+					register_file = 1;
+					#10; // Loads value into rd in new window in regfile
+					register_file = 0;
+				end
+				else begin
 					// Arithmetic and Logic Instructions Family
 					in_PC           = IR_Out[29:25]; // Get rd
 					ALU_op          = IR_Out[24:19]; // Get op3
@@ -310,9 +403,12 @@ module ControlUnit(
 						in_PB           = IR_Out[4:0];
 					end
 					// Result of operation outputted from ALU
+					PSR_Mux_select = 2'b00;
 					#10;
 					register_file   = 1;
-					PSR_Enable      = 1;
+					// Modify flags if necessary
+					if(IR_Out[23])
+						PSR_Enable      = 1;
 					#10; // Result of operation loaded into register of choice
 					register_file   = 0;
 					PSR_Enable      = 0;
@@ -447,7 +543,6 @@ module ControlUnit(
 			//B is an immediate argument in IR
 			ALUB_Mux_select = 3'b001;
 			extender_select = 2'b00;
-			$display("\n\n\n\n\nHULULUULULULULULULULULULULULU\n\n\n\n\n\n\n");
 		end
 		else begin 
 			//B is a register

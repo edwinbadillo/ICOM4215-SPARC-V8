@@ -1,5 +1,5 @@
-module test_TBR;
-
+module test_flags;
+	
 	/* Inputs */
 	wire [4:0]in_PC, in_PA, in_PB;
 	
@@ -32,7 +32,7 @@ module test_TBR;
 	reg register_file_Clr = 0;
 	reg Clk = 0;
 	
-	parameter sim_time = 200;
+	parameter sim_time = 170;
 
 	reg RESET = 0;
 
@@ -59,46 +59,34 @@ module test_TBR;
 		ControlUnit.PSR_Clr = 0;
 		#10;
 		ControlUnit.PSR_Clr = 1;
+		#10;
+		ControlUnit.PSR_Clr = 0;
 		
-		/* Init PC and nPC */
-		
-		// Select input of pc from ALU
-		ControlUnit.PC_In_Mux_select = 2'b01;
-		#10;
-		// Enable PC
-		ControlUnit.PC_enable = 1;
-		#10;
-		// Disable PC and pass output of PC to ALUA and 4 through ALUB
-		ControlUnit.PC_enable = 0;
-		ControlUnit.ALUA_Mux_select = 2'b01;
-		ControlUnit.ALUB_Mux_select = 3'b110;
-		ControlUnit.ALU_op = 6'b000000;
-		ControlUnit.NPC_enable = 1;
-		#10;
-		ControlUnit.NPC_enable = 0;
-		#10;
-		
-		// Clearing TBR
-		ControlUnit.TBR_Clr = 1;
-		#10;
-		ControlUnit.TBR_Clr = 0;
-
 		IR_Enable = 0;
-		IR_In     = 32'b10_00001_000000_00000_1_0000110000000; // mov %r1, #384   ---> add %r1, %r0, #3
+		IR_In     = 32'b10_00001_010000_00000_1_0000000000000; // mov %r1, #0   ---> add %r1, %r0, #0
 		// IR value to be loaded is ready
 		IR_Enable = 1;
 		#10; // Instruction loaded in IR
 		IR_Enable = 0;
-		IR_In     = 32'b10_00010_000000_00000_1_0000100000110; // mov %r2, #262   ---> add %r2, %r0, #6
+		IR_In     = 32'b10_00010_000000_00000_1_0000000000110; // mov %r2, #6   ---> add %r2, %r0, #6
 		#10;
 		IR_Enable = 1;
 		#10; // Instruction loaded in IR
 		IR_Enable = 0;
-		IR_In     = 32'b10_00010_110011_00001_0_0000000000010; // WRTBR rs1 + rs2 = 128
+		IR_In     = 32'b10_00001_010000_00000_1_1111111111111; // mov %r1, #0   ---> add %r1, %r0, #0
 		#10;
 		IR_Enable = 1;
 		#10; // Instruction loaded in IR
 		IR_Enable = 0;
+		IR_In     = 32'b10_00010_000000_00000_1_0000000000001; // mov %r2, #1   ---> add %r2, %r0, #1
+		#10;
+		IR_Enable = 1;
+		#10; // Instruction loaded in IR
+		IR_Enable = 0;
+		IR_In     = 32'b10_00010_010000_00001_0_00000000_00010; // add %r2, %r1, %r2
+		#10;
+		IR_Enable = 1;
+		#10; // Instruction loaded into IR
 	end
 	
 	// End simulation at sim_time
@@ -107,20 +95,20 @@ module test_TBR;
 	task printValues;
 	begin
 		$display("Time: %tns", $time);
-		$display("Clock: %d", Clk);
+		$display("Clock: %d",  Clk);
 		$display("IR_Out: %b", IR_Out);
 		$display("extender_out: %d", extender_out);
 		$display("ALU_Out: %d", ALU_Out);
+		$display("ALU_Op: %d", ControlUnit.ALU_op);
+		$display("N: %d, Z: %d, V: %d, C: %d", DataPath.alu.N, DataPath.alu.Z, DataPath.alu.V, DataPath.alu.C);
 		$display("in_PA: %d\tin_PB: %d\tin_PC: %d", in_PA, in_PB, in_PC);
 		$display("ALUA_Mux_select: %d\tALUB_Mux_select: %d", ALUA_Mux_select, ALUB_Mux_select);
 		$display("ALUA_Mux_out: %d\tALUB_Mux_out: %d", ALUA_Mux_out, ALUB_Mux_out);
 		$display("out_PA: %d\tout_PB: %d", out_PA, out_PB);
+		$display("PSR_Mux_Out: %b", DataPath.PSR_Mux_out);
 		$display("PSR_out: %b", PSR_out);
 		$display("R1 = %d", DataPath.register_file.r_out[1]);
 		$display("R2 = %d", DataPath.register_file.r_out[2]);
-		$display("PC = %d", DataPath.PC.out);
-		$display("nPC = %d", DataPath.NPC.out);
-		$display("TBR = %d", DataPath.TBR.out);
 		$display("RF_enable: %d", register_file_enable);
 		$display("--------------------------------------------------------------------------\n");
 	end

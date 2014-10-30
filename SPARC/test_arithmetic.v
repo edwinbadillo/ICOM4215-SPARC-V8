@@ -1,6 +1,6 @@
 module test_Arithmetic;
 	
-		/* Inputs */
+	/* Inputs */
 	wire [4:0]in_PC, in_PA, in_PB;
 	
 	wire [5:0]RAM_OpCode, ALU_op;
@@ -8,10 +8,13 @@ module test_Arithmetic;
 	
 	wire MDR_Mux_select;
 	wire TBR_Mux_select;
+	wire  S, PS, ET;
 	wire [2:0]extender_select;
 	wire [1:0]PC_In_Mux_select;
 	wire [1:0]ALUA_Mux_select;
 	wire [2:0]ALUB_Mux_select;
+	wire [1:0]PSR_Mux_select;
+	wire cond, BA_O, BN_O;
 	
 	// Enables
 	wire PC_enable, NPC_enable, MDR_Enable, MAR_Enable, register_file_enable, RAM_enable, PSR_Enable, TEMP_Enable, TBR_enable;
@@ -29,16 +32,17 @@ module test_Arithmetic;
 	reg register_file_Clr = 0;
 	reg Clk = 0;
 	
-	parameter sim_time = 80;
+	parameter sim_time = 100;
 
 	reg RESET = 0;
 
-	DataPath DataPath(IR_Enable, IR_In, IR_Out, PC_enable, PC_Clr, NPC_enable, NPC_Clr, PSR_Enable, PSR_Clr, PSR_out, TEMP_Enable, TEMP_Clr, MDR_Enable, MDR_Clr,
+
+	DataPath DataPath(IR_Enable, IR_In, IR_Out, PC_enable, PC_Clr, NPC_enable, NPC_Clr, PSR_Enable, PSR_Clr, S, PS, ET, PSR_out, TEMP_Enable, TEMP_Clr, MDR_Enable, MDR_Clr,
 		MAR_Enable, MAR_Clr, TBR_enable, TBR_Clr, tt, ALU_op, ALU_Out, register_file_enable, in_PA, in_PB, in_PC, out_PA, out_PB, extender_select, extender_out, 
-		ALUA_Mux_select, ALUA_Mux_out, ALUB_Mux_select, ALUB_Mux_out, MDR_Mux_select, PC_In_Mux_select, TBR_Mux_select, RAM_OpCode, RAM_enable, MFC, MSET, Clk);
+		ALUA_Mux_select, ALUA_Mux_out, ALUB_Mux_select, ALUB_Mux_out, MDR_Mux_select, PC_In_Mux_select, TBR_Mux_select, PSR_Mux_select, RAM_OpCode, RAM_enable, MFC, MSET, Clk);
 	
-	ControlUnit ControlUnit(NPC_enable, PC_enable, MDR_Enable, MAR_Enable, register_file_enable, RAM_enable, PSR_Enable, TBR_enable, extender_select, PC_In_Mux_select, ALUA_Mux_select, ALUB_Mux_select,
-		MDR_Mux_select, TBR_Mux_select, in_PC, in_PA, in_PB, ALU_op, RAM_OpCode, tt, TBR_Clr, IR_Out, MFC, MSET, RESET, Clk);
+	ControlUnit ControlUnit(NPC_enable, PC_enable, MDR_Enable, MAR_Enable, register_file_enable, RAM_enable, PSR_Enable, TBR_enable, extender_select, PC_In_Mux_select, ALUA_Mux_select, PSR_Mux_select, ALUB_Mux_select,
+		MDR_Mux_select, TBR_Mux_select, in_PC, in_PA, in_PB, ALU_op, RAM_OpCode, tt, TBR_Clr, PSR_Clr, S, PS, ET, IR_Out, MFC, MSET, cond, BA_O, BN_O, RESET, Clk);
 		
 	/* Make a regular pulsing clock. */
 	// reg clk = 0;
@@ -52,6 +56,10 @@ module test_Arithmetic;
 		// When CU has states, the magicks is simply another state.
 		printValues();
 
+		ControlUnit.PSR_Clr = 0;
+		#10;
+		ControlUnit.PSR_Clr = 1;
+		
 		IR_Enable = 0;
 		IR_In     = 32'b10_00001_000000_00000_1_0000000000011; // mov %r1, #3   ---> add %r1, %r0, #3
 		// IR value to be loaded is ready
