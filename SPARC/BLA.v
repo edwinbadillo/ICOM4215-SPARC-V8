@@ -7,7 +7,7 @@ module BLA (output out_BLA, BA_O, BN_O, input [3:0] in,  input [3:0] flags); // 
 	//-----------------------------------------------------------------------------------------------------------------
 	wire inv0, inv1, inv2, inv3, inv_N, inv_Z, inv_V, inv_C, NV_XOR, inv_NV_XOR, inv_CZ_OR, CZ_OR;
 	wire BG_O1, BG_O2, BLE_O1, BLE_O2, BGE_O1, BL_O1, BGU_O1, BLEU_O1;
-	wire BA_O, BN_O, BNE_O, BE_O, BG_O, BLE_O, BGE_O, BL_O, BGU_O, BLEU_O, BCC_O, BCS_O, BPOS_O, BNEG_O, BVC_O, BVS_O;
+	wire BNE_O, BE_O, BG_O, BLE_O, BGE_O, BL_O, BGU_O, BLEU_O, BCC_O, BCS_O, BPOS_O, BNEG_O, BVC_O, BVS_O;
  
 
 	not (inv0, in[0]);

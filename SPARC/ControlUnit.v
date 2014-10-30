@@ -22,6 +22,9 @@ module ControlUnit(
 	input [31:0]IR_Out,
 	input MFC,
 	input MSET,
+	
+	// Branches Signals
+	input cond, BA_O, BN_O,
 
 	// Input Signals
 	input RESET,
