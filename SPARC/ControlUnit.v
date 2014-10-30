@@ -401,9 +401,12 @@ module ControlUnit(
 						in_PB           = IR_Out[4:0];
 					end
 					// Result of operation outputted from ALU
+					PSR_Mux_select = 2'b00;
 					#10;
 					register_file   = 1;
-					PSR_Enable      = 1;
+					// Modify flags if necessary
+					if(IR_Out[23])
+						PSR_Enable      = 1;
 					#10; // Result of operation loaded into register of choice
 					register_file   = 0;
 					PSR_Enable      = 0;
