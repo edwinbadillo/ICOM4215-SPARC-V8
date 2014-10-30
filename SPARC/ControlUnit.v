@@ -55,40 +55,98 @@ module ControlUnit(
 		end
 		else begin 
 			if (IR_Out[31:30] === 2'b00 ) begin 
-				// Branch Instructions Family
+				if (IR_Out[24:22] === 3'b100) begin
+					// Sethi instruction
+					in_PA  = 5'b00000;      // A = r0
+					in_PC  = IR_Out[29:25]; // getting rd
+					ALU_op = 6'b000000;     // add, won't alter flags
 
-				// The address is included in the instruction in the least significant 22 bits
+					ALUA_Mux_select = 2'b00;
+					ALUB_Mux_select = 3'b001; // need immediate value
+					extender_select = 3'b100; // pass disp22 with 9:0 as zeros
+					// Value should be ready
+					#10;
+					register_file = 1;
+					#10; // Loaded 
+					register_file = 0;
+				end
+				else
+				begin
+					// Branch Instructions Family
 
-				register_file = 0; // Not writing to a register during a branch.
-				extender_select = 2'b01;
-				ALU_op          = 6'b000000;
-				PC_enable =0;
-				NPC_enable =0;
+					// The address is included in the instruction in the least significant 22 bits
 
-				if (cond) begin 
-					if (BA_O) begin
-						if(IR_Out[29]) begin
+					register_file = 0; // Not writing to a register during a branch.
+					extender_select = 2'b01;
+					ALU_op          = 6'b000000;
+					PC_enable =0;
+					NPC_enable =0;
+
+					if (cond) begin 
+						if (BA_O) begin
+							if(IR_Out[29]) begin
+							
+								//the delay instruction is annulled
+								ALUA_Mux_select = 2'b10;
+								ALUB_Mux_select = 3'b110;
+								#10;
+								NPC_enable =1;
+								#10;
+								NPC_enable = 0;
+								PC_enable =1;
+								#10;
+								PC_enable =1;
+								#10;
+								ALUA_Mux_select = 2'b10;
+								ALUB_Mux_select = 3'b110;
+								NPC_enable =1;
+								#10;
+								NPC_enable = 0;
+
+							end
+							else begin
+								
+								PC_In_Mux_select = 2'b00;
+								#10;
+								PC_enable = 1;
+								#10;
+								PC_enable = 0;
+								extender_select = 3'b101;
+								ALUA_Mux_select = 2'b01;
+								ALUB_Mux_select = 3'b001;
+								#10;
+								NPC_enable = 1;
+								#10;
+								NPC_enable = 0;
+							end
 						
-							//the delay instruction is annulled
-							ALUA_Mux_select = 2'b10;
-							ALUB_Mux_select = 3'b110;
-							#10;
-							NPC_enable =1;
-							#10;
-							NPC_enable = 0;
-							PC_enable =1;
-							#10;
-							PC_enable =1;
-							#10;
-							ALUA_Mux_select = 2'b10;
-							ALUB_Mux_select = 3'b110;
-							NPC_enable =1;
-							#10;
-							NPC_enable = 0;
+						end
+						else if (BN_O) begin
+						
+							if(IR_Out[29]) begin
+							
+								//the delay instruction is annulled
+								ALUA_Mux_select = 2'b10;
+								ALUB_Mux_select = 3'b110;
+								#10;
+								NPC_enable =1;
+								#10;
+								NPC_enable = 0;
+								#10;
+								PC_enable =1;
+								#10;
+								ALUA_Mux_select = 2'b10;
+								ALUB_Mux_select = 3'b110;
+								#10;
+								NPC_enable =1;
+								#10;
+								NPC_enable = 0;
 
+							end
+						
 						end
 						else begin
-							
+						//the delay instruction is annulled
 							PC_In_Mux_select = 2'b00;
 							#10;
 							PC_enable = 1;
@@ -102,89 +160,48 @@ module ControlUnit(
 							#10;
 							NPC_enable = 0;
 						end
+						
 					
 					end
-					else if (BN_O) begin
-					
-						if(IR_Out[29]) begin
+					else begin
 						
-							//the delay instruction is annulled
+						if(IR_Out[29]) begin
+						//the delay instruction is annulled
+								ALUA_Mux_select = 2'b10;
+								ALUB_Mux_select = 3'b110;
+								#10;
+								NPC_enable =1;
+								#10;
+								NPC_enable = 0;
+								#10;
+								PC_enable =1;
+								#10;
+								ALUA_Mux_select = 2'b10;
+								ALUB_Mux_select = 3'b110;
+								#10;
+								NPC_enable =1;
+								#10;
+								NPC_enable = 0;
+							
+						end
+						else begin
+						
+							PC_In_Mux_select = 2'b00;
+							#10;
+							PC_enable = 1;
+							#10;
+							PC_enable = 0;
 							ALUA_Mux_select = 2'b10;
 							ALUB_Mux_select = 3'b110;
 							#10;
 							NPC_enable =1;
 							#10;
-							NPC_enable = 0;
-							#10;
-							PC_enable =1;
-							#10;
-							ALUA_Mux_select = 2'b10;
-							ALUB_Mux_select = 3'b110;
-							#10;
-							NPC_enable =1;
-							#10;
-							NPC_enable = 0;
-
+							NPC_enable = 0;					
 						end
 					
 					end
-					else begin
-					//the delay instruction is annulled
-						PC_In_Mux_select = 2'b00;
-						#10;
-						PC_enable = 1;
-						#10;
-						PC_enable = 0;
-						extender_select = 3'b101;
-						ALUA_Mux_select = 2'b01;
-						ALUB_Mux_select = 3'b001;
-						#10;
-						NPC_enable = 1;
-						#10;
-						NPC_enable = 0;
-					end
-					
 				
 				end
-				else begin
-					
-					if(IR_Out[29]) begin
-					//the delay instruction is annulled
-							ALUA_Mux_select = 2'b10;
-							ALUB_Mux_select = 3'b110;
-							#10;
-							NPC_enable =1;
-							#10;
-							NPC_enable = 0;
-							#10;
-							PC_enable =1;
-							#10;
-							ALUA_Mux_select = 2'b10;
-							ALUB_Mux_select = 3'b110;
-							#10;
-							NPC_enable =1;
-							#10;
-							NPC_enable = 0;
-						
-					end
-					else begin
-					
-						PC_In_Mux_select = 2'b00;
-						#10;
-						PC_enable = 1;
-						#10;
-						PC_enable = 0;
-						ALUA_Mux_select = 2'b10;
-						ALUB_Mux_select = 3'b110;
-						#10;
-						NPC_enable =1;
-						#10;
-						NPC_enable = 0;					
-					end
-				
-				end
-				
-
 
 			end
 			else if (IR_Out[31:30] === 2'b01) begin 
