@@ -158,6 +158,7 @@ module ControlUnit2(
 					if (IR_Out[24:22] === 3'b100) nextState = 7'b0001001;
 					// Branches
 					else
+						nextState = 7'b0001100;
 					begin
 					end
 				end
@@ -221,6 +222,217 @@ module ControlUnit2(
 				register_file = 0;
 				nextState = 7'b0000100;
 			end
+			/********************/
+			/*		Branch		*/
+			/*					*/
+			7'b0001100:
+			begin
+				register_file = 0; 
+				ALU_op = 6'b000000;
+				PC_enable =0;
+				NPC_enable =0;
+				if (cond) begin 
+					if (BA_O) begin
+						if(IR_Out[29]) nextState = 7'b0001101;//go to BA_O Anulled
+						else nextState <= 7'b0010011;//go to BA_O
+					end
+					else if (BN_O) begin
+						if(IR_Out[29]) nextState <= 7'b0011000;//go to BN_O Anulled
+						else nextState <= 7'b1101101; //Go to flow control //go to NOP
+					end
+					else nextState <= 7'b0011101;//go to BX TRUE
+				end
+				else begin
+					if(IR_Out[29]) nextState <= 7'b0100010;//go to BX FALSE Anulled
+					else nextState <= 7'b0101000;//go to BX FALSE
+				
+				end
+			end
+			7'b0001101://13 -BA_O Anulled
+				begin
+				//the delay instruction is annulled
+				ALUA_Mux_select = 2'b10;
+				ALUB_Mux_select = 3'b110;
+				nextState <= 7'b0001110;
+				end
+			7'b0001110:
+				begin
+				NPC_enable =1;
+				nextState <= 7'b0001111;
+				end
+			7'b0001111:
+				begin
+				NPC_enable = 0;
+				PC_enable =1;
+				nextState <= 7'b0010000;
+				end
+			7'b0010000:
+				begin
+				PC_enable =0;
+				nextState <= 7'b0010001;
+				end
+			7'b0010001:
+				begin
+				//ALUA_Mux_select = 2'b10;
+				//ALUB_Mux_select = 3'b110;
+				NPC_enable =1;
+				nextState <= 7'b0010010;
+				end
+			7'b0010010: //disable npc, end ba_o anulled
+				begin
+				NPC_enable = 0;
+				nextState <= 7'b1101101; //Go to flow control
+				end
+			7'b0010011://19 -BA_O
+				begin
+				PC_In_Mux_select = 2'b00;
+				nextState <= 7'b0010100;
+				end
+			7'b0010100:
+				begin
+				PC_enable = 1;
+				nextState <= 7'b0010101;
+				end
+			7'b0010101:
+				begin
+				PC_enable = 0;
+				extender_select = 3'b101;
+				ALUA_Mux_select = 2'b01;
+				ALUB_Mux_select = 3'b001;
+				nextState = 7'b0010110;
+				end
+			7'b0010110:
+				begin
+				NPC_enable =1;
+				nextState <= 7'b0010111;
+				end
+			7'b0010111://end of BA_O
+				begin
+				NPC_enable = 0;
+				nextState <= 7'b1101101; //Go to flow control 
+				end
+			7'b0011000://24 -BN_O Anulled
+				begin
+				//the delay instruction is annulled
+				ALUA_Mux_select = 2'b10;
+				ALUB_Mux_select = 3'b110;
+				nextState <= 7'b0011001;
+				end
+			7'b0011001:
+				begin
+				NPC_enable =1;
+				nextState <= 7'b0011010;
+				end
+			7'b0011010:
+				begin
+				NPC_enable = 0;
+				PC_enable =1;
+				nextState <= 7'b0011011;
+				end
+			7'b0011011:
+				begin
+				PC_enable =0;
+				//ALUA_Mux_select = 2'b10;
+				//ALUB_Mux_select = 3'b110;
+				NPC_enable =1;
+				nextState <= 7'b0011100;
+				end
+			7'b0011100:
+				begin
+				NPC_enable = 0;
+				nextState <= 7'b1101101; //Go to flow control
+				end
+			7'b0011101://29 -BX TRUE
+				begin
+				//the delay instruction is annulled
+				PC_In_Mux_select = 2'b00;
+				nextState <= 7'b0011110;
+				end
+			7'b0011110:
+				begin
+				PC_enable = 1;
+				nextState <= 7'b0011111;
+				end
+			7'b0011111:
+				begin
+				PC_enable = 0;
+				extender_select = 3'b101;
+				ALUA_Mux_select = 2'b01;
+				ALUB_Mux_select = 3'b001;
+				nextState <= 7'b0100000;
+				end
+			7'b0100000://32
+				begin
+				NPC_enable = 1;
+				nextState <= 7'b0100001;
+				end
+			7'b0100001://33
+				begin
+				NPC_enable = 0;
+				nextState <= 7'b1101101; //Go to flow control
+				end
+			7'b0100010://34 -BX FALSE Anulled
+				begin
+				//the delay instruction is annulled
+				ALUA_Mux_select = 2'b10;
+				ALUB_Mux_select = 3'b110;
+				nextState <= 7'b0100011;
+				end
+			7'b0100011:
+				begin
+				NPC_enable =1;
+				nextState <= 7'b0100100;
+				end
+			7'b0100100:
+				begin
+				NPC_enable = 0;
+				PC_enable =1;
+				nextState <= 7'b0100101;
+				end
+			7'b0100101:
+				begin
+				PC_enable =0;
+				nextState <= 7'b0100110;
+				end
+			7'b0100110:
+				begin
+				//ALUA_Mux_select = 2'b10;
+				//ALUB_Mux_select = 3'b110;
+				NPC_enable =1;
+				nextState <= 7'b0100111;
+				end
+			7'b0100111:
+				begin
+				NPC_enable = 0;
+				nextState <= 7'b1101101; //Go to flow control
+				end
+			7'b0101000://40 -BX FALSE
+				begin
+				PC_In_Mux_select = 2'b00;
+				nextState <= 7'b0101001;
+				end
+			7'b0101001:
+				begin
+				PC_enable = 1;
+				nextState <= 7'b0101010;
+				end
+			7'b0101010:
+				begin
+				PC_enable = 0;
+				ALUA_Mux_select = 2'b10;
+				ALUB_Mux_select = 3'b110;
+				nextState <= 7'b0101011;
+				end
+			7'b0101011:
+				begin
+				NPC_enable =1;
+				nextState <= 7'b0101100;
+				end
+			7'b0101100:
+				begin
+				NPC_enable = 0;
+				nextState <= 7'b1101101;//Go to flow control
+				end
 			/********************/
 			/*		Arith		*/
 			/*		Logic		*/

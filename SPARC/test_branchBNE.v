@@ -1,4 +1,4 @@
-module test_arithmetic2;
+module test_branch;
 
 	/* Inputs */
 	wire [4:0]in_PC, in_PA, in_PB;
@@ -46,7 +46,7 @@ module test_arithmetic2;
 	end
 	
 	initial begin
-		fd = $fopen("code_arith.txt","r"); 
+		fd = $fopen("code_branchBNE.txt","r"); 
 		positionInMem = 0;
 		i = 0;
 		while (!($feof(fd)))
@@ -77,6 +77,7 @@ module test_arithmetic2;
 		$display("Clock: %d", Clk);
 		$display("Reset: %d", RESET);
 		$display("IR_Out: %b", IR_Out);
+		$display("BLA_out: %b \t BA_O = %b \t BN_O = %b", DataPath.out_BLA, DataPath.BA_O, DataPath.BN_O);
 		$display("PSR_out: %b", PSR_out);
 		$display("In_PA: %d\t In_PB: %d ]t in_PC", in_PA, ControlUnit.in_PB, in_PC);
 		$display("out_PA: %d\t out_PB: %d", DataPath.out_PA, DataPath.out_PB);
@@ -84,6 +85,7 @@ module test_arithmetic2;
 		$display("ALUA_Mux_out: %d\tALUB_Mux_out: %d", ALUA_Mux_out, ALUB_Mux_out);
 		$display("ALU_Out: %d", ALU_Out);
 		$display("r1: %d", DataPath.register_file.r_out[1]);
+		$display("r2: %d", DataPath.register_file.r_out[2]);
 		$display("PC_out:  %b", DataPath.PC.out);
 		$display("NPC_out: %b", DataPath.NPC.out);
 		$display("MAR_Out: %d \t RAM_OpCode = %b", DataPath.MAR_Out, RAM_OpCode);

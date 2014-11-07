@@ -66,7 +66,7 @@ module DataPath2(
 	input RAM_enable,
 	output MFC, MSET,
 	
-	input out_BLA, BA_O, BN_O,
+	output out_BLA, BA_O, BN_O,
 
 	
 	input Clk); //Missing shit like crazy
@@ -132,7 +132,7 @@ module DataPath2(
 	// Mux for the input of PSR
 	mux_32_4x1 PSR_Mux(PSR_Mux_out, PSR_Mux_select, {PSR_out[31:24],N,Z,V,C,PSR_out[19:0]}, {PSR_out[31:8],S,PS,PSR_out[5:0]}, {PSR_out[31:6],ET,PSR_out[4:0]}, {PSR_out[31:2], ALU_out[1:0]});
 	
-	BLA bla(out_BLA, BA_O, BN_O, IR_In[28:25], PSR_out[23:20]);
+	BLA bla(out_BLA, BA_O, BN_O, IR_Out[28:25], PSR_out[23:20]);
 
 	
 endmodule
