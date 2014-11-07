@@ -77,15 +77,15 @@ module ControlUnit(
 					// The address is included in the instruction in the least significant 22 bits
 
 					register_file = 0; // Not writing to a register during a branch.
-					extender_select = 2'b01;
 					ALU_op          = 6'b000000;
 					PC_enable =0;
 					NPC_enable =0;
 
 					if (cond) begin 
 						if (BA_O) begin
+						
 							if(IR_Out[29]) begin
-							
+														
 								//the delay instruction is annulled
 								ALUA_Mux_select = 2'b10;
 								ALUB_Mux_select = 3'b110;
@@ -105,7 +105,7 @@ module ControlUnit(
 
 							end
 							else begin
-								
+															
 								PC_In_Mux_select = 2'b00;
 								#10;
 								PC_enable = 1;
@@ -143,15 +143,20 @@ module ControlUnit(
 								NPC_enable = 0;
 
 							end
+							else begin
+							
+							end
 						
 						end
 						else begin
+						
 						//the delay instruction is annulled
 							PC_In_Mux_select = 2'b00;
 							#10;
 							PC_enable = 1;
 							#10;
 							PC_enable = 0;
+							#10;
 							extender_select = 3'b101;
 							ALUA_Mux_select = 2'b01;
 							ALUB_Mux_select = 3'b001;
@@ -166,6 +171,7 @@ module ControlUnit(
 					else begin
 						
 						if(IR_Out[29]) begin
+						
 							//the delay instruction is annulled
 							ALUA_Mux_select = 2'b10;
 							ALUB_Mux_select = 3'b110;

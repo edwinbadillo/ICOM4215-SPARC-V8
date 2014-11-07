@@ -39,7 +39,7 @@ module test_bla_path;
 		ALUA_Mux_select, ALUA_Mux_out, ALUB_Mux_select, ALUB_Mux_out, MDR_Mux_select, PC_In_Mux_select, TBR_Mux_select, PSR_Mux_select, RAM_OpCode, RAM_enable, MFC, MSET, out_BLA, BA_O, BN_O, Clk);
 	
 	ControlUnit ControlUnit(NPC_enable, PC_enable, MDR_Enable, MAR_Enable, register_file_enable, RAM_enable, PSR_Enable, TBR_enable, extender_select, PC_In_Mux_select, ALUA_Mux_select, PSR_Mux_select, ALUB_Mux_select,
-		MDR_Mux_select, TBR_Mux_select, in_PC, in_PA, in_PB, ALU_op, RAM_OpCode, tt, TBR_Clr, PSR_Clr, S, PS, ET, IR_Out, MFC, MSET, cond, BA_O, BN_O, RESET, Clk);
+		MDR_Mux_select, TBR_Mux_select, in_PC, in_PA, in_PB, ALU_op, RAM_OpCode, tt, TBR_Clr, PSR_Clr, S, PS, ET, IR_Out, MFC, MSET, out_BLA, BA_O, BN_O, RESET, Clk);
 		
 	always begin
 		#5 Clk = !Clk;
@@ -47,7 +47,12 @@ module test_bla_path;
 	end
 	
 	initial begin
-		DataPath.PSR.out[23:20] = 4'b0100;
+		printValues();
+		
+		ControlUnit.PSR_Clr = 0;
+		#10;
+		ControlUnit.PSR_Clr = 1;
+
 		/* Init PC and nPC */
 		
 		// Select input of pc from ALU
@@ -65,52 +70,24 @@ module test_bla_path;
 		#10;
 		ControlUnit.NPC_enable = 0;
 		#10;
-		printValues();
 
-		
+		$display("START---------------BN-N=0-(NP)-----------");
 		IR_Enable = 0;
 		IR_In     = 32'b00_0_0000_010_1010011010000000000011; //Branch Never a=0
 		#10;
 		// IR value to be loaded is ready
+				$display("START---------------BN-N=0-(NP)-----------");
+
 		IR_Enable = 1;
 		#10; // Instruction loaded in IR
 		IR_Enable = 0;
-		IR_In     = 32'b00_1_0000_010_1010011010000000000011; //Branch Never a=1
+		IR_In     = 32'b00_0_1000_010_0000000000000000000011; //Branch Always a=0
 		#10;
-		// IR value to be loaded is ready
+		$display("---------------BA-A=0---disp=3---------");
 		IR_Enable = 1;
 		#10; // Instruction loaded in IR
 		IR_Enable = 0;
-		IR_In     = 32'b00_0_1000_010_1010000010000000000011; //Branch Always a=0
 		#10;
-		IR_Enable = 1;
-		#10; // Instruction loaded in IR
-		IR_Enable = 0;
-		IR_In     = 32'b00_1_1000_010_1010000010000000000011; //Branch Always a=1
-		#10;
-		IR_Enable = 1;
-		#10; // Instruction loaded in IR
-		IR_Enable = 0;
-		IR_In     = 32'b00_0_0010_010_1010000010000000000011; //Branch on less or equal a=0
-		#10;
-		IR_Enable = 1;
-		#10; // Instruction loaded into IR
-		IR_Enable = 0;
-		IR_In     = 32'b00_1_0010_010_1010000010000000000011; //Branch on less or equal a=1
-		#10;
-		IR_Enable = 1; 
-		#10; // Instruction loaded into IR
-		IR_Enable = 0;
-		IR_In     = 32'b00_0_0101_010_1010000010000000000011; //Branch on carry or equal a=0
-		#10;
-		IR_Enable = 1;
-		#10; // Instruction loaded into IR
-		IR_Enable = 0;
-		IR_In     = 32'b00_1_0101_010_1010000010000000000011; //Branch on carry or equal a=1
-		#10;
-		IR_Enable = 1;
-		#10; // Waiting for store to finish
-		IR_Enable = 0;
 		
 	end
 	
@@ -122,6 +99,7 @@ module test_bla_path;
 		$display("Time: %tns", $time);
 		$display("Clock: %d", Clk);
 		$display("IR_Out: %b", IR_Out);
+		$display("extender_select: %d", extender_select);
 		$display("extender_out: %d", extender_out);
 		$display("ALU_Out: %d", ALU_Out);
 		$display("ALUA_Mux_select: %d\tALUB_Mux_select: %d", ALUA_Mux_select, ALUB_Mux_select);
@@ -130,7 +108,8 @@ module test_bla_path;
 		$display("PSR_out: %b", PSR_out);
 		$display("PC_out:  %b", DataPath.PC.out);
 		$display("NPC_out: %b", DataPath.NPC.out);
-		$display("Condition: %b\tBA_O: %b\tBN_O: %b\tAnull bit: %b", DataPath.bla.out_BLA, BA_O, BN_O, IR_In[29]);
+		$display("Condition(t/f): %b\tBA_O: %b\tBN_O: %b\tAnull bit: %b", DataPath.bla.out_BLA, BA_O, BN_O, IR_In[29]);
+
 
 
 		$display("--------------------------------------------------------------------------\n");
