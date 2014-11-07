@@ -275,5 +275,70 @@ module ControlUnit2(
 				register_file = 0;
 				nextState = 7'b1101101;	// Increment PC and NPC which then go to Fetch
 			end
+			/********************/
+			/*		LOAD		*/
+			/*					*/
+			7'b1011001: //89
+			begin
+				ALUA_Mux_select = 2'b00;
+				in_PC = IR_Out[29:25];
+				in_PA = IR_Out[18:14];
+				ALU_op = 6'b000000;
+				RAM_OpCode = IR_Out[24:19];
+				register_file = 0;
+				if(IR_Out[13])
+					// Immediate
+					nextState = 7'b1011010; //90
+				else
+					nextState = 7'b1011011; //91
+			7'b1011010: //90
+			begin
+				extender_select = 2'b00;
+				ALUB_Mux_select = 3'b001;
+				nextState = 7'b1011100; //92
+			end
+			7'b1011011: //91
+			begin
+				MAR_Enable = 1;
+				nextState = 7'b1011100; //92
+			end
+			7'b1011100: //92
+			begin
+				MAR_Enable = 1;
+				nextState = 7'b1011101;
+			end
+			7'b1011101: //93
+			begin
+				MAR_Enable = 0;
+				RAM_enable = 1;
+				MDR_Mux_select = 1;
+				nextState = 7'b1011110;
+			end
+			7'b1011110: //94
+			begin
+				RAM_enable = 0;
+				nextState = 7'b1011111;
+			end
+			7'b1011110: //95
+			begin
+				MDR_Enable = 1;
+				nextState = 7'b1100000;
+			end
+			7'b1100000: //96
+			begin
+				MDR_Enable = 0;
+				nextState = 7'b1100001;
+			end
+			7'b1100001: //97
+			begin
+				register_file  = 1;
+				nextState = 7'b1100010;
+			end
+			7'b1100010: //98
+			begin
+				register_file  = 0;
+				nextState = 7'b1101101; // Got to flow control
+			end
+			end
 		endcase
 endmodule

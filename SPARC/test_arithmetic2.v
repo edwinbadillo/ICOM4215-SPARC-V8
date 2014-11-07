@@ -28,6 +28,8 @@ module test_arithmetic2;
 	reg Clk = 0;
 	
 	parameter sim_time = 500;
+	
+	integer fd, positionInMem, data, i, j;
 
 	reg RESET = 0;
 
@@ -44,6 +46,21 @@ module test_arithmetic2;
 	end
 	
 	initial begin
+		fd = $fopen("code_arith.txt","r"); 
+		positionInMem = 0;
+		i = 0;
+		while (!($feof(fd)))
+		begin
+			$fscanf(fd, "%b", data);
+			DataPath.ram.Mem[positionInMem]= data[31:24];
+			DataPath.ram.Mem[positionInMem + 1]= data[23:16];
+			DataPath.ram.Mem[positionInMem + 2]= data[15:8];
+			DataPath.ram.Mem[positionInMem + 3]= data[7:0];
+			positionInMem = positionInMem + 4;
+			i = i + 1;
+			$display("data de file = %b", data);
+		end
+		$fclose(fd);
 		DataPath.ram.Mem[3]= 8'b00000001;
 		DataPath.ram.Mem[2]= 8'b00100000;
 		DataPath.ram.Mem[1]= 8'b00000000;
