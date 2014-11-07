@@ -20,7 +20,7 @@ module ram512x8 (output reg[31:0] MDR_DataOut, output reg MFC, MSET, input Enabl
 			//---LOADS-------------------------------------------------------
 			//Load Word 
 			6'b000000:begin
-				#5;
+				#20;
 				MDR_DataOut[31:24] <= Mem[MAR_Address];
 				MDR_DataOut[23:16] <= Mem[MAR_Address + 1];
 				MDR_DataOut[15:8]  <= Mem[MAR_Address + 2];
@@ -30,7 +30,7 @@ module ram512x8 (output reg[31:0] MDR_DataOut, output reg MFC, MSET, input Enabl
 
 			//Load Unsigned Byte
 			6'b000001: begin
-				#5;
+				#20;
 				MDR_DataOut[31:8] <= 24'h00000;
 				MDR_DataOut[7:0]  <= Mem[MAR_Address + 3];
 				MFC               <= 1;
@@ -38,7 +38,7 @@ module ram512x8 (output reg[31:0] MDR_DataOut, output reg MFC, MSET, input Enabl
 			
 			//Load Unsigned Halfword
 			6'b000010: begin
-				#5;
+				#20;
 				MDR_DataOut[31:16] <= 16'h0000;
 				MDR_DataOut[15:8]  <= Mem[MAR_Address + 2];
 				MDR_DataOut[7:0]   <= Mem[MAR_Address + 3];
@@ -54,7 +54,7 @@ module ram512x8 (output reg[31:0] MDR_DataOut, output reg MFC, MSET, input Enabl
 
 			//Store Word
 			6'b000100: begin
-				#5;
+				#20;
 				if (MAR_Address % 4 == 0) begin
 					Mem[MAR_Address]     <= MDR_DataIn[31:24];
 					Mem[MAR_Address + 1] <= MDR_DataIn[23:16];
@@ -69,14 +69,14 @@ module ram512x8 (output reg[31:0] MDR_DataOut, output reg MFC, MSET, input Enabl
 
 			//Store Byte
 			6'b000101: begin
-				#5;
+				#20;
 				Mem[MAR_Address] <= MDR_DataIn[7:0];
 				MFC              <= 1;
 			end
 
 			//Store Halfword
 			6'b000110: begin
-				#5;
+				#20;
 				if (MAR_Address % 2 == 0) begin
 				Mem[MAR_Address]     <= MDR_DataIn[15:8];
 				Mem[MAR_Address + 1] <= MDR_DataIn[7:0];
@@ -95,14 +95,14 @@ module ram512x8 (output reg[31:0] MDR_DataOut, output reg MFC, MSET, input Enabl
 			6'b001001: begin
 				if(Mem[MAR_Address + 3][7]==1)
 					begin
-						#5;
+						#20;
 						MDR_DataOut[31:8] <= 24'hffffff;
 						MDR_DataOut[7:0]  <= Mem[MAR_Address + 3];
 						MFC               <= 1;
 					end
 				else
 					begin
-						#5;
+						#20;
 						MDR_DataOut[31:8] <= 24'h000000;
 						MDR_DataOut[7:0]  <= Mem[MAR_Address + 3];
 						MFC               <= 1;
@@ -113,7 +113,7 @@ module ram512x8 (output reg[31:0] MDR_DataOut, output reg MFC, MSET, input Enabl
 			6'b001010: begin
 				if(Mem[MAR_Address + 2][7]==1)
 					begin
-						#5;
+						#20;
 						MDR_DataOut[31:16] <= 16'hffff;
 						MDR_DataOut[15:8]  <= Mem[MAR_Address + 2];
 						MDR_DataOut[7:0]   <= Mem[MAR_Address + 3];
@@ -121,7 +121,7 @@ module ram512x8 (output reg[31:0] MDR_DataOut, output reg MFC, MSET, input Enabl
 					end
 				else
 					begin
-						#5;
+						#20;
 						MDR_DataOut[31:16] <= 16'h0000;
 						MDR_DataOut[15:8]  <= Mem[MAR_Address + 2];
 						MDR_DataOut[7:0]   <= Mem[MAR_Address + 3];
