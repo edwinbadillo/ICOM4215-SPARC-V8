@@ -186,7 +186,9 @@ module ControlUnit2(
 					// Load
 					if(IR_Out[24:19] == 6'b000000||IR_Out[24:19] == 6'b000001||IR_Out[24:19] == 6'b000010||IR_Out[24:19] == 6'b001001||IR_Out[24:19] == 6'b001010) 
 					begin
+						nextState = 7'b1011001;
 					end
+					// Store
 					else if(IR_Out[24:19] == 6'b000100||IR_Out[24:19] == 6'b000101||IR_Out[24:19] == 6'b000110) 
 					begin
 					end
@@ -291,6 +293,7 @@ module ControlUnit2(
 					nextState = 7'b1011010; //90
 				else
 					nextState = 7'b1011011; //91
+			end
 			7'b1011010: //90
 			begin
 				extender_select = 2'b00;
@@ -299,7 +302,8 @@ module ControlUnit2(
 			end
 			7'b1011011: //91
 			begin
-				MAR_Enable = 1;
+				ALUB_Mux_select = 3'b000;
+				in_PB = IR_Out[4:0];
 				nextState = 7'b1011100; //92
 			end
 			7'b1011100: //92
@@ -312,6 +316,8 @@ module ControlUnit2(
 				MAR_Enable = 0;
 				RAM_enable = 1;
 				MDR_Mux_select = 1;
+				in_PA = 5'b00000;
+				ALUB_Mux_select = 3'b010;
 				nextState = 7'b1011110;
 			end
 			7'b1011110: //94
@@ -319,7 +325,7 @@ module ControlUnit2(
 				RAM_enable = 0;
 				nextState = 7'b1011111;
 			end
-			7'b1011110: //95
+			7'b1011111: //95
 			begin
 				MDR_Enable = 1;
 				nextState = 7'b1100000;
@@ -338,7 +344,6 @@ module ControlUnit2(
 			begin
 				register_file  = 0;
 				nextState = 7'b1101101; // Got to flow control
-			end
 			end
 		endcase
 endmodule
