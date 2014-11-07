@@ -95,10 +95,10 @@ module ControlUnit(
 								NPC_enable = 0;
 								PC_enable =1;
 								#10;
-								PC_enable =1;
+								PC_enable =0;
 								#10;
-								ALUA_Mux_select = 2'b10;
-								ALUB_Mux_select = 3'b110;
+								//ALUA_Mux_select = 2'b10;
+								//ALUB_Mux_select = 3'b110;
 								NPC_enable =1;
 								#10;
 								NPC_enable = 0;
@@ -132,12 +132,12 @@ module ControlUnit(
 								NPC_enable =1;
 								#10;
 								NPC_enable = 0;
-								#10;
 								PC_enable =1;
 								#10;
-								ALUA_Mux_select = 2'b10;
-								ALUB_Mux_select = 3'b110;
+								PC_enable =0;
 								#10;
+								//ALUA_Mux_select = 2'b10;
+								//ALUB_Mux_select = 3'b110;
 								NPC_enable =1;
 								#10;
 								NPC_enable = 0;
@@ -166,22 +166,22 @@ module ControlUnit(
 					else begin
 						
 						if(IR_Out[29]) begin
-						//the delay instruction is annulled
-								ALUA_Mux_select = 2'b10;
-								ALUB_Mux_select = 3'b110;
-								#10;
-								NPC_enable =1;
-								#10;
-								NPC_enable = 0;
-								#10;
-								PC_enable =1;
-								#10;
-								ALUA_Mux_select = 2'b10;
-								ALUB_Mux_select = 3'b110;
-								#10;
-								NPC_enable =1;
-								#10;
-								NPC_enable = 0;
+							//the delay instruction is annulled
+							ALUA_Mux_select = 2'b10;
+							ALUB_Mux_select = 3'b110;
+							#10;
+							NPC_enable =1;
+							#10;
+							NPC_enable = 0;
+							PC_enable =1;
+							#10;
+							PC_enable =0;
+							#10;
+							//ALUA_Mux_select = 2'b10;
+							//ALUB_Mux_select = 3'b110;
+							NPC_enable =1;
+							#10;
+							NPC_enable = 0;
 							
 						end
 						else begin
