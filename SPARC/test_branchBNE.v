@@ -1,4 +1,4 @@
-module test_branch;
+module test_branchBNE;
 
 	/* Inputs */
 	wire [4:0]in_PC, in_PA, in_PB;
@@ -22,7 +22,7 @@ module test_branch;
 	wire PC_Clr, NPC_Clr, PSR_Clr, TEMP_Clr, MDR_Clr, MAR_Clr, TBR_Clr;
 
 	/* Outputs */
-	wire signed [31:0]IR_Out, ALU_Out, extender_out, out_PA, out_PB, ALUB_Mux_out, PSR_out, ALUA_Mux_out;
+	wire [31:0]IR_Out, ALU_Out, extender_out, out_PA, out_PB, ALUB_Mux_out, PSR_out, ALUA_Mux_out;
 	wire MFC, MSET, BA_O, BN_O, cond, out_BLA;
 	
 	reg Clk = 0;

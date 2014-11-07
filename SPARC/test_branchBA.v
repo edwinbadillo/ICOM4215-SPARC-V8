@@ -1,4 +1,4 @@
-module test_branch;
+module test_branchBA;
 
 	/* Inputs */
 	wire [4:0]in_PC, in_PA, in_PB;

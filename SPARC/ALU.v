@@ -57,7 +57,6 @@ module alu(output reg [31:0]res, output reg N, Z, V, C,input wire [5:0]op, input
 			// SUB (4 y 20)
 			6'b0?0100:
 				begin
-				$display("a = %d, b = %d",a,b);
 				{carry, res} = a - b;
 				if(op[4])
 					subFlags();

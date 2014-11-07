@@ -192,6 +192,7 @@ module ControlUnit2(
 					// Store
 					else if(IR_Out[24:19] == 6'b000100||IR_Out[24:19] == 6'b000101||IR_Out[24:19] == 6'b000110) 
 					begin
+						nextState = 7'b1100100;
 					end
 				end
 				else begin
@@ -281,35 +282,37 @@ module ControlUnit2(
 			7'b0010010: //disable npc, end ba_o anulled
 				begin
 				NPC_enable = 0;
-				nextState <= 7'b1101101; //Go to flow control
+				nextState <= 7'b0000100; //Go to fetch 
 				end
 			7'b0010011://19 -BA_O
 				begin
+				extender_select = 3'b101;
+				ALUA_Mux_select = 2'b01;
+				ALUB_Mux_select = 3'b001;
 				PC_In_Mux_select = 2'b00;
 				nextState <= 7'b0010100;
 				end
 			7'b0010100:
 				begin
 				PC_enable = 1;
+				NPC_enable =1;
 				nextState <= 7'b0010101;
 				end
 			7'b0010101:
 				begin
 				PC_enable = 0;
-				extender_select = 3'b101;
-				ALUA_Mux_select = 2'b01;
-				ALUB_Mux_select = 3'b001;
-				nextState = 7'b0010110;
+				NPC_enable = 0;
+				nextState = 7'b0000100; //Go to fetch 7'b0010110;
 				end
 			7'b0010110:
 				begin
-				NPC_enable =1;
+				
 				nextState <= 7'b0010111;
 				end
 			7'b0010111://end of BA_O
 				begin
-				NPC_enable = 0;
-				nextState <= 7'b1101101; //Go to flow control 
+				
+				nextState <= 7'b0000100; //Go to fetch 
 				end
 			7'b0011000://24 -BN_O Anulled
 				begin
@@ -340,36 +343,39 @@ module ControlUnit2(
 			7'b0011100:
 				begin
 				NPC_enable = 0;
-				nextState <= 7'b1101101; //Go to flow control
+				nextState <= 7'b0000100; //Go to fetch 
 				end
 			7'b0011101://29 -BX TRUE
 				begin
 				//the delay instruction is annulled
+				extender_select = 3'b101;
+				ALUA_Mux_select = 2'b01;
+				ALUB_Mux_select = 3'b001;
+				//tengo mi npc
 				PC_In_Mux_select = 2'b00;
 				nextState <= 7'b0011110;
 				end
 			7'b0011110:
 				begin
 				PC_enable = 1;
+				NPC_enable = 1;
 				nextState <= 7'b0011111;
 				end
 			7'b0011111:
 				begin
 				PC_enable = 0;
-				extender_select = 3'b101;
-				ALUA_Mux_select = 2'b01;
-				ALUB_Mux_select = 3'b001;
-				nextState <= 7'b0100000;
+				NPC_enable = 0;
+				nextState <= 7'b0000100;//Go to fetch 7'b0100000;
 				end
 			7'b0100000://32
 				begin
-				NPC_enable = 1;
+				
 				nextState <= 7'b0100001;
 				end
 			7'b0100001://33
 				begin
-				NPC_enable = 0;
-				nextState <= 7'b1101101; //Go to flow control
+				
+				nextState <= 7'b0000100; //Go to fetch 
 				end
 			7'b0100010://34 -BX FALSE Anulled
 				begin
@@ -404,7 +410,7 @@ module ControlUnit2(
 			7'b0100111:
 				begin
 				NPC_enable = 0;
-				nextState <= 7'b1101101; //Go to flow control
+				nextState <= 7'b0000100; //Go to fetch 
 				end
 			7'b0101000://40 -BX FALSE
 				begin
@@ -431,7 +437,7 @@ module ControlUnit2(
 			7'b0101100:
 				begin
 				NPC_enable = 0;
-				nextState <= 7'b1101101;//Go to flow control
+				nextState <= 7'b0000100; //Go to fetch 
 				end
 			/********************/
 			/*		Arith		*/
@@ -557,5 +563,61 @@ module ControlUnit2(
 				register_file  = 0;
 				nextState = 7'b1101101; // Got to flow control
 			end
+			/********************/
+			/*		Store		*/
+			/*					*/
+			7'b1100100://100
+				begin
+				RAM_OpCode = IR_Out[24:19];
+				ALU_op = 6'b000000;
+				in_PA  = IR_Out[18:14];
+				ALUA_Mux_select = 2'b00;
+				if (IR_Out[13]) nextState <= 7'b1100101; //B immediate
+				else nextState <= 7'b1100110; //B register
+				end
+			7'b1100101:
+				begin
+				//B is an immediate argument in IR
+				ALUB_Mux_select = 3'b001;
+				extender_select = 2'b00;
+				nextState <= 7'b1100111; //mar enable
+				end
+			7'b1100110:
+				begin
+				//B is a register
+				ALUB_Mux_select = 3'b000;
+				in_PB = IR_Out[4:0];
+				nextState <= 7'b1100111; //mar enable
+				end
+			7'b1100111:
+				begin
+				MAR_Enable = 1;
+				nextState <= 7'b1101000;//mar enable, init mdr
+				end
+			7'b1101000:
+				begin
+				MAR_Enable      = 0;
+				in_PA           = IR_Out[29:25];
+				ALUB_Mux_select = 3'b000;
+				in_PB           = 0;
+				MDR_Mux_select  = 0;
+				nextState <= 7'b1101001; //mdr enable
+				end
+			7'b1101001:
+				begin
+				MDR_Enable      = 1;
+				nextState <= 7'b1101010;//MDR disable, store value
+				end
+			7'b1101010:
+				begin
+				MDR_Enable = 0;
+				RAM_enable = 1;
+				nextState <= 7'b1101011;//Ram disable
+				end
+			7'b1101011:
+				begin
+				RAM_enable = 0;
+				nextState <= 7'b1101101; //Go to flow control
+				end
 		endcase
 endmodule

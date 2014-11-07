@@ -1,4 +1,4 @@
-module test_load;
+module test_store;
 
 	/* Inputs */
 	wire [4:0]in_PC, in_PA, in_PB;
@@ -22,16 +22,18 @@ module test_load;
 	wire PC_Clr, NPC_Clr, PSR_Clr, TEMP_Clr, MDR_Clr, MAR_Clr, TBR_Clr;
 
 	/* Outputs */
-	wire signed [31:0]IR_Out, ALU_Out, extender_out, out_PA, out_PB, ALUB_Mux_out, PSR_out, ALUA_Mux_out;
+	wire [31:0]IR_Out, ALU_Out, extender_out, out_PA, out_PB, ALUB_Mux_out, PSR_out, ALUA_Mux_out;
 	wire MFC, MSET, BA_O, BN_O, cond, out_BLA;
 	
 	reg Clk = 0;
 	
-	parameter sim_time = 500;
+	parameter sim_time = 20000000;
 	
 	integer fd, positionInMem, data, i, j;
 
 	reg RESET = 0;
+	
+	integer fp;
 
 	DataPath2 DataPath(IR_enable, IR_In, IR_Out, PC_enable, PC_Clr, NPC_enable, NPC_Clr, PSR_Enable, PSR_Clr, S, PS, ET, PSR_out, TEMP_Enable, TEMP_Clr, MDR_Enable, MDR_Clr,
 		MAR_Enable, MAR_Clr, TBR_enable, TBR_Clr, tt, ALU_op, ALU_Out, register_file_enable, in_PA, in_PB, in_PC, out_PA, out_PB, extender_select, extender_out, 
@@ -41,12 +43,24 @@ module test_load;
 		MDR_Mux_select, TBR_Mux_select, in_PC, in_PA, in_PB, ALU_op, RAM_OpCode, tt, TBR_Clr, PSR_Clr, S, PS, ET, IR_Out, MFC, MSET, out_BLA, BA_O, BN_O, RESET, Clk);
 		
 	always begin
-		#5 Clk = !Clk;
+		#1 Clk = !Clk;
 		printValues();
 	end
 	
+	/*
 	initial begin
-		fd = $fopen("code_load.txt","r"); 
+		fp=$fopen("result.txt","w");
+	end
+	
+	always @ (DataPath.MAR_Out, DataPath.ram.Mem[DataPath.MAR_Out])
+	begin
+		//$display("Mar_Out = %d \nMem[%d] = %b\nMem[%d] = %b\nMem[%d] = %b\nMem[%d] = %b", DataPath.MAR_Out,DataPath.MAR_Out, DataPath.ram.Mem[DataPath.MAR_Out],DataPath.MAR_Out+1, DataPath.ram.Mem[DataPath.MAR_Out+1], DataPath.MAR_Out+2,DataPath.ram.Mem[DataPath.MAR_Out+2], DataPath.MAR_Out +3,DataPath.ram.Mem[DataPath.MAR_Out+3]);
+		//$fwrite(fp,"Time: %tns, Mar_Out = %d \nMem[%d] = %b\nMem[%d] = %b\nMem[%d] = %b\nMem[%d] = %b\n--------------------------------\n", $time, DataPath.MAR_Out,DataPath.MAR_Out, DataPath.ram.Mem[DataPath.MAR_Out],DataPath.MAR_Out+1, DataPath.ram.Mem[DataPath.MAR_Out+1], DataPath.MAR_Out+2,DataPath.ram.Mem[DataPath.MAR_Out+2], DataPath.MAR_Out +3,DataPath.ram.Mem[DataPath.MAR_Out+3]);
+	end
+	*/
+	
+	initial begin
+		fd = $fopen("showTime1.txt","r"); 
 		positionInMem = 0;
 		i = 0;
 		while (!($feof(fd)))
@@ -62,9 +76,9 @@ module test_load;
 		end
 		$fclose(fd);
 		RESET = 1;
-		#10;
+		#2;
 		RESET = 0;
-		#10;
+		#2;
 	end
 	
 	// End simulation at sim_time
@@ -72,22 +86,26 @@ module test_load;
 
 	task printValues;
 	begin
+		//$monitor("IR_Out: %0b \t PSR_out: %0b\nIn_PA: %0d, \t In_PB: %0d, \t in_PC %0d\nout_PA: %0d\t out_PB: %0d, ALU_Out: %0d \nPC_out:  %0d, \t NPC_out: %0d \nr1: %0d\t r2: %0d \t r3: %0d \t r5: %0d\n MAR_Out: %0d\n-----------------------------------", IR_Out, PSR_out, in_PA, ControlUnit.in_PB, in_PC, DataPath.out_PA, DataPath.out_PB, ALU_Out, DataPath.PC.out, DataPath.NPC.out, DataPath.register_file.r_out[1],DataPath.register_file.r_out[2],DataPath.register_file.r_out[3],DataPath.register_file.r_out[5], DataPath.MAR_Out);
 		$display("Time: %tns", $time);
 		$display("State %b \t nextState %b", ControlUnit.state, ControlUnit.nextState);
 		$display("Clock: %d", Clk);
 		$display("Reset: %d", RESET);
 		$display("IR_Out: %b", IR_Out);
-		$display("In_PA: %d\t In_PB: %d ]t in_PC", in_PA, ControlUnit.in_PB, in_PC);
+		$display("BLA_out: %b \t BA_O = %b \t BN_O = %b", DataPath.out_BLA, DataPath.BA_O, DataPath.BN_O);
+		$display("PSR_out: %b", PSR_out);
+		$display("In_PA: %d\t In_PB: %d \t in_PC", in_PA, ControlUnit.in_PB, in_PC);
 		$display("out_PA: %d\t out_PB: %d", DataPath.out_PA, DataPath.out_PB);
 		$display("ALUA_Mux_select: %d\tALUB_Mux_select: %d", ALUA_Mux_select, ALUB_Mux_select);
 		$display("ALUA_Mux_out: %d\tALUB_Mux_out: %d", ALUA_Mux_out, ALUB_Mux_out);
 		$display("ALU_Out: %d", ALU_Out);
 		$display("r1: %d", DataPath.register_file.r_out[1]);
 		$display("r2: %d", DataPath.register_file.r_out[2]);
-		$display("Mem 9: %d", DataPath.ram.Mem[8]);
-		$display("Mem 10: %d", DataPath.ram.Mem[9]);
-		$display("Mem 11: %d", DataPath.ram.Mem[10]);
-		$display("Mem 12: %d", DataPath.ram.Mem[11]);
+		$display("r3: %d", DataPath.register_file.r_out[3]);
+		$display("r5: %d", DataPath.register_file.r_out[5]);
+		$display("Mem 45: %d", DataPath.ram.Mem[45]);
+		$display("Mem 47: %d", DataPath.ram.Mem[47]);
+		$display("Mem 49: %d", DataPath.ram.Mem[49]);
 		$display("PC_out:  %d", DataPath.PC.out);
 		$display("NPC_out: %d", DataPath.NPC.out);
 		$display("MAR_Out: %d \t RAM_OpCode = %b", DataPath.MAR_Out, RAM_OpCode);
