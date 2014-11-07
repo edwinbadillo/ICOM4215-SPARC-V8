@@ -121,7 +121,7 @@ module DataPath(
 	mux_8x1 ALUB_Mux(ALUB_Mux_out, ALUB_Mux_select, out_PB, extender_out, MDR_Out, PC_out, NPC_out, TEMP_Out, 32'h00000004, 32'h00000001);
 
 	// Mux for selecting first operand for ALU
-	mux_32_4x1 ALUA_Mux(ALUA_Mux_out, ALUA_Mux_select, out_PA, PC_out, NPC_out, {27'b000_0000_0000_0000_0000_0000_0000, PSR_out[4:0]});
+	mux_32_4x1 ALUA_Mux(ALUA_Mux_out, ALUA_Mux_select, out_PA, PC_out, NPC_out, {30'b000_0000_0000_0000_0000_0000_0000_000, PSR_out[1:0]});
 	
 	// Mux for PC input
 	mux_32_4x1 PC_In_Mux(PC_Mux_out, PC_In_Mux_select, NPC_out, ALU_out, TBR_Out, 32'h00000000);
@@ -130,7 +130,7 @@ module DataPath(
 	mux_2x1 TBR_Mux(TBR_Mux_out, TBR_Mux_select, {ALU_out[31:7], TBR_Out[6:0]}, {TBR_Out[31:7], tt,TBR_Out[3:0]});
 	
 	// Mux for the input of PSR
-	mux_32_4x1 PSR_Mux(PSR_Mux_out, PSR_Mux_select, {PSR_out[31:24],N,Z,V,C,PSR_out[19:0]}, {PSR_out[31:8],S,PS,PSR_out[5:0]}, {PSR_out[31:6],ET,PSR_out[4:0]}, {PSR_out[31:5], ALU_out[4:0]});
+	mux_32_4x1 PSR_Mux(PSR_Mux_out, PSR_Mux_select, {PSR_out[31:24],N,Z,V,C,PSR_out[19:0]}, {PSR_out[31:8],S,PS,PSR_out[5:0]}, {PSR_out[31:6],ET,PSR_out[4:0]}, {PSR_out[31:2], ALU_out[1:0]});
 	
 	BLA bla(out_BLA, BA_O, BN_O, IR_In[28:25], PSR_out[23:20]);
 
