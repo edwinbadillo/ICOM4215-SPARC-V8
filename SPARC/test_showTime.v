@@ -27,7 +27,7 @@ module test_showTime;
 	
 	reg Clk = 0;
 	
-	parameter sim_time = 20000000;
+	parameter sim_time = 20000;
 	
 	integer fd, positionInMem, data, i, j, counter = 0;
 
@@ -55,7 +55,10 @@ module test_showTime;
 	begin
 		//$display("Mar_Out = %d \nMem[%d] = %b\nMem[%d] = %b\nMem[%d] = %b\nMem[%d] = %b", DataPath.MAR_Out,DataPath.MAR_Out, DataPath.ram.Mem[DataPath.MAR_Out],DataPath.MAR_Out+1, DataPath.ram.Mem[DataPath.MAR_Out+1], DataPath.MAR_Out+2,DataPath.ram.Mem[DataPath.MAR_Out+2], DataPath.MAR_Out +3,DataPath.ram.Mem[DataPath.MAR_Out+3]);
 		$fwrite(fp,"Count = %d, Mar_Out = %d \nMem[%0d] = %d\nMem[%0d] = %d\nMem[%0d] = %d\nMem[%0d] = %d\n", counter, DataPath.MAR_Out,DataPath.MAR_Out, DataPath.ram.Mem[DataPath.MAR_Out],DataPath.MAR_Out+1, DataPath.ram.Mem[DataPath.MAR_Out+1], DataPath.MAR_Out+2,DataPath.ram.Mem[DataPath.MAR_Out+2], DataPath.MAR_Out +3,DataPath.ram.Mem[DataPath.MAR_Out+3]);
-		$fwrite(fp,"r1: %d\nr2: %d\nr3: %d\nr5: %d\n--------------------------------\n", DataPath.register_file.r_out[1], DataPath.register_file.r_out[2],DataPath.register_file.r_out[3],DataPath.register_file.r_out[5]);
+		$fwrite(fp,"r1: %d\nr2: %d\nr3: %d\nr5: %d\n", DataPath.register_file.r_out[1], DataPath.register_file.r_out[2],DataPath.register_file.r_out[3],DataPath.register_file.r_out[5]);
+		$fwrite(fp,"PSR = %b\n", PSR_out);
+		if((counter == 26) ||(counter ==  27) ||(counter == 28))
+			$fwrite(fp,"ALU_OUT = %d, ALU_A = %d, ALU_B = %d \n-------------------\n",ALU_Out,ALUA_Mux_out, ALUB_Mux_out);
 		counter = counter +1;
 		if(IR_Out == 32'b00010000100000000000000000000000)
 		begin

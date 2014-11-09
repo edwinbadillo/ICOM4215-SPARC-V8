@@ -304,16 +304,16 @@ module ControlUnit2(
 				NPC_enable = 0;
 				nextState = 7'b0000100; //Go to fetch 7'b0010110;
 				end
-			7'b0010110:
-				begin
+			// 7'b0010110:
+				// begin
 				
-				nextState <= 7'b0010111;
-				end
-			7'b0010111://end of BA_O
-				begin
+				// nextState <= 7'b0010111;
+				// end
+			// 7'b0010111://end of BA_O
+				// begin
 				
-				nextState <= 7'b0000100; //Go to fetch 
-				end
+				// nextState <= 7'b0000100; //Go to fetch 
+				// end
 			7'b0011000://24 -BN_O Anulled
 				begin
 				//the delay instruction is annulled
@@ -367,16 +367,16 @@ module ControlUnit2(
 				NPC_enable = 0;
 				nextState <= 7'b0000100;//Go to fetch 7'b0100000;
 				end
-			7'b0100000://32
-				begin
+			// 7'b0100000://32
+				// begin
 				
-				nextState <= 7'b0100001;
-				end
-			7'b0100001://33
-				begin
+				// nextState <= 7'b0100001;
+				// end
+			// 7'b0100001://33
+				// begin
 				
-				nextState <= 7'b0000100; //Go to fetch 
-				end
+				// nextState <= 7'b0000100; //Go to fetch 
+				// end
 			7'b0100010://34 -BX FALSE Anulled
 				begin
 				//the delay instruction is annulled
@@ -480,20 +480,21 @@ module ControlUnit2(
 				register_file = 1;
 				if(IR_Out[23])
 					// Modify flag
-					nextState = 7'b1010110;	// 86
-				else
-					nextState = 7'b1010111;	// 87
-			end
-			7'b1010110: //86
-			begin
-				PSR_Enable = 1;
+					PSR_Enable = 1;
 				nextState = 7'b1010111;	// 87
 			end
+			// Estado de mas...no se usa. DONT TOUCH
+			// 7'b1010110: //86
+			// begin
+				// register_file = 0;
+				// PSR_Enable = 0;
+				// nextState = 7'b1010111;	// 87
+			// end
 			7'b1010111: //87
 			begin
 				PSR_Enable = 0;
 				register_file = 0;
-				nextState = 7'b1101101;	// Increment PC and NPC which then go to Fetch
+				nextState = 7'b1101101;	// Increment PC and NPC and then go to Fetch
 			end
 			/********************/
 			/*		LOAD		*/
