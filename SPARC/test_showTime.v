@@ -54,7 +54,8 @@ module test_showTime;
 	always @ (DataPath.MAR_Out, DataPath.ram.Mem[DataPath.MAR_Out])
 	begin
 		//$display("Mar_Out = %d \nMem[%d] = %b\nMem[%d] = %b\nMem[%d] = %b\nMem[%d] = %b", DataPath.MAR_Out,DataPath.MAR_Out, DataPath.ram.Mem[DataPath.MAR_Out],DataPath.MAR_Out+1, DataPath.ram.Mem[DataPath.MAR_Out+1], DataPath.MAR_Out+2,DataPath.ram.Mem[DataPath.MAR_Out+2], DataPath.MAR_Out +3,DataPath.ram.Mem[DataPath.MAR_Out+3]);
-		$fwrite(fp,"Count = %d, Mar_Out = %d \nMem[%0d] = %d\nMem[%0d] = %d\nMem[%0d] = %d\nMem[%0d] = %d\n--------------------------------\n", counter, DataPath.MAR_Out,DataPath.MAR_Out, DataPath.ram.Mem[DataPath.MAR_Out],DataPath.MAR_Out+1, DataPath.ram.Mem[DataPath.MAR_Out+1], DataPath.MAR_Out+2,DataPath.ram.Mem[DataPath.MAR_Out+2], DataPath.MAR_Out +3,DataPath.ram.Mem[DataPath.MAR_Out+3]);
+		$fwrite(fp,"Count = %d, Mar_Out = %d \nMem[%0d] = %d\nMem[%0d] = %d\nMem[%0d] = %d\nMem[%0d] = %d\n", counter, DataPath.MAR_Out,DataPath.MAR_Out, DataPath.ram.Mem[DataPath.MAR_Out],DataPath.MAR_Out+1, DataPath.ram.Mem[DataPath.MAR_Out+1], DataPath.MAR_Out+2,DataPath.ram.Mem[DataPath.MAR_Out+2], DataPath.MAR_Out +3,DataPath.ram.Mem[DataPath.MAR_Out+3]);
+		$fwrite(fp,"r1: %d\nr2: %d\nr3: %d\nr5: %d\n--------------------------------\n", DataPath.register_file.r_out[1], DataPath.register_file.r_out[2],DataPath.register_file.r_out[3],DataPath.register_file.r_out[5]);
 		counter = counter +1;
 		if(IR_Out == 32'b00010000100000000000000000000000)
 		begin
