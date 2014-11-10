@@ -1,3 +1,67 @@
+//jmpl
+7'b0110010:
+	begin
+		in_PA = 5'b00000;			// Get r0 from PA
+		ALUA_Mux_select = 2'b00;	// Choose rs1 from register file
+		ALUB_Mux_select = 3'b011;	// Select PC
+		ALU_op = 6'b000000;			// r0 + PC
+		in_PC = IR_Out[29:25];		// Store in rd
+		nextState = 7'b0110011;
+	end
+7'b0110011:
+	begin
+		register_file = 1;
+		nextState = 7'b0110100;
+	end
+7'b0110100:
+	begin
+		register_file = 0;
+		nextState = 7'b0110101;
+	end
+7'b0110101:
+	begin
+		PC_In_Mux_select = 2'b00;
+		nextState = 7'b0110110;
+	end
+7'b0110110:
+	begin
+		PC_enable = 1;
+		nextState = 7'b0110111;
+	end
+7'b0110111:
+	begin
+		PC_enable = 0;
+		in_PA = IR_Out[18:14];
+		if(IR_Out[23])
+			nextState = 7'b0111000;
+		else
+			nextState = 7'b0111001;
+	end
+7'b0111000:
+	begin
+		//B is an immediate argument in IR
+		ALUB_Mux_select = 3'b001; // Select output of sign extender as B for ALU
+		extender_select = 2'b00;  // Select 13bit to 32bit extender
+		nextState = 7'b0111010;
+	end
+7'b0111001:
+	begin
+		//B is a register
+		ALUB_Mux_select = 3'b000;
+		in_PB = IR_Out[4:0];
+		nextState = 7'b0111010;
+	end
+7'b0111010:
+	begin
+		NPC_enable = 1;
+		nextState = 7'b0111011;
+	end
+7'b0111011:
+	begin
+		NPC_enable = 0;
+		nextState = 7'b0000100; // Go to fetch
+	end
+
 
 
 //12
@@ -10,11 +74,11 @@
 		if (cond) begin 
 			if (BA_O) begin
 				if(IR_Out[29]) //go to BA_O Anulled
-				else //go to BA_O
+				else nextState <= 7'0010011;//go to BA_O
 			end
 			else if (BN_O) begin
 				if(IR_Out[29]) nextState <= 7'b0011000;//go to BN_O Anulled
-				else //go to NOP
+				else nextState <= 7'b1101101; //Go to flow control //go to NOP
 			end
 			else nextState <= 7'b0011101;//go to BX TRUE
 		end
@@ -58,7 +122,7 @@
 0010010: //disable npc, end ba_o anulled
 	begin
 	NPC_enable = 0;
-	nextState <= 7'b0000100; //fetch
+	nextState <= 7'b1101101; //Go to flow control
 	end
 0010011://19 -BA_O
 	begin
@@ -85,7 +149,7 @@
 0010111://end of BA_O
 	begin
 	NPC_enable = 0;
-	nextState <= 7'b0000100; //fetch 
+	nextState <= 7'b1101101; //Go to flow control 
 	end
 0011000://24 -BN_O Anulled
 	begin
@@ -116,7 +180,7 @@
 0011100:
 	begin
 	NPC_enable = 0;
-	nextState <= 7'b0000100; //fetch
+	nextState <= 7'b1101101; //Go to flow control
 	end
 0011101://29 -BX TRUE
 	begin
@@ -145,7 +209,7 @@
 0100001://33
 	begin
 	NPC_enable = 0;
-	nextState <= 7'b0000100; //fetch
+	nextState <= 7'b1101101; //Go to flow control
 	end
 0100010://34 -BX FALSE Anulled
 	begin
@@ -180,7 +244,7 @@
 0100111:
 	begin
 	NPC_enable = 0;
-	nextState <= 7'b0000100; //fetch
+	nextState <= 7'b1101101; //Go to flow control
 	end
 0101000://40 -BX FALSE
 	begin
@@ -207,9 +271,9 @@
 0101100:
 	begin
 	NPC_enable = 0;
-	nextState <= 7'b0000100;//fetch
+	nextState <= 7'b1101101;//Go to flow control
 	end
-0101101: //45- Call
+7'b0101101: //45- Call
 	begin
 	in_PC  = 5'b01111;  // Value of Program Counter is to be stored in R15
 	// Just moving the value of Program Counter to R15, so add 0
@@ -222,13 +286,13 @@
 	// Now, nPC is at the entrance of PC as well
 	nextState <= 7'b0101110;
 	end
-0101110:
+7'b0101110:
 	begin
 	PC_enable     = 1;
 	register_file = 1;
 	nextState <= 7'b0101111;
 	end
-0101111://47
+7'b0101111://47
 	begin
 	PC_enable     = 0;
 	register_file = 0;
@@ -243,22 +307,22 @@
 	nextState <= 7'b0110000; 
 	end
 	
-0110000:
+7'b0110000:
 	begin
 	NPC_enable = 1;
 	nextState <= 7'b0110001; // Loads ALU output to nPC
 	end
 	
-0110001: //49
+7'b0110001: //49
 	begin
 	NPC_enable = 0;
-	nextState <= 7'b0000100; //fetch
+	nextState <= 7'b1101101; //Go to flow control
 	end
 	
 	
 
 //88
-7'b1011000: nextState <= 7'b0000100; //no load double word, go to Fetch
+7'b1011000: nextState <= 7'b1101101; //no load double word, go to Go to flow control
 7'b1011001: //load
 	begin //Init reg and muxes
 	in_PC           = IR_Out[29:25];
@@ -321,9 +385,9 @@
 7'b1100010://98
 	begin
 	register_file = 0;
-	nextState <= 7'b0000100; //Fetch
+	nextState <= 7'b1101101; //Go to flow control
 	end
-7'b1100011: nextState <= 7'b0000100; //no store double word, go to Fetch
+7'b1100011: nextState <= 7'b1101101; //no store double word, go to Go to flow control
 7'b1100100://100
 	begin
 	RAM_OpCode = IR_Out[24:19];
@@ -376,7 +440,7 @@
 7'b1101011:
 	begin
 	RAM_enable = 0;
-	nextState <= 7'b0000100; //Fetch
+	nextState <= 7'b1101101; //Go to flow control
 	end
 	
 	

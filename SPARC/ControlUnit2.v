@@ -165,6 +165,7 @@ module ControlUnit2(
 				// OP = 01 (Call)
 				else if (IR_Out[31:30] === 2'b01) 
 				begin
+					nextState = 7'b0101101;
 				end
 				// OP = 10
 				else if (IR_Out[31:30] === 2'b10)
@@ -172,6 +173,7 @@ module ControlUnit2(
 					// JMPL
 					if(IR_Out[24:19] == 6'b111000)
 					begin
+						nextState = 7'b0110010;
 					end
 					// Faltan
 					// Arithmetic
@@ -221,7 +223,7 @@ module ControlUnit2(
 			7'b0001011:
 			begin
 				register_file = 0;
-				nextState = 7'b0000100;
+				nextState = 7'b1101101; // Go to PC flow control
 			end
 			/********************/
 			/*		Branch		*/
@@ -439,6 +441,119 @@ module ControlUnit2(
 				NPC_enable = 0;
 				nextState <= 7'b0000100; //Go to fetch 
 				end
+			/********************/
+			/*		Call		*/
+			/*					*/
+			7'b0101101: //45- Call
+				begin
+				in_PC  = 5'b01111;  // Value of Program Counter is to be stored in R15
+				// Just moving the value of Program Counter to R15, so add 0
+				ALU_op = 6'b000000; // add
+				in_PA  = 5'b00000;  // choose r0 as A
+				ALUA_Mux_select = 2'b00;  // Selecting port A of regfile
+				ALUB_Mux_select = 3'b011; // Selecting output of Program Counter
+				// So far, value of PC is at the entrance of R15
+				PC_In_Mux_select = 2'b00; // nPC --> PC
+				// Now, nPC is at the entrance of PC as well
+				nextState <= 7'b0101110;
+				end
+			7'b0101110:
+				begin
+				PC_enable     = 1;
+				register_file = 1;
+				nextState <= 7'b0101111;
+				end
+			7'b0101111://47
+				begin
+				PC_enable     = 0;
+				register_file = 0;
+
+				// Now to perform nPC <= PC(which is R15) + 4*disp30
+				in_PA = 5'b01111; // A = R15
+				ALUA_Mux_select = 2'b00;  // redundant, but helps readability
+				ALUB_Mux_select = 3'b001; // select output from magicbox <- IR
+				extender_select = 2'b11; // Choose the shifter to perform B = 4*disp30
+				ALU_op = 6'b000000; // redundant, add again: R15 + 4*disp30
+				//ALU_out has the value needed, knocking at the door of nPC
+				nextState <= 7'b0110000; 
+				end
+				
+			7'b0110000:
+				begin
+				NPC_enable = 1;
+				nextState <= 7'b0110001; // Loads ALU output to nPC
+				end
+				
+			7'b0110001: //49
+				begin
+				NPC_enable = 0;
+				nextState <= 7'b0000100; //Go to fetch
+				end
+			/********************/
+			/*		JMPL		*/
+			/*					*/
+			7'b0110010:
+				begin
+					in_PA = 5'b00000;			// Get r0 from PA
+					ALUA_Mux_select = 2'b00;	// Choose rs1 from register file
+					ALUB_Mux_select = 3'b011;	// Select PC
+					ALU_op = 6'b000000;			// r0 + PC
+					in_PC = IR_Out[29:25];		// Store in rd
+					nextState = 7'b0110011;
+				end
+			7'b0110011:
+				begin
+					register_file = 1;
+					nextState = 7'b0110100;
+				end
+			7'b0110100:
+				begin
+					register_file = 0;
+					nextState = 7'b0110101;
+				end
+			7'b0110101:
+				begin
+					PC_In_Mux_select = 2'b00;
+					nextState = 7'b0110110;
+				end
+			7'b0110110:
+				begin
+					PC_enable = 1;
+					nextState = 7'b0110111;
+				end
+			7'b0110111:
+				begin
+					PC_enable = 0;
+					in_PA = IR_Out[18:14];
+					if(IR_Out[13])
+						nextState = 7'b0111000;
+					else
+						nextState = 7'b0111001;
+				end
+			7'b0111000:
+				begin
+					//B is an immediate argument in IR
+					ALUB_Mux_select = 3'b001; // Select output of sign extender as B for ALU
+					extender_select = 2'b00;  // Select 13bit to 32bit extender
+					nextState = 7'b0111010;
+				end
+			7'b0111001:
+				begin
+					//B is a register
+					ALUB_Mux_select = 3'b000;
+					in_PB = IR_Out[4:0];
+					nextState = 7'b0111010;
+				end
+			7'b0111010:
+				begin
+					NPC_enable = 1;
+					nextState = 7'b0111011;
+				end
+			7'b0111011:
+				begin
+					NPC_enable = 0;
+					nextState = 7'b0000100; // Go to fetch
+				end	
 			/********************/
 			/*		Arith		*/
 			/*		Logic		*/
