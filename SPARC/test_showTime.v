@@ -53,12 +53,9 @@ module test_showTime;
 	
 	always @ (DataPath.MAR_Out, DataPath.ram.Mem[DataPath.MAR_Out])
 	begin
-		//$display("Mar_Out = %d \nMem[%d] = %b\nMem[%d] = %b\nMem[%d] = %b\nMem[%d] = %b", DataPath.MAR_Out,DataPath.MAR_Out, DataPath.ram.Mem[DataPath.MAR_Out],DataPath.MAR_Out+1, DataPath.ram.Mem[DataPath.MAR_Out+1], DataPath.MAR_Out+2,DataPath.ram.Mem[DataPath.MAR_Out+2], DataPath.MAR_Out +3,DataPath.ram.Mem[DataPath.MAR_Out+3]);
 		$fwrite(fp,"Count = %d, Mar_Out = %d \nMem[%0d] = %d\nMem[%0d] = %d\nMem[%0d] = %d\nMem[%0d] = %d\n", counter, DataPath.MAR_Out,DataPath.MAR_Out, DataPath.ram.Mem[DataPath.MAR_Out],DataPath.MAR_Out+1, DataPath.ram.Mem[DataPath.MAR_Out+1], DataPath.MAR_Out+2,DataPath.ram.Mem[DataPath.MAR_Out+2], DataPath.MAR_Out +3,DataPath.ram.Mem[DataPath.MAR_Out+3]);
 		$fwrite(fp,"r1: %d\nr2: %d\nr3: %d\nr5: %d\n", DataPath.register_file.r_out[1], DataPath.register_file.r_out[2],DataPath.register_file.r_out[3],DataPath.register_file.r_out[5]);
-		$fwrite(fp,"PSR = %b\n", PSR_out);
-		if((counter == 26) ||(counter ==  27) ||(counter == 28))
-			$fwrite(fp,"ALU_OUT = %d, ALU_A = %d, ALU_B = %d \n-------------------\n",ALU_Out,ALUA_Mux_out, ALUB_Mux_out);
+		$fwrite(fp,"PSR = %b\n----------------------\n", PSR_out);
 		counter = counter +1;
 		if(IR_Out == 32'b00010000100000000000000000000000)
 		begin
@@ -102,39 +99,5 @@ module test_showTime;
 	
 	// End simulation at sim_time
 	initial #sim_time $finish;
-
-	/*
-	task printValues;
-	begin
-		$monitor("IR_Out: %0b \t PSR_out: %0b\nIn_PA: %0d, \t In_PB: %0d, \t in_PC %0d\nout_PA: %0d\t out_PB: %0d, ALU_Out: %0d \nPC_out:  %0d, \t NPC_out: %0d \nr1: %0d\t r2: %0d \t r3: %0d \t r5: %0d\n MAR_Out: %0d\n-----------------------------------", IR_Out, PSR_out, in_PA, ControlUnit.in_PB, in_PC, DataPath.out_PA, DataPath.out_PB, ALU_Out, DataPath.PC.out, DataPath.NPC.out, DataPath.register_file.r_out[1],DataPath.register_file.r_out[2],DataPath.register_file.r_out[3],DataPath.register_file.r_out[5], DataPath.MAR_Out);
-		$display("Time: %tns", $time);
-		$display("State %b \t nextState %b", ControlUnit.state, ControlUnit.nextState);
-		$display("Clock: %d", Clk);
-		$display("Reset: %d", RESET);
-		$display("IR_Out: %b", IR_Out);
-		$display("BLA_out: %b \t BA_O = %b \t BN_O = %b", DataPath.out_BLA, DataPath.BA_O, DataPath.BN_O);
-		$display("PSR_out: %b", PSR_out);
-		$display("In_PA: %d\t In_PB: %d \t in_PC", in_PA, ControlUnit.in_PB, in_PC);
-		$display("out_PA: %d\t out_PB: %d", DataPath.out_PA, DataPath.out_PB);
-		$display("ALUA_Mux_select: %d\tALUB_Mux_select: %d", ALUA_Mux_select, ALUB_Mux_select);
-		$display("ALUA_Mux_out: %d\tALUB_Mux_out: %d", ALUA_Mux_out, ALUB_Mux_out);
-		$display("ALU_Out: %d", ALU_Out);
-		$display("r1: %d", DataPath.register_file.r_out[1]);
-		$display("r2: %d", DataPath.register_file.r_out[2]);
-		$display("r3: %d", DataPath.register_file.r_out[3]);
-		$display("r5: %d", DataPath.register_file.r_out[5]);
-		$display("Mem 45: %d", DataPath.ram.Mem[45]);
-		$display("Mem 47: %d", DataPath.ram.Mem[47]);
-		$display("Mem 49: %d", DataPath.ram.Mem[49]);
-		$display("PC_out:  %d", DataPath.PC.out);
-		$display("NPC_out: %d", DataPath.NPC.out);
-		$display("MAR_Out: %d \t RAM_OpCode = %b", DataPath.MAR_Out, RAM_OpCode);
-		$display("MAR_Enable: %d \t RAM_enable = %b", MAR_Enable, RAM_enable);
-		$display("IR_Enable: %d \t RAM_Out = %b", IR_enable, DataPath.RAM_Out);
-		$display("--------------------------------------------------------------------------\n");
-	end
-	endtask
-	
-	*/
 
 endmodule

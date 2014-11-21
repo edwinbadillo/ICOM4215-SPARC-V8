@@ -94,7 +94,7 @@ module ControlUnit2(
 			7'b0000101:
 			begin
 				MAR_Enable = 1;
-				RAM_OpCode = 6'b000000;
+				RAM_OpCode = 6'b000000; ///TODO: REVERT BACK TO OPCODE SPARC 000000
 				nextState = 7'b0000110;
 			end
 			// Start RAM procedure

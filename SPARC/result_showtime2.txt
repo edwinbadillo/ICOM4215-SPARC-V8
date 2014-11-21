@@ -1,0 +1,1211 @@
+Count =           0, Mar_Out =          0, IR_out = xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
+Mem[0] = 130
+Mem[1] =  16
+Mem[2] =  32
+Mem[3] =  34
+DataPath.ram.Mem[224]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[228]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[232]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[236]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[240]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[244]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =           1, Mar_Out =          4, IR_out = 10000010000100000010000000100010 
+Mem[4] = 136
+Mem[5] =  16
+Mem[6] =  32
+Mem[7] = 220
+DataPath.ram.Mem[224]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[228]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[232]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[236]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[240]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[244]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =           2, Mar_Out =          8, IR_out = 10001000000100000010000011011100 
+Mem[8] = 148
+Mem[9] =  16
+Mem[10] =   0
+Mem[11] =   4
+DataPath.ram.Mem[224]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[228]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[232]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[236]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[240]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[244]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =           3, Mar_Out =         12, IR_out = 10010100000100000000000000000100 
+Mem[12] = 198
+Mem[13] =   0
+Mem[14] =   0
+Mem[15] =  10
+DataPath.ram.Mem[224]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[228]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[232]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[236]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[240]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[244]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =           4, Mar_Out =        220, IR_out = 11000110000000000000000000001010 
+Mem[220] = 255
+Mem[221] = 255
+Mem[222] = 255
+Mem[223] = 245
+DataPath.ram.Mem[224]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[228]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[232]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[236]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[240]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[244]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =           5, Mar_Out =         16, IR_out = 11000110000000000000000000001010 
+Mem[16] = 148
+Mem[17] =   2
+Mem[18] = 160
+Mem[19] =   4
+DataPath.ram.Mem[224]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[228]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[232]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[236]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[240]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[244]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =           6, Mar_Out =         20, IR_out = 10010100000000101010000000000100 
+Mem[20] = 132
+Mem[21] =   0
+Mem[22] = 192
+Mem[23] =   1
+DataPath.ram.Mem[224]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[228]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[232]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[236]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[240]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[244]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =           7, Mar_Out =         24, IR_out = 10000100000000001100000000000001 
+Mem[24] = 138
+Mem[25] =  16
+Mem[26] =   0
+Mem[27] =   2
+DataPath.ram.Mem[224]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[228]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[232]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[236]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[240]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[244]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =           8, Mar_Out =         28, IR_out = 10001010000100000000000000000010 
+Mem[28] = 202
+Mem[29] =  32
+Mem[30] =   0
+Mem[31] =  10
+DataPath.ram.Mem[224]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[228]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[232]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[236]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[240]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[244]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =           9, Mar_Out =        224, IR_out = 11001010001000000000000000001010 
+Mem[224] =   x
+Mem[225] =   x
+Mem[226] =   x
+Mem[227] =   x
+DataPath.ram.Mem[224]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[228]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[232]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[236]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[240]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[244]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          10, Mar_Out =        224, IR_out = 11001010001000000000000000001010 
+Mem[224] =   0
+Mem[225] =   0
+Mem[226] =   0
+Mem[227] =  23
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[232]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[236]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[240]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[244]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          11, Mar_Out =         32, IR_out = 11001010001000000000000000001010 
+Mem[32] = 148
+Mem[33] =   2
+Mem[34] = 160
+Mem[35] =   4
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[232]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[236]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[240]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[244]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          12, Mar_Out =         36, IR_out = 10010100000000101010000000000100 
+Mem[36] = 138
+Mem[37] =  32
+Mem[38] =  64
+Mem[39] =   2
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[232]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[236]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[240]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[244]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          13, Mar_Out =         40, IR_out = 10001010001000000100000000000010 
+Mem[40] = 202
+Mem[41] =  32
+Mem[42] =   0
+Mem[43] =  10
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[232]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[236]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[240]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[244]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          14, Mar_Out =        228, IR_out = 11001010001000000000000000001010 
+Mem[228] =   x
+Mem[229] =   x
+Mem[230] =   x
+Mem[231] =   x
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[232]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[236]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[240]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[244]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          15, Mar_Out =        228, IR_out = 11001010001000000000000000001010 
+Mem[228] =   0
+Mem[229] =   0
+Mem[230] =   0
+Mem[231] =  11
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[236]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[240]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[244]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          16, Mar_Out =         44, IR_out = 11001010001000000000000000001010 
+Mem[44] = 148
+Mem[45] =   2
+Mem[46] = 160
+Mem[47] =   4
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[236]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[240]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[244]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          17, Mar_Out =         48, IR_out = 10010100000000101010000000000100 
+Mem[48] =  11
+Mem[49] =  15
+Mem[50] =  15
+Mem[51] =   6
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[236]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[240]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[244]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          18, Mar_Out =         52, IR_out = 00001011000011110000111100000110 
+Mem[52] = 202
+Mem[53] =  32
+Mem[54] =   0
+Mem[55] =  10
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[236]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[240]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[244]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          19, Mar_Out =        232, IR_out = 11001010001000000000000000001010 
+Mem[232] =   x
+Mem[233] =   x
+Mem[234] =   x
+Mem[235] =   x
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[236]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[240]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[244]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          20, Mar_Out =        232, IR_out = 11001010001000000000000000001010 
+Mem[232] =  60
+Mem[233] =  60
+Mem[234] =  24
+Mem[235] =   0
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[240]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[244]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          21, Mar_Out =         56, IR_out = 11001010001000000000000000001010 
+Mem[56] = 148
+Mem[57] =   2
+Mem[58] = 160
+Mem[59] =   4
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[240]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[244]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          22, Mar_Out =         60, IR_out = 10010100000000101010000000000100 
+Mem[60] = 139
+Mem[61] =  56
+Mem[62] = 224
+Mem[63] =   3
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[240]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[244]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          23, Mar_Out =         64, IR_out = 10001011001110001110000000000011 
+Mem[64] = 202
+Mem[65] =  32
+Mem[66] =   0
+Mem[67] =  10
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[240]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[244]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          24, Mar_Out =        236, IR_out = 11001010001000000000000000001010 
+Mem[236] =   x
+Mem[237] =   x
+Mem[238] =   x
+Mem[239] =   x
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[240]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[244]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          25, Mar_Out =        236, IR_out = 11001010001000000000000000001010 
+Mem[236] = 255
+Mem[237] = 255
+Mem[238] = 255
+Mem[239] = 254
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[244]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          26, Mar_Out =         68, IR_out = 11001010001000000000000000001010 
+Mem[68] = 148
+Mem[69] =   2
+Mem[70] = 160
+Mem[71] =   4
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[244]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          27, Mar_Out =         72, IR_out = 10010100000000101010000000000100 
+Mem[72] = 139
+Mem[73] =  40
+Mem[74] = 224
+Mem[75] =   3
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[244]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          28, Mar_Out =         76, IR_out = 10001011001010001110000000000011 
+Mem[76] = 202
+Mem[77] =  32
+Mem[78] =   0
+Mem[79] =  10
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[244]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          29, Mar_Out =        240, IR_out = 11001010001000000000000000001010 
+Mem[240] =   x
+Mem[241] =   x
+Mem[242] =   x
+Mem[243] =   x
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[244]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          30, Mar_Out =        240, IR_out = 11001010001000000000000000001010 
+Mem[240] = 255
+Mem[241] = 255
+Mem[242] = 255
+Mem[243] = 168
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          31, Mar_Out =         80, IR_out = 11001010001000000000000000001010 
+Mem[80] = 148
+Mem[81] =   2
+Mem[82] = 160
+Mem[83] =   4
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          32, Mar_Out =         84, IR_out = 10010100000000101010000000000100 
+Mem[84] = 139
+Mem[85] =  48
+Mem[86] = 224
+Mem[87] =   3
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          33, Mar_Out =         88, IR_out = 10001011001100001110000000000011 
+Mem[88] = 202
+Mem[89] =  32
+Mem[90] =   0
+Mem[91] =  10
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          34, Mar_Out =        244, IR_out = 11001010001000000000000000001010 
+Mem[244] =   x
+Mem[245] =   x
+Mem[246] =   x
+Mem[247] =   x
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          35, Mar_Out =        244, IR_out = 11001010001000000000000000001010 
+Mem[244] =  31
+Mem[245] = 255
+Mem[246] = 255
+Mem[247] = 254
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          36, Mar_Out =         92, IR_out = 11001010001000000000000000001010 
+Mem[92] = 148
+Mem[93] =   2
+Mem[94] = 160
+Mem[95] =   4
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          37, Mar_Out =         96, IR_out = 10010100000000101010000000000100 
+Mem[96] =  64
+Mem[97] =   0
+Mem[98] =   0
+Mem[99] =   4
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          38, Mar_Out =        100, IR_out = 01000000000000000000000000000100 
+Mem[100] = 144
+Mem[101] =  16
+Mem[102] =  32
+Mem[103] =  36
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          39, Mar_Out =        112, IR_out = 10010000000100000010000000100100 
+Mem[112] = 158
+Mem[113] =   2
+Mem[114] =   0
+Mem[115] =  15
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          40, Mar_Out =        116, IR_out = 10011110000000100000000000001111 
+Mem[116] = 222
+Mem[117] =  32
+Mem[118] =   0
+Mem[119] =  10
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          41, Mar_Out =        248, IR_out = 11011110001000000000000000001010 
+Mem[248] =   x
+Mem[249] =   x
+Mem[250] =   x
+Mem[251] =   x
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[248]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          42, Mar_Out =        248, IR_out = 11011110001000000000000000001010 
+Mem[248] =   0
+Mem[249] =   0
+Mem[250] =   0
+Mem[251] = 132
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[248]= 00000000 00000000 00000000 10000100
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          43, Mar_Out =        120, IR_out = 11011110001000000000000000001010 
+Mem[120] = 129
+Mem[121] = 192
+Mem[122] =   0
+Mem[123] =  15
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[248]= 00000000 00000000 00000000 10000100
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          44, Mar_Out =        124, IR_out = 10000001110000000000000000001111 
+Mem[124] = 148
+Mem[125] =   2
+Mem[126] = 160
+Mem[127] =   4
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[248]= 00000000 00000000 00000000 10000100
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          45, Mar_Out =        132, IR_out = 10010100000000101010000000000100 
+Mem[132] = 216
+Mem[133] =   1
+Mem[134] =  63
+Mem[135] = 252
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[248]= 00000000 00000000 00000000 10000100
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          46, Mar_Out =        216, IR_out = 11011000000000010011111111111100 
+Mem[216] = 192
+Mem[217] =   0
+Mem[218] =   0
+Mem[219] =   0
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[248]= 00000000 00000000 00000000 10000100
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          47, Mar_Out =        136, IR_out = 11011000000000010011111111111100 
+Mem[136] = 214
+Mem[137] =   1
+Mem[138] =  63
+Mem[139] = 248
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[248]= 00000000 00000000 00000000 10000100
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          48, Mar_Out =        212, IR_out = 11010110000000010011111111111000 
+Mem[212] = 160
+Mem[213] =   0
+Mem[214] =   0
+Mem[215] =   0
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[248]= 00000000 00000000 00000000 10000100
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          49, Mar_Out =        140, IR_out = 11010110000000010011111111111000 
+Mem[140] = 128
+Mem[141] = 131
+Mem[142] =   0
+Mem[143] =  11
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[248]= 00000000 00000000 00000000 10000100
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          50, Mar_Out =        144, IR_out = 10000000100000110000000000001011 
+Mem[144] =  14
+Mem[145] = 128
+Mem[146] =   0
+Mem[147] =   3
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[248]= 00000000 00000000 00000000 10000100
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000001100000000000000000000
+---------------------
+Count =          51, Mar_Out =        148, IR_out = 00001110100000000000000000000011 
+Mem[148] = 128
+Mem[149] =   0
+Mem[150] =   0
+Mem[151] =   0
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[248]= 00000000 00000000 00000000 10000100
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000001100000000000000000000
+---------------------
+Count =          52, Mar_Out =        156, IR_out = 10000000000000000000000000000000 
+Mem[156] = 202
+Mem[157] =  32
+Mem[158] =   0
+Mem[159] =  10
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[248]= 00000000 00000000 00000000 10000100
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000001100000000000000000000
+---------------------
+Count =          53, Mar_Out =        252, IR_out = 11001010001000000000000000001010 
+Mem[252] =   x
+Mem[253] =   x
+Mem[254] =   x
+Mem[255] =   x
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[248]= 00000000 00000000 00000000 10000100
+DataPath.ram.Mem[252]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000001100000000000000000000
+---------------------
+Count =          54, Mar_Out =        252, IR_out = 11001010001000000000000000001010 
+Mem[252] =  31
+Mem[253] = 255
+Mem[254] = 255
+Mem[255] = 254
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[248]= 00000000 00000000 00000000 10000100
+DataPath.ram.Mem[252]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000001100000000000000000000
+---------------------
+Count =          55, Mar_Out =        160, IR_out = 11001010001000000000000000001010 
+Mem[160] = 148
+Mem[161] =   2
+Mem[162] = 160
+Mem[163] =   4
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[248]= 00000000 00000000 00000000 10000100
+DataPath.ram.Mem[252]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000001100000000000000000000
+---------------------
+Count =          56, Mar_Out =        164, IR_out = 10010100000000101010000000000100 
+Mem[164] = 138
+Mem[165] =   0
+Mem[166] =  64
+Mem[167] =  11
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[248]= 00000000 00000000 00000000 10000100
+DataPath.ram.Mem[252]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000001100000000000000000000
+---------------------
+Count =          57, Mar_Out =        168, IR_out = 10001010000000000100000000001011 
+Mem[168] =  14
+Mem[169] = 128
+Mem[170] =   0
+Mem[171] =   3
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[248]= 00000000 00000000 00000000 10000100
+DataPath.ram.Mem[252]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000001100000000000000000000
+---------------------
+Count =          58, Mar_Out =        172, IR_out = 00001110100000000000000000000011 
+Mem[172] = 128
+Mem[173] =   0
+Mem[174] =   0
+Mem[175] =   0
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[248]= 00000000 00000000 00000000 10000100
+DataPath.ram.Mem[252]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000001100000000000000000000
+---------------------
+Count =          59, Mar_Out =        180, IR_out = 10000000000000000000000000000000 
+Mem[180] = 202
+Mem[181] =  32
+Mem[182] =   0
+Mem[183] =  10
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[248]= 00000000 00000000 00000000 10000100
+DataPath.ram.Mem[252]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000001100000000000000000000
+---------------------
+Count =          60, Mar_Out =        256, IR_out = 11001010001000000000000000001010 
+Mem[256] =   x
+Mem[257] =   x
+Mem[258] =   x
+Mem[259] =   x
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[248]= 00000000 00000000 00000000 10000100
+DataPath.ram.Mem[252]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[256]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000001100000000000000000000
+---------------------
+Count =          61, Mar_Out =        256, IR_out = 11001010001000000000000000001010 
+Mem[256] = 160
+Mem[257] =   0
+Mem[258] =   0
+Mem[259] =  34
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[248]= 00000000 00000000 00000000 10000100
+DataPath.ram.Mem[252]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[256]= 10100000 00000000 00000000 00100010
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000001100000000000000000000
+---------------------
+Count =          62, Mar_Out =        184, IR_out = 11001010001000000000000000001010 
+Mem[184] = 148
+Mem[185] =   2
+Mem[186] = 160
+Mem[187] =   4
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[248]= 00000000 00000000 00000000 10000100
+DataPath.ram.Mem[252]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[256]= 10100000 00000000 00000000 00100010
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000001100000000000000000000
+---------------------
+Count =          63, Mar_Out =        188, IR_out = 10010100000000101010000000000100 
+Mem[188] = 138
+Mem[189] = 144
+Mem[190] =  32
+Mem[191] =   4
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[248]= 00000000 00000000 00000000 10000100
+DataPath.ram.Mem[252]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[256]= 10100000 00000000 00000000 00100010
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000001100000000000000000000
+---------------------
+Count =          64, Mar_Out =        192, IR_out = 10001010100100000010000000000100 
+Mem[192] =  34
+Mem[193] = 128
+Mem[194] =   0
+Mem[195] =   2
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[248]= 00000000 00000000 00000000 10000100
+DataPath.ram.Mem[252]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[256]= 10100000 00000000 00000000 00100010
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          65, Mar_Out =        200, IR_out = 00100010100000000000000000000010 
+Mem[200] = 202
+Mem[201] =  32
+Mem[202] =   0
+Mem[203] =  10
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[248]= 00000000 00000000 00000000 10000100
+DataPath.ram.Mem[252]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[256]= 10100000 00000000 00000000 00100010
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          66, Mar_Out =        260, IR_out = 11001010001000000000000000001010 
+Mem[260] =   x
+Mem[261] =   x
+Mem[262] =   x
+Mem[263] =   x
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[248]= 00000000 00000000 00000000 10000100
+DataPath.ram.Mem[252]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[256]= 10100000 00000000 00000000 00100010
+DataPath.ram.Mem[260]= xxxxxxxx xxxxxxxx xxxxxxxx xxxxxxxx
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          67, Mar_Out =        260, IR_out = 11001010001000000000000000001010 
+Mem[260] =   0
+Mem[261] =   0
+Mem[262] =   0
+Mem[263] =   4
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[248]= 00000000 00000000 00000000 10000100
+DataPath.ram.Mem[252]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[256]= 10100000 00000000 00000000 00100010
+DataPath.ram.Mem[260]= 00000000 00000000 00000000 00000100
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          68, Mar_Out =        204, IR_out = 11001010001000000000000000001010 
+Mem[204] =  16
+Mem[205] = 128
+Mem[206] =   0
+Mem[207] =   0
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[248]= 00000000 00000000 00000000 10000100
+DataPath.ram.Mem[252]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[256]= 10100000 00000000 00000000 00100010
+DataPath.ram.Mem[260]= 00000000 00000000 00000000 00000100
+PSR = 00000000000000000000000000000000
+---------------------
+Count =          69, Mar_Out =        208, IR_out = 00010000100000000000000000000000 
+Mem[208] = 128
+Mem[209] =   0
+Mem[210] =   0
+Mem[211] =   0
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+DataPath.ram.Mem[244]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[248]= 00000000 00000000 00000000 10000100
+DataPath.ram.Mem[252]= 00011111 11111111 11111111 11111110
+DataPath.ram.Mem[256]= 10100000 00000000 00000000 00100010
+DataPath.ram.Mem[260]= 00000000 00000000 00000000 00000100
+PSR = 00000000000000000000000000000000
+---------------------
+Last Branch Always Reached!
+-------------------
+DataPath.ram.Mem[224]= 00000000 00000000 00000000 00010111
+-------------------
+DataPath.ram.Mem[228]= 00000000 00000000 00000000 00001011
+-------------------
+DataPath.ram.Mem[232]= 00111100 00111100 00011000 00000000
+-------------------
+DataPath.ram.Mem[236]= 11111111 11111111 11111111 11111110
+-------------------
+DataPath.ram.Mem[240]= 11111111 11111111 11111111 10101000
+-------------------
+DataPath.ram.Mem[244]= 00011111 11111111 11111111 11111110
+-------------------
+DataPath.ram.Mem[248]= 00000000 00000000 00000000 10000100
+-------------------
+DataPath.ram.Mem[252]= 00011111 11111111 11111111 11111110
+-------------------
+DataPath.ram.Mem[256]= 10100000 00000000 00000000 00100010
+-------------------
+DataPath.ram.Mem[260]= 00000000 00000000 00000000 00000100
