@@ -26,7 +26,9 @@ module DataPath2(
 	
 	//TBR
 	input TBR_enable, TBR_Clr,
-	input [2:0] tt,
+	
+	// WIM
+	input WIM_enable, WIM_Clr,
 	
 	// ALU
 	input [5:0]ALU_op,
@@ -46,7 +48,7 @@ module DataPath2(
 	output [31:0]ALUA_Mux_out,
 	
 	// ALUB Mux
-	input [2:0]ALUB_Mux_select,
+	input [3:0]ALUB_Mux_select,
 	output [31:0]ALUB_Mux_out,
 	
 	// MDR Mux
@@ -59,7 +61,7 @@ module DataPath2(
 	input TBR_Mux_select,
 	
 	// PSR Mux
-	input [1:0]PSR_Mux_select,
+	input [2:0]PSR_Mux_select,
 	
 	// Ram
 	input [5:0]RAM_OpCode,
@@ -72,13 +74,11 @@ module DataPath2(
 	input Clk); //Missing shit like crazy
 	
 	
-	wire rett, N, Z, C, V;
-	wire [4:0] cwp_in;
+	wire N, Z, C, V;
 	
-	wire [1:0] trap;
-
-	wire [31:0] MDR_Mux_out, MDR_Out, MAR_Out, RAM_Out, TEMP_Out, NPC_out, PC_out, TBR_Out, PC_Mux_out, TBR_Mux_out, PSR_Mux_out;
-	wire [19:0] TBA;
+	wire [1:0] coupler_out;
+	
+	wire [31:0] MDR_Mux_out, MDR_Out, MAR_Out, RAM_Out, TEMP_Out, NPC_out, PC_out, TBR_Out, PC_Mux_out, TBR_Mux_out, PSR_Mux_out, WIM_Out;
 	
 	/* Registers */
 
@@ -99,9 +99,14 @@ module DataPath2(
 	
 	register_32 TBR (TBR_Out, TBR_Mux_out, TBR_enable, TBR_Clr, Clk);
 	
+	// WIM
+	register_32 WIM (WIM_Out, ALU_out, WIM_enable, WIM_Clr, Clk);
+	
 	/* Components */
 	
-	register_file register_file(out_PA, out_PB, ALU_out, in_PA, in_PB, in_PC, register_file_enable, register_file_Clr, Clk, PSR_out[1:0]);
+	register_file_coupler coupler(coupler_out, PSR_out[1:0]);
+	
+	register_file register_file(out_PA, out_PB, ALU_out, in_PA, in_PB, in_PC, register_file_enable, register_file_Clr, Clk, coupler_out);
 	
 	// ALU
 	alu alu(ALU_out, N, Z, V, C, ALU_op, ALUA_Mux_out, ALUB_Mux_out, PSR_out[20]);
@@ -118,7 +123,7 @@ module DataPath2(
 	mux_2x1 MDR_Mux(MDR_Mux_out, MDR_Mux_select, ALU_out, RAM_Out);
 	
 	// Mux for selecting second operand for ALU
-	mux_8x1 ALUB_Mux(ALUB_Mux_out, ALUB_Mux_select, out_PB, extender_out, MDR_Out, PC_out, NPC_out, TEMP_Out, 32'h00000004, 32'h00000001);
+	mux_32_16x1 ALUB_Mux(ALUB_Mux_out, ALUB_Mux_select, out_PB, extender_out, MDR_Out, PC_out, NPC_out, TEMP_Out, 32'h00000004, 32'h00000001, WIM_Out,TBR_Out,PSR_out, 32'hZZZZZZZZ, 32'hZZZZZZZZ,32'hZZZZZZZZ,32'hZZZZZZZZ,32'hZZZZZZZZ);
 
 	// Mux for selecting first operand for ALU
 	mux_32_4x1 ALUA_Mux(ALUA_Mux_out, ALUA_Mux_select, out_PA, PC_out, NPC_out, {30'b000_0000_0000_0000_0000_0000_0000_000, PSR_out[1:0]});
@@ -126,11 +131,8 @@ module DataPath2(
 	// Mux for PC input
 	mux_32_4x1 PC_In_Mux(PC_Mux_out, PC_In_Mux_select, NPC_out, ALU_out, TBR_Out, 32'h00000000);
 	
-	// Mux for the input of TBR. Used for writing TBA or TT
-	mux_2x1 TBR_Mux(TBR_Mux_out, TBR_Mux_select, {ALU_out[31:7], TBR_Out[6:0]}, {TBR_Out[31:7], tt,TBR_Out[3:0]});
-	
 	// Mux for the input of PSR
-	mux_32_4x1 PSR_Mux(PSR_Mux_out, PSR_Mux_select, {PSR_out[31:24],N,Z,V,C,PSR_out[19:0]}, {PSR_out[31:8],S,PS,PSR_out[5:0]}, {PSR_out[31:6],ET,PSR_out[4:0]}, {PSR_out[31:2], ALU_out[1:0]});
+	mux_8x1 PSR_Mux(PSR_Mux_out, PSR_Mux_select, {PSR_out[31:24],N,Z,V,C,PSR_out[19:0]}, {PSR_out[31:8],S,PS,PSR_out[5:0]}, {PSR_out[31:6],ET,PSR_out[4:0]}, {PSR_out[31:2], ALU_out[1:0]}, ALU_out , 32'hZZZZZZZZ, 32'hZZZZZZZZ, 32'hZZZZZZZZ);
 	
 	BLA bla(out_BLA, BA_O, BN_O, IR_Out[28:25], PSR_out[23:20]);
 
