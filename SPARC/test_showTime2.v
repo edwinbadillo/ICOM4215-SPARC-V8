@@ -16,14 +16,14 @@ module test_showTime2;
 	wire [2:0]PSR_Mux_select;
 	
 	// Enables
-	wire IR_enable, PC_enable, NPC_enable, MDR_Enable, MAR_Enable, register_file_enable, RAM_enable, PSR_Enable, TEMP_Enable, TBR_enable, WIM_enable;
+	wire IR_enable, PC_enable, NPC_enable, MDR_Enable, MAR_Enable, register_file_enable, RAM_enable, PSR_Enable, TEMP_Enable, TBR_enable, WIM_enable, TR_PR_enable;
 	
 	// Clears
-	wire PC_Clr, NPC_Clr, PSR_Clr, TEMP_Clr, MDR_Clr, MAR_Clr, TBR_Clr, WIM_Clr;
+	wire PC_Clr, NPC_Clr, PSR_Clr, TEMP_Clr, MDR_Clr, MAR_Clr, TBR_Clr, WIM_Clr,TR_PR_CLR;
 
 	/* Outputs */
-	wire [31:0]IR_Out, ALU_Out, extender_out, out_PA, out_PB, ALUB_Mux_out, PSR_out, ALUA_Mux_out;
-	wire MFC, MSET, BA_O, BN_O, cond, out_BLA;
+	wire [31:0]IR_Out, ALU_Out, extender_out, out_PA, out_PB, ALUB_Mux_out, PSR_out, ALUA_Mux_out, WIM_Out, TR_PR_out;
+	wire MFC, MSET, BA_O, BN_O, cond, out_BLA, Overflow, Underflow, T3, T4;
 	
 	reg Clk = 0;
 	
@@ -31,14 +31,14 @@ module test_showTime2;
 	
 	integer fd, positionInMem, data, i, j, counter = 0,fp;
 
-	reg RESET = 0;
-
+	reg RESET = 0, Hardware_Trap = 0;
+	
 	DataPath2 DataPath(IR_enable, IR_In, IR_Out, PC_enable, PC_Clr, NPC_enable, NPC_Clr, PSR_Enable, PSR_Clr, S, PS, ET, PSR_out, TEMP_Enable, TEMP_Clr, MDR_Enable, MDR_Clr,
-		MAR_Enable, MAR_Clr, TBR_enable, TBR_Clr, WIM_enable, WIM_Clr, ALU_op, ALU_Out, register_file_enable, in_PA, in_PB, in_PC, out_PA, out_PB, extender_select, extender_out, 
+		MAR_Enable, MAR_Clr, TBR_enable, TBR_Clr, WIM_enable, WIM_Clr, WIM_Out, TR_PR_enable, TR_PR_Clr, Overflow, Underflow, T3, T4, TR_PR_out, ALU_op, ALU_Out, register_file_enable, in_PA, in_PB, in_PC, out_PA, out_PB, extender_select, extender_out, 
 		ALUA_Mux_select, ALUA_Mux_out, ALUB_Mux_select, ALUB_Mux_out, MDR_Mux_select, PC_In_Mux_select, TBR_Mux_select, PSR_Mux_select, RAM_OpCode, RAM_enable, MFC, MSET, out_BLA, BA_O, BN_O, Clk);
 	
-	ControlUnit2 ControlUnit(IR_enable, NPC_enable, PC_enable, MDR_Enable, MAR_Enable, register_file_enable, RAM_enable, PSR_Enable, TBR_enable, PC_Clr, extender_select, PC_In_Mux_select, ALUA_Mux_select, PSR_Mux_select, ALUB_Mux_select,
-		MDR_Mux_select, TBR_Mux_select, in_PC, in_PA, in_PB, ALU_op, RAM_OpCode, TBR_Clr, PSR_Clr, S, PS, ET,WIM_enable, WIM_Clr, IR_Out, MFC, MSET, out_BLA, BA_O, BN_O, RESET, Clk);
+	ControlUnit2 ControlUnit(IR_enable, NPC_enable, PC_enable, MDR_Enable, MAR_Enable, register_file_enable, RAM_enable, PSR_Enable, TBR_enable, TR_PR_enable, PC_Clr, TR_PR_Clr, extender_select, PC_In_Mux_select, ALUA_Mux_select, PSR_Mux_select, ALUB_Mux_select,
+		MDR_Mux_select, TBR_Mux_select, in_PC, in_PA, in_PB, ALU_op, RAM_OpCode, TBR_Clr, PSR_Clr, S, PS, ET,WIM_enable, WIM_Clr, Overflow, Underflow, T3, T4, WIM_Out, PSR_out, TR_PR_out, IR_Out, MFC, MSET, out_BLA, BA_O, BN_O, RESET, Hardware_Trap, Clk);
 		
 	always begin
 		#1 Clk = !Clk;
