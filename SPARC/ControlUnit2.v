@@ -745,5 +745,88 @@ module ControlUnit2(
 				RAM_enable = 0;
 				nextState <= 7'b1101101; //Go to flow control
 				end
+			//Read WIM
+			7'b1101101:
+				begin
+					if(PSR_Mux_out[7]) begin 
+						//go to trap 5
+					end
+					else begin
+						ALU_op = 6'b000000;
+						in_PA = 5'b00000;
+						in_PC  = IR_Out[29:25];
+						ALUA_Mux_select = 2'b00;
+						ALUB_Mux_select = 4'b1000;
+						nextState <= 7'b1101110;//change
+					end
+				end
+			7'b1101110:
+				begin
+					register_file =1;
+					nextState <= 7'b1101111;//change
+				end
+			7'b1101111:
+				begin
+					register_file =0;
+					nextState <= 7'b1101101;//flow control
+				end
+			
+			//Read TBR
+			7'b1110000:
+				begin
+					
+					if(PSR_Mux_out[7]) begin 
+						//go to trap 5
+						//nextState <= 
+					end
+					else begin
+						ALU_op = 6'b000000;
+						in_PA = 5'b00000;
+						in_PC  = IR_Out[29:25];
+						ALUA_Mux_select = 2'b00;
+						ALUB_Mux_select = 4'b1001;
+						nextState <= 7'b1110001;
+					end
+				end
+			7'b1110001:
+				begin
+					register_file =1;
+					nextState <= 7'b1110010;
+				end
+			
+			7'b1110010:
+				begin
+					register_file =0;
+					nextState <= 7'b1101101;//flow control
+				end
+			
+			//Read PSR
+			7'b1110011:
+				begin
+					if(PSR_Mux_out[7]) begin 
+						//go to trap 5
+					end
+					else begin
+						ALU_op = 6'b000000;
+						in_PA = 5'b00000;
+						in_PC  = IR_Out[29:25];
+						ALUA_Mux_select = 2'b00;
+						ALUB_Mux_select = 4'b1010;
+						nextState <= 7'b1110100;
+					end
+				end
+			7'b1110100:
+				begin
+					register_file =1;
+					nextState <= 7'b1110101;
+				end
+			
+			7'b1110101:
+				begin
+					register_file =1;
+					nextState <= 7'b1101101; //go to flow control
+				end
+	
+			
 		endcase
 endmodule
