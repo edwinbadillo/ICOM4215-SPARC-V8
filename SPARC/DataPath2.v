@@ -29,6 +29,11 @@ module DataPath2(
 	
 	// WIM
 	input WIM_enable, WIM_Clr,
+	output [31:0] WIM_Out,
+	
+	// Priority
+	input TR_PR_enable, TR_PR_Clr, Overflow, Underflow, T3, T4,
+	output [31:0] TR_PR_out,
 	
 	// ALU
 	input [5:0]ALU_op,
@@ -78,7 +83,7 @@ module DataPath2(
 	
 	wire [1:0] coupler_out;
 	
-	wire [31:0] MDR_Mux_out, MDR_Out, MAR_Out, RAM_Out, TEMP_Out, NPC_out, PC_out, TBR_Out, PC_Mux_out, TBR_Mux_out, PSR_Mux_out, WIM_Out;
+	wire [31:0] MDR_Mux_out, MDR_Out, MAR_Out, RAM_Out, TEMP_Out, NPC_out, PC_out, TBR_Out, PC_Mux_out, TBR_Mux_out, PSR_Mux_out;
 	
 	/* Registers */
 
@@ -102,6 +107,9 @@ module DataPath2(
 	// WIM
 	register_32 WIM (WIM_Out, ALU_out, WIM_enable, WIM_Clr, Clk);
 	
+	// Priority Trap register
+	register_32 TR_PR (TR_PR_out, {28'b0000000000000000000000000000, T4, T3, Underflow, Overflow}, TR_PR_enable, TR_PR_Clr, Clk);
+	
 	/* Components */
 	
 	register_file_coupler coupler(coupler_out, PSR_out[1:0]);
@@ -122,6 +130,9 @@ module DataPath2(
 	// Mux for the input of MDR (Memory out or ALU out)
 	mux_2x1 MDR_Mux(MDR_Mux_out, MDR_Mux_select, ALU_out, RAM_Out);
 	
+	// Mux for the input of MDR (Memory out or ALU out)
+	mux_2x1 TBR_Mux(TBR_Mux_out, TBR_Mux_select, TBR_Out, {TBR_Out[31:7], ALU_out[2:0], TBR_Out[3:0]});
+	
 	// Mux for selecting second operand for ALU
 	mux_32_16x1 ALUB_Mux(ALUB_Mux_out, ALUB_Mux_select, out_PB, extender_out, MDR_Out, PC_out, NPC_out, TEMP_Out, 32'h00000004, 32'h00000001, WIM_Out,TBR_Out,PSR_out, 32'hZZZZZZZZ, 32'hZZZZZZZZ,32'hZZZZZZZZ,32'hZZZZZZZZ,32'hZZZZZZZZ);
 
@@ -132,7 +143,7 @@ module DataPath2(
 	mux_32_4x1 PC_In_Mux(PC_Mux_out, PC_In_Mux_select, NPC_out, ALU_out, TBR_Out, 32'h00000000);
 	
 	// Mux for the input of PSR
-	mux_8x1 PSR_Mux(PSR_Mux_out, PSR_Mux_select, {PSR_out[31:24],N,Z,V,C,PSR_out[19:0]}, {PSR_out[31:8],S,PS,PSR_out[5:0]}, {PSR_out[31:6],ET,PSR_out[4:0]}, {PSR_out[31:2], ALU_out[1:0]}, ALU_out , 32'hZZZZZZZZ, 32'hZZZZZZZZ, 32'hZZZZZZZZ);
+	mux_8x1 PSR_Mux(PSR_Mux_out, PSR_Mux_select, {PSR_out[31:24],N,Z,V,C,PSR_out[19:0]}, {PSR_out[31:7],S,PSR_out[5:0]}, {PSR_out[31:6],ET,PSR_out[4:0]}, {PSR_out[31:2], ALU_out[1:0]}, {PSR_out[31:7],PS,PSR_out[5:0]}, ALU_out, 32'hZZZZZZZZ, 32'hZZZZZZZZ);
 	
 	BLA bla(out_BLA, BA_O, BN_O, IR_Out[28:25], PSR_out[23:20]);
 

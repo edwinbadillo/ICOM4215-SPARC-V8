@@ -2,9 +2,9 @@ module ControlUnit2(
 
 	// Control Signals
 	// Enables
-	output reg IR_enable, NPC_enable, PC_enable, MDR_Enable, MAR_Enable, register_file, RAM_enable, PSR_Enable, TBR_enable,
+	output reg IR_enable, NPC_enable, PC_enable, MDR_Enable, MAR_Enable, register_file, RAM_enable, PSR_Enable, TBR_enable, TR_PR_enable,
 	// Clear
-	output reg PC_Clr,
+	output reg PC_Clr, TR_PR_Clr,
 	// Select Lines Muxes
 	output reg [2:0]extender_select,
 	output reg [1:0]PC_In_Mux_select, ALUA_Mux_select,
@@ -23,6 +23,11 @@ module ControlUnit2(
 	output reg S, PS, ET,
 	// WIM
 	output WIM_enable, WIM_Clr,
+	// Priority
+	output reg Overflow, Underflow, T3,T4,
+	
+	// WIM and PSR
+	input [31:0] WIM_Out, PSR_Out, TR_PR_Out,
 	
 	// Status Signals
 	input [31:0]IR_Out,
@@ -34,6 +39,7 @@ module ControlUnit2(
 
 	// Input Signals
 	input RESET,
+	input Hardware_Trap,
 	input Clk);
 
 	reg [6:0] nextState, state;
@@ -55,6 +61,7 @@ module ControlUnit2(
 			7'b000000:
 			begin
 				PC_Clr = 1;
+				TR_PR_Clr = 1;
 				PSR_Clr = 1;
 				nextState = 7'b0000001;
 			end
@@ -62,6 +69,7 @@ module ControlUnit2(
 			7'b0000001:
 			begin
 				PC_Clr = 0;
+				TR_PR_Clr = 0;
 				PSR_Clr = 0;
 				ALUA_Mux_select = 2'b01;
 				ALUB_Mux_select = 3'b110;
