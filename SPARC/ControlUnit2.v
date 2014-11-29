@@ -7,8 +7,9 @@ module ControlUnit2(
 	output reg PC_Clr,
 	// Select Lines Muxes
 	output reg [2:0]extender_select,
-	output reg [1:0]PC_In_Mux_select, ALUA_Mux_select, PSR_Mux_select,
-	output reg [2:0]ALUB_Mux_select,
+	output reg [1:0]PC_In_Mux_select, ALUA_Mux_select,
+	output reg [2:0]PSR_Mux_select,
+	output reg [3:0]ALUB_Mux_select,
 	output reg MDR_Mux_select, TBR_Mux_select,
 	// Register file control
 	output reg [4:0]in_PC, output reg [4:0]in_PA, output reg [4:0]in_PB,
@@ -16,11 +17,12 @@ module ControlUnit2(
 	output reg [5:0]ALU_op,
 	// Ram control
 	output reg [5:0]RAM_OpCode,
-	// tt
-	output reg [2:0] tt, 
+	// TBR
 	output reg TBR_Clr, PSR_Clr,
 	// PSR
 	output reg S, PS, ET,
+	// WIM
+	output WIM_enable, WIM_Clr,
 	
 	// Status Signals
 	input [31:0]IR_Out,
