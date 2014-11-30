@@ -1,5 +1,5 @@
-ControlUnit.v
-DataPath.v
+ControlUnit2.v
+DataPath2.v
 Memory.v
 Muxes.v
 register_32.v
@@ -7,9 +7,10 @@ decoders.v
 ALU.v
 register_dummy_32.v
 register_file_V2.v
-psr.v
+PSR_register_32.v
 wim.v
-tbr.v
+TBR_register_32.v
 sign_extender.v
-test_save_restore.v
+test_save_restore_states.v
 BLA.v
+register_file_coupler.v

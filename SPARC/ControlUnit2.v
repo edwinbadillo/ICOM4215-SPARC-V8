@@ -227,6 +227,22 @@ module ControlUnit2(
 					begin
 						nextState = 8'b1111100;
 					end
+
+					// SAVE
+					else if(IR_Out[24:19] == 6'b111100)
+					begin
+						// go to first state of save
+						$display("SAVE!!!!!");
+						nextState = 8'b10100110;
+					end
+
+					else if(IR_Out[24:19] == 6'b111101)
+					begin
+						// go to first state of restore
+						$display("RESTORE!!!!!");
+						nextState = 8'b10101101; // Go to state 173
+					end
+
 					// Faltan
 					// Arithmetic
 					else 
@@ -1331,5 +1347,179 @@ module ControlUnit2(
 					
 				end
 			end
+
+
+			/**************/
+			/*    Save    */
+			/**************/
+
+			8'b10100110: // State 166
+			begin
+				$display("HUE HUE HU EHU HUE \n\n\n\n\n\n\n\n\n");
+				PSR_Clr = 0;
+				ALU_op          = 6'b000000;     // add, no change in flags
+				ALUA_Mux_select = 2'b00;         // choose port A of regfile in muxA
+				in_PC           = IR_Out[29:25]; // get rd
+				in_PA           = IR_Out[18:14]; // get rs1
+
+				if (IR_Out[13]) begin 
+					//B is an immediate argument in IR
+					ALUB_Mux_select = 4'b0001; // Select output of sign extender as B for ALU
+					extender_select = 2'b00;  // Select 13bit to 32bit extender
+				end
+				else begin 
+					//B is a register
+					ALUB_Mux_select = 4'b0000;
+					in_PB           = IR_Out[4:0];
+				end
+				// Result of operation outputted from ALU
+				MDR_Mux_select = 0; // Choose MDR to store the result while we move windows
+				// now ready to enter MDR
+
+				nextState = 8'b10100111;
+			end
+
+			8'b10100111: // State 167
+			begin
+				MDR_Enable = 1; // Let the value of the sum get stored in MDR
+				nextState = 8'b10101000;
+			end
+
+			8'b10101000: // State 168
+			begin
+				// Now, we must subtract 1 from CWP
+				MDR_Enable = 0;
+				ALU_op = 6'b000100; // subtract
+				ALUA_Mux_select = 2'b11;  // Select CWP as A
+				ALUB_Mux_select = 4'b0111; // B <- 1
+				//Value ready
+				PSR_Mux_select  = 2'b11;
+				PSR_Clr = 0;
+				//Value knocking the door on psr
+				nextState = 8'b10101001;
+			end
+
+			8'b10101001: // State 169
+			begin
+				PSR_Enable = 1;
+				// Loaded new value of CWP into PSR
+				nextState = 8'b10101010;
+			end
+
+			8'b10101010: // State 170
+			begin
+				PSR_Enable = 0;
+				// now we must store the value in mdr in rd in new window
+				ALU_op          = 6'b000000; // Add, because we changed it to subtract before
+				ALUA_Mux_select = 2'b00; // choose portA as A, intending to use r0
+				in_PA           = 5'b00000;
+				ALUB_Mux_select = 4'b0010; // Choose output of MDR as B, which is our value of rs1+rs2 from last window
+				// Value knocking at regfile's door
+				nextState = 8'b10101011;
+			end
+
+			8'b10101011: // State 171
+			begin
+				register_file = 1; // Loads value into rd in new window in regfile
+				nextState = 8'b10101100;
+			end
+
+			8'b10101100: // State 172
+			begin
+				register_file = 0;
+				nextState = 8'b01101101; // Finished. Return to Flow Control, 109
+			end
+
+			/***************/
+			/*   Restore   */
+			/***************/
+
+			8'b10101101: // State 173
+			begin
+				$display("LELELELELELELELELELELELEELEL\n\n\n\n\n\n\n");
+				PSR_Clr = 0;
+				ALU_op          = 6'b000000;     // add, no change in flags
+				ALUA_Mux_select = 2'b00;         // choose port A of regfile in muxA
+				in_PC           = IR_Out[29:25]; // get rd
+				in_PA           = IR_Out[18:14]; // get rs1
+
+				if (IR_Out[13]) begin 
+					//B is an immediate argument in IR
+					ALUB_Mux_select = 4'b0001; // Select output of sign extender as B for ALU
+					extender_select = 2'b00;  // Select 13bit to 32bit extender
+				end
+				else begin 
+					//B is a register
+					ALUB_Mux_select = 4'b0000;
+					in_PB           = IR_Out[4:0];
+				end
+				// Result of operation outputted from ALU
+				MDR_Mux_select = 0; // Choose MDR to store the result while we move windows
+				//ready to enter MDR
+				nextState = 8'b10101110;
+			end
+
+			8'b10101110: // State 174
+			begin
+				// Result of operation outputted from ALU
+				MDR_Mux_select = 0; // Choose MDR to store the result while we move windows
+				//ready to enter MDR
+				nextState = 8'b10101111;
+			end
+
+			8'b10101111: // State 175
+			begin
+				MDR_Enable = 1;
+				// Loaded result into MDR
+				nextState = 8'b10110000;
+			end
+
+
+			8'b10110000: // State 176
+			begin
+				// Now, we must sum 1 to CWP
+				MDR_Enable = 0;
+				ALUA_Mux_select = 2'b11;  // Select CWP as A
+				ALUB_Mux_select = 4'b0111; // B <- 1
+				//Value ready
+				PSR_Mux_select  = 2'b11;
+				PSR_Clr = 0;
+				//Value knocking the door on psr
+				nextState = 8'b10110001;
+			end
+
+			8'b10110001: // State 177
+			begin
+				PSR_Enable = 1;
+				// Loaded new value of CWP into PSR
+				nextState = 8'b10110010;
+			end
+
+			8'b10110010: // State 178
+			begin
+				PSR_Enable = 0;
+				// now we must store the value in mdr in rd in new window
+				ALUA_Mux_select = 2'b00; // choose portA as A, intending to use r0
+				in_PA = 5'b00000;
+				ALUB_Mux_select = 4'b0010; // Choose output of MDR as B, which is our value of rs1+rs2 from last window
+				// Value knocking at regfile's door
+				nextState = 8'b10110011;
+			end
+
+			8'b10110011: // State 179
+			begin
+				register_file = 1; // Loads value into rd in new window in regfile
+				nextState = 8'b10110100;
+			end
+
+			8'b10110100: // State 180
+			begin
+				register_file = 0;
+				nextState = 8'b01101101; // Finished. Return to Flow Control, 109;
+			end
+
+
+
+
 		endcase
 endmodule
