@@ -131,7 +131,7 @@ module DataPath2(
 	mux_2x1 MDR_Mux(MDR_Mux_out, MDR_Mux_select, ALU_out, RAM_Out);
 	
 	// Mux for the input of MDR (Memory out or ALU out)
-	mux_2x1 TBR_Mux(TBR_Mux_out, TBR_Mux_select, TBR_Out, {TBR_Out[31:7], ALU_out[2:0], TBR_Out[3:0]});
+	mux_2x1 TBR_Mux(TBR_Mux_out, TBR_Mux_select, ALU_out, {TBR_Out[31:7], ALU_out[2:0], TBR_Out[3:0]});
 	
 	// Mux for selecting second operand for ALU
 	mux_32_16x1 ALUB_Mux(ALUB_Mux_out, ALUB_Mux_select, out_PB, extender_out, MDR_Out, PC_out, NPC_out, TEMP_Out, 32'h00000004, 32'h00000001, WIM_Out,TBR_Out,PSR_out, 32'hZZZZZZZZ, 32'hZZZZZZZZ,32'hZZZZZZZZ,32'hZZZZZZZZ,32'hZZZZZZZZ);

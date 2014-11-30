@@ -23,7 +23,7 @@ module ControlUnit2(
 	output reg Overflow, Underflow, T3,T4,
 	
 	// WIM and PSR
-	input [31:0] WIM_Out, PSR_Out, TR_PR_Out,
+	input [31:0] WIM_Out, PSR_Out, TR_PR_Out, ALU_out,
 	
 	// Status Signals
 	input [31:0]IR_Out,
@@ -196,6 +196,36 @@ module ControlUnit2(
 					else if(IR_Out[24:19] == 6'b111010)
 					begin
 						nextState = 8'b10000101;
+					end
+					// R PSR
+					else if(IR_Out[24:19] == 6'b101001)
+					begin
+						nextState = 8'b01110011;
+					end
+					// R WIM
+					else if(IR_Out[24:19] == 6'b101010)
+					begin
+						nextState = 8'b01111111;
+					end
+					// R TBR
+					else if(IR_Out[24:19] == 6'b101011)
+					begin
+						nextState = 8'b01110000;
+					end 
+					// W TBR
+					else if(IR_Out[24:19] == 6'b110011)
+					begin
+						nextState = 8'b01110110;
+					end
+					// W PSR
+					else if(IR_Out[24:19] == 6'b110001)
+					begin
+						nextState = 8'b1111001;
+					end
+					// W WIM
+					else if(IR_Out[24:19] == 6'b110010)
+					begin
+						nextState = 8'b1111100;
 					end
 					// Faltan
 					// Arithmetic
@@ -763,9 +793,9 @@ module ControlUnit2(
 			/*					*/
 			
 			//Read WIM
-			7'b1101101:
+			8'b01111111:
 				begin
-					if(PSR_Mux_out[7]) begin 
+					if(!PSR_Out[7]) begin 
 						//go to trap 5
 					end
 					else begin
@@ -774,25 +804,24 @@ module ControlUnit2(
 						in_PC  = IR_Out[29:25];
 						ALUA_Mux_select = 2'b00;
 						ALUB_Mux_select = 4'b1000;
-						nextState <= 7'b1101110;//change
+						nextState <= 8'b11111110;//change
 					end
 				end
-			7'b1101110:
+			8'b11111110:
 				begin
 					register_file =1;
-					nextState <= 7'b1101111;//change
+					nextState <= 8'b11111111;//change
 				end
-			7'b1101111:
+			8'b11111111:
 				begin
 					register_file =0;
-					nextState <= 7'b1101101;//flow control
+					nextState <= 8'b01101101;//flow control
 				end
 			
 			//Read TBR
-			7'b1110000:
+			8'b01110000:
 				begin
-					
-					if(PSR_Mux_out[7]) begin 
+					if(!PSR_Out[7]) begin 
 						//go to trap 5
 						//nextState <= 
 					end
@@ -802,25 +831,25 @@ module ControlUnit2(
 						in_PC  = IR_Out[29:25];
 						ALUA_Mux_select = 2'b00;
 						ALUB_Mux_select = 4'b1001;
-						nextState <= 7'b1110001;
+						nextState <= 8'b01110001;
 					end
 				end
-			7'b1110001:
+			8'b01110001:
 				begin
 					register_file =1;
-					nextState <= 7'b1110010;
+					nextState <= 8'b01110010;
 				end
 			
-			7'b1110010:
+			8'b01110010:
 				begin
 					register_file =0;
-					nextState <= 7'b1101101;//flow control
+					nextState <= 8'b01101101;//flow control
 				end
 			
 			//Read PSR
-			7'b1110011:
+			8'b01110011:
 				begin
-					if(PSR_Mux_out[7]) begin 
+					if(!PSR_Out[7]) begin 
 						//go to trap 5
 					end
 					else begin
@@ -829,20 +858,138 @@ module ControlUnit2(
 						in_PC  = IR_Out[29:25];
 						ALUA_Mux_select = 2'b00;
 						ALUB_Mux_select = 4'b1010;
-						nextState <= 7'b1110100;
+						nextState <= 8'b01110100;
 					end
 				end
-			7'b1110100:
+			8'b01110100:
 				begin
 					register_file =1;
-					nextState <= 7'b1110101;
+					nextState <= 8'b01110101;
 				end
 			
-			7'b1110101:
+			8'b01110101:
 				begin
-					register_file =1;
-					nextState <= 7'b1101101; //go to flow control
+					register_file =0;
+					nextState <= 8'b01101101; //go to flow control
 				end
+			
+			/********************/
+			/*  Write Privilege	*/
+			/*					*/
+				
+			//Write TBR
+			8'b01110110: //118
+			begin
+				if(!PSR_Out[7]) begin 
+					//go to trap 5
+				end
+				else begin
+					ALU_op = 6'b000011; //XOR
+					TBR_Mux_select = 1'b0;
+					in_PA = IR_Out[18:14]; // Get rs1
+					if (IR_Out[13]) begin 
+						//B is an immediate argument in IR
+						ALUB_Mux_select = 4'b0001; // Select output of sign extender as B for ALU
+						extender_select = 2'b00;  // Select 13bit to 32bit extender
+					end
+					else begin 
+						//B is a register
+						ALUB_Mux_select = 4'b0000;
+						in_PB = IR_Out[4:0];
+					end
+					nextState = 8'b01110111;
+				end
+			end
+			
+			8'b01110111://119
+			begin
+				TBR_enable = 1;
+				nextState = 8'b1111000;
+			end
+			
+			8'b1111000://120
+			begin
+				TBR_enable = 0;
+				nextState <= 8'b01101101; // Flow control
+			end
+				
+			//Write PSR
+			8'b1111001://121
+			begin
+				if(!PSR_Out[7]) begin 
+					//go to trap 5
+				end
+				else begin
+					ALU_op = 6'b000011; //XOR
+					in_PA = IR_Out[18:14]; // Get rs1
+					if (IR_Out[13]) begin 
+						//B is an immediate argument in IR
+						ALUB_Mux_select = 4'b0001; // Select output of sign extender as B for ALU
+						extender_select = 2'b00;  // Select 13bit to 32bit extender
+					end
+					else begin 
+						//B is a register
+						ALUB_Mux_select = 4'b0000;
+						in_PB = IR_Out[4:0];
+					end
+					//ALU_out  = what we want to write
+					if(ALU_out[4:0] > 3) begin//// YOYOYOYOYO
+						//go to trap 5
+					end
+					else begin
+						PSR_Mux_select = 3'b101; //ALU_out
+						nextState <= 8'b01111010;
+
+					end
+				end
+			end
+			
+			8'b01111010://122
+			begin
+				PSR_Enable = 1;
+				nextState <= 8'b01111011;
+			end
+			
+			8'b01111011://123
+			begin
+				PSR_Enable = 0;
+				nextState <= 8'b01101101; // Flow control
+			end
+			
+			
+			//Write WIM
+			8'b1111100://124
+			begin
+				if(!PSR_Out[7]) begin 
+					//go to trap 5
+				end
+				else begin
+					ALU_op = 6'b000011; //XOR
+					in_PA = IR_Out[18:14]; // Get rs1
+					if (IR_Out[13]) begin 
+						//B is an immediate argument in IR
+						ALUB_Mux_select = 4'b0001; // Select output of sign extender as B for ALU
+						extender_select = 2'b00;  // Select 13bit to 32bit extender
+					end
+					else begin 
+						//B is a register
+						ALUB_Mux_select = 4'b0000;
+						in_PB = IR_Out[4:0];
+					end
+					nextState <= 8'b01111101;
+				end
+			end
+			
+			8'b01111101://125
+			begin
+				WIM_enable = 1;
+				nextState <= 8'b01111110;
+			end
+			8'b01111110://126
+			begin
+				WIM_enable = 0;
+				nextState <= 8'b01101101; // Flow control
+			end
 			
 			/********************/
 			/*	  TRAP icc		*/
@@ -862,7 +1009,7 @@ module ControlUnit2(
 					in_PA = IR_Out[18:14];
 					
 					// Check priority
-					nextState <= 8'b10011100;
+					nextState <= 8'b10011010;
 				end
 				else
 					// Nop
@@ -936,7 +1083,6 @@ module ControlUnit2(
 				ET = 0;
 				nextState <= 8'b10001110;
 			end
-			
 			
 			// PSR Enable
 			8'b10001110:
@@ -1039,10 +1185,120 @@ module ControlUnit2(
 			end
 			
 			/********************/
+			/*	  	Rett		*/
+			/*					*/
+			
+			8'b10011011: //155
+			begin	
+				if( WIM_Out & 2^(PSR_Out[1:0] + 1) == 1)
+				begin
+					// Underflow
+					Underflow = 1;
+					TR_PR_enable = 1;
+					
+					// Check priority
+					nextState <= 8'b10011010;
+				end
+				ALU_op = 6'b000000; // add
+				ALUA_Mux_select = 2'b11;//CWP
+				ALUB_Mux_select = 4'b0111;//1
+				PSR_Mux_select = 3'b011; //CWP to write
+				nextState = 8'b10011100; 
+			end
+			
+			// PSR Enable
+			8'b10011100:
+			begin	
+				PSR_Enable = 1;
+				nextState <= 8'b10011101;
+			end
+			
+			// PSR Disable
+			8'b10011101:
+			begin	
+				PSR_Enable = 0;
+				PC_In_Mux_select = 2'b00;
+				nextState <= 8'b10011110;
+			end
+			
+			// Enable PC
+			8'b10011110:
+			begin	
+				PC_enable = 1;
+				nextState <= 8'b10011111;
+			end
+			
+			// Disable PC, nPC = rs1 + rs2 or rs1 + simm13
+			8'b10011111:
+			begin	
+				PC_enable = 0;
+				// nPC = rs1 + rs2 or rs1 + simm13
+				in_PA = IR_Out[18:14]; // Get rs1
+				if (IR_Out[13]) begin 
+				//B is an immediate argument in IR
+				ALUB_Mux_select = 4'b0001; // Select output of sign extender as B for ALU
+				extender_select = 2'b00;  // Select 13bit to 32bit extender
+				end
+				else begin 
+				//B is a register
+				ALUB_Mux_select = 3'b000;
+				in_PB = IR_Out[4:0];
+				end
+				in_PC = IR_Out[29:25];
+				nextState <= 8'b10100000;
+			end
+			
+			// Enable register
+			8'b10100000:
+			begin	
+				register_file = 1;
+				nextState <= 8'b10100001;
+			end
+			
+			// Disable register, restore S from PS
+			8'b10100001:
+			begin	
+				register_file = 0;
+				S = PSR_Out[6];
+				PSR_Mux_select = 3'b001;	
+				nextState = 8'b10100010;
+			end
+			
+			// PSR Enable
+			8'b10100010:
+			begin	
+				PSR_Enable = 1;
+				nextState <= 8'b10100011;
+			end
+			
+			// PSR Disable, enable traps
+			8'b10100011:
+			begin	
+				PSR_Enable = 0;
+				ET = 1;
+				PSR_Mux_select = 3'b010;
+				nextState <= 8'b10100100;
+			end
+			
+			// PSR Enable
+			8'b10100100:
+			begin	
+				PSR_Enable = 1;
+				nextState <= 8'b10100101;
+			end
+			
+			// PSR Disable
+			8'b10100101:
+			begin	
+				PSR_Enable = 0;
+				nextState = 8'b00000100; // Go to Fetch
+			end
+			
+			/********************/
 			/*	  Priority		*/
 			/*					*/
 			
-			8'b10011100:
+			8'b10011010:
 			begin
 				#1;
 				$display("hi: %b", TR_PR_Out[2]);
@@ -1058,7 +1314,7 @@ module ControlUnit2(
 				// Underflow
 				else if(TR_PR_Out[1])
 				begin
-					
+					// Go to trap table 2
 				end
 				// Trap 3
 				else if(TR_PR_Out[2])
