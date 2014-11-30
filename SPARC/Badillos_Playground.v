@@ -598,12 +598,12 @@ module ControlUnit(
 	ALU_op = 6'b000000; // add
 	ALUB_Mux_select = 4'b1010; 
 	in_PA = 5'b00000;
-	if(PSR_Mux_out[5]) begin //if trap=0
+	if(PSR_out[5]) begin //if trap=0
 	//???
 	end
 	else begin
 	//SAVE SUP IN PS
-	PS = PSR_Mux_out[7];
+	PS = PSR_out[7];
 	PSR_Mux_select=3'b100; //S4=PS
 	PSR_Enable = 1;
 	#2;

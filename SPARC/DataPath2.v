@@ -102,7 +102,7 @@ module DataPath2(
 	// Process State Register
 	register_32 PSR(PSR_out, PSR_Mux_out, PSR_Enable, PSR_Clr, Clk);
 	
-	register_32 TBR (TBR_Out, TBR_Mux_out, TBR_enable, TBR_Clr, Clk);
+	TBR_register_32 TBR (TBR_Out, TBR_Mux_out, TBR_enable, TBR_Clr, Clk);
 	
 	// WIM
 	register_32 WIM (WIM_Out, ALU_out, WIM_enable, WIM_Clr, Clk);

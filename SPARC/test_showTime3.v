@@ -1,4 +1,4 @@
-module test_showTime2;
+module test_showTime3;
 
 	/* Inputs */
 	wire [4:0]in_PC, in_PA, in_PB;
@@ -40,49 +40,33 @@ module test_showTime2;
 	ControlUnit2 ControlUnit(IR_enable, NPC_enable, PC_enable, MDR_Enable, MAR_Enable, register_file_enable, RAM_enable, PSR_Enable, TBR_enable, TR_PR_enable, WIM_enable, PC_Clr, TR_PR_Clr, TBR_Clr,PSR_Clr, WIM_Clr, extender_select, PC_In_Mux_select, ALUA_Mux_select, PSR_Mux_select, ALUB_Mux_select,
 		MDR_Mux_select, TBR_Mux_select, in_PC, in_PA, in_PB, ALU_op, RAM_OpCode, S, PS, ET, Overflow, Underflow, T3, T4, WIM_Out, PSR_out, TR_PR_out, IR_Out, MFC, MSET, out_BLA, BA_O, BN_O, RESET, Hardware_Trap, Clk);
 		
-	always begin
+		always begin
 		#1 Clk = !Clk;
+		$display("Time: %tns", $time);
+		$display("State %b \t nextState %b", ControlUnit.state, ControlUnit.nextState);
+		$display("Clock: %d", Clk);
+		$display("Reset: %d", RESET);
+		$display("IR_Out: %b", IR_Out);
+		$display("PSR_out: %b", PSR_out);
+		$display("TBR_out: %b", DataPath.TBR_Out);
+		$display("WIM_Out: %b", DataPath.WIM_Out);
+		$display("TR_PR_out: %b", DataPath.TR_PR_out);
+		$display("BLA_out: %b \t BA_O = %b \t BN_O = %b", DataPath.out_BLA, DataPath.BA_O, DataPath.BN_O);
+		$display("In_PA: %d\t In_PB: %d \t in_PC: ", in_PA, ControlUnit.in_PB, in_PC);
+		$display("out_PA: %d\t out_PB: %d", DataPath.out_PA, DataPath.out_PB);
+		$display("ALUA_Mux_select: %d\tALUB_Mux_select: %d", ALUA_Mux_select, ALUB_Mux_select);
+		$display("ALUA_Mux_out: %d\tALUB_Mux_out: %d", ALUA_Mux_out, ALUB_Mux_out);
+		$display("ALU_Out: %d", ALU_Out);
+		$display("r1: %d", DataPath.register_file.r_out[7]);
+		$display("r8: %d", DataPath.register_file.r_out[5]);
+		$display("PC_out:  %d", DataPath.PC.out);
+		$display("NPC_out: %d", DataPath.NPC.out);
+		$display("MAR_Out: %d \t RAM_OpCode = %b", DataPath.MAR_Out, RAM_OpCode);
+		$display("--------------------------------------------------------------------------\n");
 	end
 	
 	initial begin
-		fp=$fopen("result_showtime2.txt","w");
-	end
-	
-	always @ (DataPath.MAR_Out, DataPath.ram.Mem[DataPath.MAR_Out])
-	begin
-		$fwrite(fp,"Count = %d, Mar_Out = %d, IR_out = %b \nMem[%0d] = %d\nMem[%0d] = %d\nMem[%0d] = %d\nMem[%0d] = %d\n", counter, DataPath.MAR_Out, IR_Out,DataPath.MAR_Out, DataPath.ram.Mem[DataPath.MAR_Out],DataPath.MAR_Out+1, DataPath.ram.Mem[DataPath.MAR_Out+1], DataPath.MAR_Out+2,DataPath.ram.Mem[DataPath.MAR_Out+2], DataPath.MAR_Out +3,DataPath.ram.Mem[DataPath.MAR_Out+3]);
-		// $fwrite(fp,"r1: %d\nr2: %d\nr3: %d\nr4: %d\nr5: %d\nr8: %d\nr10: %d\nr11: %d\nr12: %d\nr15: %d\n", DataPath.register_file.r_out[1], DataPath.register_file.r_out[2],DataPath.register_file.r_out[3],DataPath.register_file.r_out[4], DataPath.register_file.r_out[5],DataPath.register_file.r_out[8],DataPath.register_file.r_out[10],DataPath.register_file.r_out[11],DataPath.register_file.r_out[12],DataPath.register_file.r_out[15]);
-		for(i = 224; i<264; i=i+4)
-			begin
-				$fwrite(fp,"DataPath.ram.Mem[%0d]= %b %b %b %b\n",i,DataPath.ram.Mem[i],DataPath.ram.Mem[i+1],DataPath.ram.Mem[i+2],DataPath.ram.Mem[i+3]);
-			end
-		$fwrite(fp,"PSR = %b\n---------------------\n", PSR_out);
-		counter = counter +1;
-		if(IR_Out == 32'b00010000100000000000000000000000)
-		begin
-			$fwrite(fp,"Last Branch Always Reached!\n");
-			// $display("r1: %d", DataPath.register_file.r_out[1]);
-			// $display("r2: %d", DataPath.register_file.r_out[2]);
-			// $display("r3: %d", DataPath.register_file.r_out[3]);
-			// $display("r4: %d", DataPath.register_file.r_out[4]);
-			// $display("r5: %d", DataPath.register_file.r_out[5]);
-			// $display("r8: %d", DataPath.register_file.r_out[8]);
-			// $display("r10: %d", DataPath.register_file.r_out[10]);
-			// $display("r11: %d", DataPath.register_file.r_out[11]);
-			// $display("r12: %d", DataPath.register_file.r_out[12]);
-			// $display("r15: %d", DataPath.register_file.r_out[15]);
-			for(i = 224; i<264; i=i+4)
-			begin
-				$fwrite(fp,"-------------------\n");
-				$fwrite(fp,"DataPath.ram.Mem[%0d]= %b %b %b %b\n",i,DataPath.ram.Mem[i],DataPath.ram.Mem[i+1],DataPath.ram.Mem[i+2],DataPath.ram.Mem[i+3]);
-			end
-			$finish;
-		end
-	end
-	
-	
-	initial begin
-		fd = $fopen("testcode_sparc2.txt","r"); 
+		fd = $fopen("testcode_sparc3.txt","r"); 
 		positionInMem = 0;
 		i = 0;
 		while (!($feof(fd)))
