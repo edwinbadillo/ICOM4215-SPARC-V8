@@ -2,9 +2,9 @@ module ControlUnit2(
 
 	// Control Signals
 	// Enables
-	output reg IR_enable, NPC_enable, PC_enable, MDR_Enable, MAR_Enable, register_file, RAM_enable, PSR_Enable, TBR_enable, TR_PR_enable, WIM_enable,
+	output reg IR_enable, NPC_enable, PC_enable, MDR_Enable, MAR_Enable, register_file, RAM_enable, PSR_Enable, TBR_enable, TR_PR_enable,
 	// Clear
-	output reg PC_Clr, TR_PR_Clr, TBR_Clr, PSR_Clr, WIM_Clr,
+	output reg PC_Clr, TR_PR_Clr,
 	// Select Lines Muxes
 	output reg [2:0]extender_select,
 	output reg [1:0]PC_In_Mux_select, ALUA_Mux_select,
@@ -17,8 +17,12 @@ module ControlUnit2(
 	output reg [5:0]ALU_op,
 	// Ram control
 	output reg [5:0]RAM_OpCode,
+	// TBR
+	output reg TBR_Clr, PSR_Clr,
 	// PSR
 	output reg S, PS, ET,
+	// WIM
+	output WIM_enable, WIM_Clr,
 	// Priority
 	output reg Overflow, Underflow, T3,T4,
 	
@@ -38,12 +42,12 @@ module ControlUnit2(
 	input Hardware_Trap,
 	input Clk);
 
-	reg [7:0] nextState, state;
+	reg [6:0] nextState, state;
 	
 	always @ (posedge Clk, RESET)
 	begin
 		if(RESET)
-			state = 8'b0000000;
+			state = 7'b000000;
 		else
 			state = nextState;
 	end
@@ -54,97 +58,82 @@ module ControlUnit2(
 			/*		RESET		*/
 			/*					*/
 			// Init PC
-			8'b0000000:
+			7'b000000:
 			begin
 				PC_Clr = 1;
 				TR_PR_Clr = 1;
 				PSR_Clr = 1;
-				TBR_Clr = 1;
-				
-				S = 0;
-				PS = 0;
-				Overflow = 0;
-				Underflow = 0;
-				T3 = 0;
-				T4 = 0;
-				
-				// Enable traps
-				ET = 1;
-				PSR_Mux_select = 3'b010;
-				nextState = 8'b00000001;
+				nextState = 7'b0000001;
 			end
 			// ALU output 4
-			8'b00000001:
+			7'b0000001:
 			begin
 				PC_Clr = 0;
 				TR_PR_Clr = 0;
 				PSR_Clr = 0;
-				TBR_Clr = 0;
 				ALUA_Mux_select = 2'b01;
 				ALUB_Mux_select = 3'b110;
 				in_PA = 5'b00000;
 				ALU_op = 6'b000000;
-				PSR_Enable = 1;
-				nextState = 8'b00000010;
+				nextState = 7'b0000010;
 			end
 			// NPC = 4
-			8'b00000010:
+			7'b0000010:
 			begin
 				NPC_enable = 1;
-				PSR_Enable = 0;
-				nextState = 8'b00000011;
+				nextState = 7'b0000011;
 			end
 			// Disable NPC
-			8'b00000011:
+			7'b0000011:
 			begin
 				NPC_enable = 0;
-				nextState = 8'b00000100;
+				nextState = 7'b0000100;
 			end
 			/********************/
 			/*		Fetch		*/
 			/*					*/
 			// Get PC in ALU
-			8'b00000100:
+			7'b0000100:
 			begin
 				in_PA = 5'b00000;
 				ALUA_Mux_select = 2'b00;
 				ALUB_Mux_select = 3'b011;
-				nextState = 8'b00000101;
+				nextState = 7'b0000101;
 			end
 			// Enable MAR and Load word opcode RAM
-			8'b00000101:
+			7'b0000101:
 			begin
 				MAR_Enable = 1;
 				RAM_OpCode = 6'b000000; ///TODO: REVERT BACK TO OPCODE SPARC 000000
-				nextState = 8'b00000110;
+				nextState = 7'b0000110;
 			end
 			// Start RAM procedure
-			8'b00000110:
+			7'b0000110:
 			begin
 				MAR_Enable = 0;
 				RAM_enable = 1;
-				nextState = 8'b00000111;
+				nextState = 7'b0000111;
 			end
 			// Wait for MFC
-			8'b00000111:
+			7'b0000111:
 			begin
 				if(MFC)
 				begin
 					IR_enable = 1;
 					RAM_enable = 0;
-					nextState = 8'b00001000;
+					nextState = 7'b0001000;
 				end
 			end
 			// Disable IR
-			8'b00001000:
+			7'b0001000:
 			begin
 				IR_enable = 0;
-				nextState = 8'b01101100;
+				nextState = 7'b1101100;
 			end
 			/********************/
 			/*	   PC Flow		*/
 			/*					*/
-			8'b01101101: // 109
+			7'b1101101: // 109
 			begin
 				// NPC + 4
 				ALUA_Mux_select = 2'b10;  // Select NPC
@@ -152,41 +141,41 @@ module ControlUnit2(
 				ALU_op = 6'b000000;
 				PC_In_Mux_select = 2'b00; 
 				// Now NPC is ready to be passed to PC and NPC + 4 is ready for NPC
-				nextState = 8'b01101110;
+				nextState = 7'b1101110;
 			end
 			// Enable PC and NPC for NPC -> PC, NPC + 4 -> NPC
-			8'b01101110: // 110
+			7'b1101110: // 110
 			begin
 				PC_enable = 1;
 				NPC_enable = 1;
-				nextState = 8'b01101111;
+				nextState = 7'b1101111;
 			end
-			8'b01101111: // 111
+			7'b1101111: // 111
 			begin
 				PC_enable = 0;
 				NPC_enable = 0;
-				nextState = 8'b00000100; // Go to Fetch
+				nextState = 7'b0000100; // Go to Fetch
 			end
 			/********************/
 			/*		Decode		*/
 			/*					*/
-			8'b01101100: // 108
+			7'b1101100: // 108
 			begin
 				// OP = 00
 				if (IR_Out[31:30] === 2'b00 ) 
 				begin
 					// Sethi
-					if (IR_Out[24:22] === 3'b100) nextState = 8'b00001001;
+					if (IR_Out[24:22] === 3'b100) nextState = 7'b0001001;
 					// Branches
 					else
-						nextState = 8'b00001100;
+						nextState = 7'b0001100;
 					begin
 					end
 				end
 				// OP = 01 (Call)
 				else if (IR_Out[31:30] === 2'b01) 
 				begin
-					nextState = 8'b00101101;
+					nextState = 7'b0101101;
 				end
 				// OP = 10
 				else if (IR_Out[31:30] === 2'b10)
@@ -194,17 +183,12 @@ module ControlUnit2(
 					// JMPL
 					if(IR_Out[24:19] == 6'b111000)
 					begin
-						nextState = 8'b00110010;
-					end
-					// Trap icc
-					else if(IR_Out[24:19] == 6'b111010)
-					begin
-						nextState = 8'b10000101;
+						nextState = 7'b0110010;
 					end
 					// Faltan
 					// Arithmetic
 					else 
-						nextState = 8'b01010001;
+						nextState = 7'b1010001;
 					begin
 					end
 				end
@@ -215,12 +199,12 @@ module ControlUnit2(
 					// Load
 					if(IR_Out[24:19] == 6'b000000||IR_Out[24:19] == 6'b000001||IR_Out[24:19] == 6'b000010||IR_Out[24:19] == 6'b001001||IR_Out[24:19] == 6'b001010) 
 					begin
-						nextState = 8'b01011001;
+						nextState = 7'b1011001;
 					end
 					// Store
 					else if(IR_Out[24:19] == 6'b000100||IR_Out[24:19] == 6'b000101||IR_Out[24:19] == 6'b000110) 
 					begin
-						nextState = 8'b01100100;
+						nextState = 7'b1100100;
 					end
 				end
 				else begin
@@ -231,7 +215,7 @@ module ControlUnit2(
 			/********************/
 			/*		Sethi		*/
 			/*					*/
-			8'b00001001:
+			7'b0001001:
 			begin
 				extender_select = 3'b100;
 				ALUA_Mux_select = 2'b00;
@@ -239,22 +223,22 @@ module ControlUnit2(
 				in_PC = IR_Out[29:25];
 				in_PA = 5'b00000;
 				ALU_op = 6'b000000;
-				nextState = 8'b00001010;
+				nextState = 7'b0001010;
 			end
-			8'b00001010:
+			7'b0001010:
 			begin
 				register_file = 1;
-				nextState = 8'b00001011;
+				nextState = 7'b0001011;
 			end
-			8'b00001011:
+			7'b0001011:
 			begin
 				register_file = 0;
-				nextState = 8'b01101101; // Go to PC flow control
+				nextState = 7'b1101101; // Go to PC flow control
 			end
 			/********************/
 			/*		Branch		*/
 			/*					*/
-			8'b00001100:
+			7'b0001100:
 			begin
 				register_file = 0; 
 				ALU_op = 6'b000000;
@@ -262,118 +246,118 @@ module ControlUnit2(
 				NPC_enable =0;
 				if (cond) begin 
 					if (BA_O) begin
-						if(IR_Out[29]) nextState = 8'b00001101;//go to BA_O Anulled
-						else nextState <= 8'b00010011;//go to BA_O
+						if(IR_Out[29]) nextState = 7'b0001101;//go to BA_O Anulled
+						else nextState <= 7'b0010011;//go to BA_O
 					end
 					else if (BN_O) begin
-						if(IR_Out[29]) nextState <= 8'b00011000;//go to BN_O Anulled
-						else nextState <= 8'b01101101; //Go to flow control //go to NOP
+						if(IR_Out[29]) nextState <= 7'b0011000;//go to BN_O Anulled
+						else nextState <= 7'b1101101; //Go to flow control //go to NOP
 					end
-					else nextState <= 8'b00011101;//go to BX TRUE
+					else nextState <= 7'b0011101;//go to BX TRUE
 				end
 				else begin
-					if(IR_Out[29]) nextState <= 8'b00100010;//go to BX FALSE Anulled
-					else nextState <= 8'b00101000;//go to BX FALSE
+					if(IR_Out[29]) nextState <= 7'b0100010;//go to BX FALSE Anulled
+					else nextState <= 7'b0101000;//go to BX FALSE
 				
 				end
 			end
-			8'b00001101://13 -BA_O Anulled
+			7'b0001101://13 -BA_O Anulled
 				begin
 				//the delay instruction is annulled
 				ALUA_Mux_select = 2'b10;
 				ALUB_Mux_select = 3'b110;
-				nextState <= 8'b00001110;
+				nextState <= 7'b0001110;
 				end
-			8'b00001110:
+			7'b0001110:
 				begin
 				NPC_enable =1;
-				nextState <= 8'b00001111;
+				nextState <= 7'b0001111;
 				end
-			8'b00001111:
+			7'b0001111:
 				begin
 				NPC_enable = 0;
 				PC_enable =1;
-				nextState <= 8'b00010000;
+				nextState <= 7'b0010000;
 				end
-			8'b00010000:
+			7'b0010000:
 				begin
 				PC_enable =0;
-				nextState <= 8'b00010001;
+				nextState <= 7'b0010001;
 				end
-			8'b00010001:
+			7'b0010001:
 				begin
 				//ALUA_Mux_select = 2'b10;
 				//ALUB_Mux_select = 3'b110;
 				NPC_enable =1;
-				nextState <= 8'b00010010;
+				nextState <= 7'b0010010;
 				end
-			8'b00010010: //disable npc, end ba_o anulled
+			7'b0010010: //disable npc, end ba_o anulled
 				begin
 				NPC_enable = 0;
-				nextState <= 8'b00000100; //Go to fetch 
+				nextState <= 7'b0000100; //Go to fetch 
 				end
-			8'b00010011://19 -BA_O
+			7'b0010011://19 -BA_O
 				begin
 				extender_select = 3'b101;
 				ALUA_Mux_select = 2'b01;
 				ALUB_Mux_select = 3'b001;
 				PC_In_Mux_select = 2'b00;
-				nextState <= 8'b00010100;
+				nextState <= 7'b0010100;
 				end
-			8'b00010100:
+			7'b0010100:
 				begin
 				PC_enable = 1;
 				NPC_enable =1;
-				nextState <= 8'b00010101;
+				nextState <= 7'b0010101;
 				end
-			8'b00010101:
+			7'b0010101:
 				begin
 				PC_enable = 0;
 				NPC_enable = 0;
-				nextState = 8'b00000100; //Go to fetch 8'b00010110;
+				nextState = 7'b0000100; //Go to fetch 7'b0010110;
 				end
-			// 8'b00010110:
+			// 7'b0010110:
 				// begin
 				
-				// nextState <= 8'b00010111;
+				// nextState <= 7'b0010111;
 				// end
-			// 8'b00010111://end of BA_O
+			// 7'b0010111://end of BA_O
 				// begin
 				
-				// nextState <= 8'b00000100; //Go to fetch 
+				// nextState <= 7'b0000100; //Go to fetch 
 				// end
-			8'b00011000://24 -BN_O Anulled
+			7'b0011000://24 -BN_O Anulled
 				begin
 				//the delay instruction is annulled
 				ALUA_Mux_select = 2'b10;
 				ALUB_Mux_select = 3'b110;
-				nextState <= 8'b00011001;
+				nextState <= 7'b0011001;
 				end
-			8'b00011001:
+			7'b0011001:
 				begin
 				NPC_enable =1;
-				nextState <= 8'b00011010;
+				nextState <= 7'b0011010;
 				end
-			8'b00011010:
+			7'b0011010:
 				begin
 				NPC_enable = 0;
 				PC_enable =1;
-				nextState <= 8'b00011011;
+				nextState <= 7'b0011011;
 				end
-			8'b00011011:
+			7'b0011011:
 				begin
 				PC_enable =0;
 				//ALUA_Mux_select = 2'b10;
 				//ALUB_Mux_select = 3'b110;
 				NPC_enable =1;
-				nextState <= 8'b00011100;
+				nextState <= 7'b0011100;
 				end
-			8'b00011100:
+			7'b0011100:
 				begin
 				NPC_enable = 0;
-				nextState <= 8'b00000100; //Go to fetch 
+				nextState <= 7'b0000100; //Go to fetch 
 				end
-			8'b00011101://29 -BX TRUE
+			7'b0011101://29 -BX TRUE
 				begin
 				//the delay instruction is annulled
 				extender_select = 3'b101;
@@ -381,96 +365,96 @@ module ControlUnit2(
 				ALUB_Mux_select = 3'b001;
 				//tengo mi npc
 				PC_In_Mux_select = 2'b00;
-				nextState <= 8'b00011110;
+				nextState <= 7'b0011110;
 				end
-			8'b00011110:
+			7'b0011110:
 				begin
 				PC_enable = 1;
 				NPC_enable = 1;
-				nextState <= 8'b00011111;
+				nextState <= 7'b0011111;
 				end
-			8'b00011111:
+			7'b0011111:
 				begin
 				PC_enable = 0;
 				NPC_enable = 0;
-				nextState <= 8'b00000100;//Go to fetch 8'b00100000;
+				nextState <= 7'b0000100;//Go to fetch 7'b0100000;
 				end
-			// 8'b00100000://32
+			// 7'b0100000://32
 				// begin
 				
-				// nextState <= 8'b00100001;
+				// nextState <= 7'b0100001;
 				// end
-			// 8'b00100001://33
+			// 7'b0100001://33
 				// begin
 				
-				// nextState <= 8'b00000100; //Go to fetch 
+				// nextState <= 7'b0000100; //Go to fetch 
 				// end
-			8'b00100010://34 -BX FALSE Anulled
+			7'b0100010://34 -BX FALSE Anulled
 				begin
 				//the delay instruction is annulled
 				ALUA_Mux_select = 2'b10;
 				ALUB_Mux_select = 3'b110;
-				nextState <= 8'b00100011;
+				nextState <= 7'b0100011;
 				end
-			8'b00100011:
+			7'b0100011:
 				begin
 				NPC_enable =1;
-				nextState <= 8'b00100100;
+				nextState <= 7'b0100100;
 				end
-			8'b00100100:
+			7'b0100100:
 				begin
 				NPC_enable = 0;
 				PC_enable =1;
-				nextState <= 8'b00100101;
+				nextState <= 7'b0100101;
 				end
-			8'b00100101:
+			7'b0100101:
 				begin
 				PC_enable =0;
-				nextState <= 8'b00100110;
+				nextState <= 7'b0100110;
 				end
-			8'b00100110:
+			7'b0100110:
 				begin
 				//ALUA_Mux_select = 2'b10;
 				//ALUB_Mux_select = 3'b110;
 				NPC_enable =1;
-				nextState <= 8'b00100111;
+				nextState <= 7'b0100111;
 				end
-			8'b00100111:
+			7'b0100111:
 				begin
 				NPC_enable = 0;
-				nextState <= 8'b00000100; //Go to fetch 
+				nextState <= 7'b0000100; //Go to fetch 
 				end
-			8'b00101000://40 -BX FALSE
+			7'b0101000://40 -BX FALSE
 				begin
 				PC_In_Mux_select = 2'b00;
-				nextState <= 8'b00101001;
+				nextState <= 7'b0101001;
 				end
-			8'b00101001:
+			7'b0101001:
 				begin
 				PC_enable = 1;
-				nextState <= 8'b00101010;
+				nextState <= 7'b0101010;
 				end
-			8'b00101010:
+			7'b0101010:
 				begin
 				PC_enable = 0;
 				ALUA_Mux_select = 2'b10;
 				ALUB_Mux_select = 3'b110;
-				nextState <= 8'b00101011;
+				nextState <= 7'b0101011;
 				end
-			8'b00101011:
+			7'b0101011:
 				begin
 				NPC_enable =1;
-				nextState <= 8'b00101100;
+				nextState <= 7'b0101100;
 				end
-			8'b00101100:
+			7'b0101100:
 				begin
 				NPC_enable = 0;
-				nextState <= 8'b00000100; //Go to fetch 
+				nextState <= 7'b0000100; //Go to fetch 
 				end
 			/********************/
 			/*		Call		*/
 			/*					*/
-			8'b00101101: //45- Call
+			7'b0101101: //45- Call
 				begin
 				in_PC  = 5'b01111;  // Value of Program Counter is to be stored in R15
 				// Just moving the value of Program Counter to R15, so add 0
@@ -481,15 +465,15 @@ module ControlUnit2(
 				// So far, value of PC is at the entrance of R15
 				PC_In_Mux_select = 2'b00; // nPC --> PC
 				// Now, nPC is at the entrance of PC as well
-				nextState <= 8'b00101110;
+				nextState <= 7'b0101110;
 				end
-			8'b00101110:
+			7'b0101110:
 				begin
 				PC_enable     = 1;
 				register_file = 1;
-				nextState <= 8'b00101111;
+				nextState <= 7'b0101111;
 				end
-			8'b00101111://47
+			7'b0101111://47
 				begin
 				PC_enable     = 0;
 				register_file = 0;
@@ -501,89 +485,89 @@ module ControlUnit2(
 				extender_select = 2'b11; // Choose the shifter to perform B = 4*disp30
 				ALU_op = 6'b000000; // redundant, add again: R15 + 4*disp30
 				//ALU_out has the value needed, knocking at the door of nPC
-				nextState <= 8'b00110000; 
+				nextState <= 7'b0110000; 
 				end
 				
-			8'b00110000:
+			7'b0110000:
 				begin
 				NPC_enable = 1;
-				nextState <= 8'b00110001; // Loads ALU output to nPC
+				nextState <= 7'b0110001; // Loads ALU output to nPC
 				end
 				
-			8'b00110001: //49
+			7'b0110001: //49
 				begin
 				NPC_enable = 0;
-				nextState <= 8'b00000100; //Go to fetch
+				nextState <= 7'b0000100; //Go to fetch
 				end
 			/********************/
 			/*		JMPL		*/
 			/*					*/
-			8'b00110010:
+			7'b0110010:
 				begin
 					in_PA = 5'b00000;			// Get r0 from PA
 					ALUA_Mux_select = 2'b00;	// Choose rs1 from register file
 					ALUB_Mux_select = 3'b011;	// Select PC
 					ALU_op = 6'b000000;			// r0 + PC
 					in_PC = IR_Out[29:25];		// Store in rd
-					nextState = 8'b00110011;
+					nextState = 7'b0110011;
 				end
-			8'b00110011:
+			7'b0110011:
 				begin
 					register_file = 1;
-					nextState = 8'b00110100;
+					nextState = 7'b0110100;
 				end
-			8'b00110100:
+			7'b0110100:
 				begin
 					register_file = 0;
-					nextState = 8'b00110101;
+					nextState = 7'b0110101;
 				end
-			8'b00110101:
+			7'b0110101:
 				begin
 					PC_In_Mux_select = 2'b00;
-					nextState = 8'b00110110;
+					nextState = 7'b0110110;
 				end
-			8'b00110110:
+			7'b0110110:
 				begin
 					PC_enable = 1;
-					nextState = 8'b00110111;
+					nextState = 7'b0110111;
 				end
-			8'b00110111:
+			7'b0110111:
 				begin
 					PC_enable = 0;
 					in_PA = IR_Out[18:14];
 					if(IR_Out[13])
-						nextState = 8'b00111000;
+						nextState = 7'b0111000;
 					else
-						nextState = 8'b00111001;
+						nextState = 7'b0111001;
 				end
-			8'b00111000:
+			7'b0111000:
 				begin
 					//B is an immediate argument in IR
 					ALUB_Mux_select = 3'b001; // Select output of sign extender as B for ALU
 					extender_select = 2'b00;  // Select 13bit to 32bit extender
-					nextState = 8'b00111010;
+					nextState = 7'b0111010;
 				end
-			8'b00111001:
+			7'b0111001:
 				begin
 					//B is a register
 					ALUB_Mux_select = 3'b000;
 					in_PB = IR_Out[4:0];
-					nextState = 8'b00111010;
+					nextState = 7'b0111010;
 				end
-			8'b00111010:
+			7'b0111010:
 				begin
 					NPC_enable = 1;
-					nextState = 8'b00111011;
+					nextState = 7'b0111011;
 				end
-			8'b00111011:
+			7'b0111011:
 				begin
 					NPC_enable = 0;
-					nextState = 8'b00000100; // Go to fetch
+					nextState = 7'b0000100; // Go to fetch
 				end	
 			/********************/
 			/*		Arith		*/
 			/*		Logic		*/
-			8'b01010001: //81
+			7'b1010001: //81
 			begin
 				ALUA_Mux_select = 2'b00;
 				in_PC = IR_Out[29:25];
@@ -591,56 +575,56 @@ module ControlUnit2(
 				ALU_op = IR_Out[24:19];
 				if(IR_Out[13])
 					// Immediate
-					nextState = 8'b01010010; // 82
+					nextState = 7'b1010010; // 82
 				else
-					nextState = 8'b01010011; // 83
+					nextState = 7'b1010011; // 83
 			end
 			// Immediate
-			8'b01010010: //82
+			7'b1010010: //82
 			begin
 				extender_select = 3'b000;
 				ALUB_Mux_select = 3'b001;
-				nextState = 8'b01010100;	// 84
+				nextState = 7'b1010100;	// 84
 			end
 			// B is a register
-			8'b01010011: //83
+			7'b1010011: //83
 			begin
 				in_PB = IR_Out[4:0];
 				ALUB_Mux_select = 3'b000;
-				nextState = 8'b01010100;	// 84
+				nextState = 7'b1010100;	// 84
 			end
 			// ALU value ready
-			8'b01010100: //84
+			7'b1010100: //84
 			begin
 				PSR_Mux_select = 2'b00;
-				nextState = 8'b01010101;	
+				nextState = 7'b1010101;	
 			end
 			// Write ALU out to register file
-			8'b01010101: //85
+			7'b1010101: //85
 			begin
 				register_file = 1;
 				if(IR_Out[23])
 					// Modify flag
 					PSR_Enable = 1;
-				nextState = 8'b01010111;	// 87
+				nextState = 7'b1010111;	// 87
 			end
 			// Estado de mas...no se usa. DONT TOUCH
-			// 8'b01010110: //86
+			// 7'b1010110: //86
 			// begin
 				// register_file = 0;
 				// PSR_Enable = 0;
-				// nextState = 8'b01010111;	// 87
+				// nextState = 7'b1010111;	// 87
 			// end
-			8'b01010111: //87
+			7'b1010111: //87
 			begin
 				PSR_Enable = 0;
 				register_file = 0;
-				nextState = 8'b01101101;	// Increment PC and NPC and then go to Fetch
+				nextState = 7'b1101101;	// Increment PC and NPC and then go to Fetch
 			end
 			/********************/
 			/*		LOAD		*/
 			/*					*/
-			8'b01011001: //89
+			7'b1011001: //89
 			begin
 				ALUA_Mux_select = 2'b00;
 				in_PC = IR_Out[29:25];
@@ -650,348 +634,199 @@ module ControlUnit2(
 				register_file = 0;
 				if(IR_Out[13])
 					// Immediate
-					nextState = 8'b01011010; //90
+					nextState = 7'b1011010; //90
 				else
-					nextState = 8'b01011011; //91
+					nextState = 7'b1011011; //91
 			end
-			8'b01011010: //90
+			7'b1011010: //90
 			begin
 				extender_select = 2'b00;
 				ALUB_Mux_select = 3'b001;
-				nextState = 8'b01011100; //92
+				nextState = 7'b1011100; //92
 			end
-			8'b01011011: //91
+			7'b1011011: //91
 			begin
 				ALUB_Mux_select = 3'b000;
 				in_PB = IR_Out[4:0];
-				nextState = 8'b01011100; //92
+				nextState = 7'b1011100; //92
 			end
-			8'b01011100: //92
+			7'b1011100: //92
 			begin
 				MAR_Enable = 1;
-				nextState = 8'b01011101;
+				nextState = 7'b1011101;
 			end
-			8'b01011101: //93
+			7'b1011101: //93
 			begin
 				MAR_Enable = 0;
 				RAM_enable = 1;
 				MDR_Mux_select = 1;
 				in_PA = 5'b00000;
 				ALUB_Mux_select = 3'b010;
-				nextState = 8'b01011110;
+				nextState = 7'b1011110;
 			end
-			8'b01011110: //94
+			7'b1011110: //94
 			begin
 				RAM_enable = 0;
-				nextState = 8'b01011111;
+				nextState = 7'b1011111;
 			end
-			8'b01011111: //95
+			7'b1011111: //95
 			begin
 				MDR_Enable = 1;
-				nextState = 8'b01100000;
+				nextState = 7'b1100000;
 			end
-			8'b01100000: //96
+			7'b1100000: //96
 			begin
 				MDR_Enable = 0;
-				nextState = 8'b01100001;
+				nextState = 7'b1100001;
 			end
-			8'b01100001: //97
+			7'b1100001: //97
 			begin
 				register_file  = 1;
-				nextState = 8'b01100010;
+				nextState = 7'b1100010;
 			end
-			8'b01100010: //98
+			7'b1100010: //98
 			begin
 				register_file  = 0;
-				nextState = 8'b01101101; // Got to flow control
+				nextState = 7'b1101101; // Got to flow control
 			end
 			/********************/
 			/*		Store		*/
 			/*					*/
-			8'b01100100://100
+			7'b1100100://100
 				begin
 				RAM_OpCode = IR_Out[24:19];
 				ALU_op = 6'b000000;
 				in_PA  = IR_Out[18:14];
 				ALUA_Mux_select = 2'b00;
-				if (IR_Out[13]) nextState <= 8'b01100101; //B immediate
-				else nextState <= 8'b01100110; //B register
+				if (IR_Out[13]) nextState <= 7'b1100101; //B immediate
+				else nextState <= 7'b1100110; //B register
 				end
-			8'b01100101:
+			7'b1100101:
 				begin
 				//B is an immediate argument in IR
 				ALUB_Mux_select = 3'b001;
 				extender_select = 2'b00;
-				nextState <= 8'b01100111; //mar enable
+				nextState <= 7'b1100111; //mar enable
 				end
-			8'b01100110:
+			7'b1100110:
 				begin
 				//B is a register
 				ALUB_Mux_select = 3'b000;
 				in_PB = IR_Out[4:0];
-				nextState <= 8'b01100111; //mar enable
+				nextState <= 7'b1100111; //mar enable
 				end
-			8'b01100111:
+			7'b1100111:
 				begin
 				MAR_Enable = 1;
-				nextState <= 8'b01101000;//mar enable, init mdr
+				nextState <= 7'b1101000;//mar enable, init mdr
 				end
-			8'b01101000:
+			7'b1101000:
 				begin
 				MAR_Enable      = 0;
 				in_PA           = IR_Out[29:25];
 				ALUB_Mux_select = 3'b000;
 				in_PB           = 0;
 				MDR_Mux_select  = 0;
-				nextState <= 8'b01101001; //mdr enable
+				nextState <= 7'b1101001; //mdr enable
 				end
-			8'b01101001:
+			7'b1101001:
 				begin
 				MDR_Enable      = 1;
-				nextState <= 8'b01101010;//MDR disable, store value
+				nextState <= 7'b1101010;//MDR disable, store value
 				end
-			8'b01101010:
+			7'b1101010:
 				begin
 				MDR_Enable = 0;
 				RAM_enable = 1;
-				nextState <= 8'b01101011;//Ram disable
+				nextState <= 7'b1101011;//Ram disable
 				end
-			8'b01101011:
+			7'b1101011:
 				begin
 				RAM_enable = 0;
-				nextState <= 8'b01101101; //Go to flow control
+				nextState <= 7'b1101101; //Go to flow control
 				end
-			
-			/********************/
-			/*	  TRAP icc		*/
-			/*					*/
-						
-			8'b10000101:
-			begin
-				if(cond && PSR_Out[5])
-					// Trap condition was true and trap enables
+			//Read WIM
+			7'b1101101:
 				begin
-					T3 = 1;
-					TR_PR_enable = 1;
-					
-					ALUA_Mux_select = 2'b00; 
-					TBR_Mux_select = 1'b1;
-					ALU_op = 6'b000000;
-					in_PA = IR_Out[18:14];
-					
-					// Check priority
-					nextState <= 8'b10011100;
+					if(PSR_Mux_out[7]) begin 
+						//go to trap 5
+					end
+					else begin
+						ALU_op = 6'b000000;
+						in_PA = 5'b00000;
+						in_PC  = IR_Out[29:25];
+						ALUA_Mux_select = 2'b00;
+						ALUB_Mux_select = 4'b1000;
+						nextState <= 7'b1101110;//change
+					end
 				end
-				else
-					// Nop
+			7'b1101110:
 				begin
-					nextState <= 8'b01101101; // Flow control
+					register_file =1;
+					nextState <= 7'b1101111;//change
 				end
-			end
+			7'b1101111:
+				begin
+					register_file =0;
+					nextState <= 7'b1101101;//flow control
+				end
 			
-			// Immediate
-			8'b10000110:
-			begin	
-				extender_select = 2'b00;
-				ALUB_Mux_select = 4'b0001;
-				nextState <= 8'b10001000;
-			end
-			
-			// Register
-			8'b10000111:
-			begin	
-				ALUB_Mux_select = 4'b0000;
-				in_PB = IR_Out[4:0];
-				nextState <= 8'b10001000;
-			end
-			
-			// TBR enable
-			8'b10001000:
-			begin	
-				TBR_enable = 1;
-				nextState <= 8'b10001001;
-			end
-			
-			// TBR disable
-			8'b10001001:
-			begin	
-				TBR_enable = 0;
-				// Save S in PS
-				PS = PSR_Out[7];
-				// Write to PS
-				PSR_Mux_select = 3'b100;
-				nextState <= 8'b10001010;
-			end
-			
-			// PSR enable
-			8'b10001010:
-			begin	
-				PSR_Enable = 1;
-				nextState <= 8'b10001011;
-			end
-			
-			// Enter supervisor
-			8'b10001011:
-			begin	
-				PSR_Enable = 0;
-				PSR_Mux_select = 3'b001;
-				S = 1;
-				nextState <= 8'b10001100;
-			end
-			
-			// PSR Enable
-			8'b10001100:
-			begin	
-				PSR_Enable = 1;
-				nextState <= 8'b10001101;
-			end
-			
-			// Disable Traps (ET)
-			8'b10001101:
-			begin	
-				PSR_Enable = 0;
-				PSR_Mux_select = 3'b010;
-				ET = 0;
-				nextState <= 8'b10001110;
-			end
-			
-			
-			// PSR Enable
-			8'b10001110:
-			begin	
-				PSR_Enable = 1;
-				nextState <= 8'b10001111;
-			end
-			
-			// Decrement CWP
-			8'b10001111:
-			begin	
-				PSR_Enable = 0;
-				ALU_op = 6'b000100; // sub
-				ALUA_Mux_select = 2'b11;//CWP
-				ALUB_Mux_select = 4'b0111;//1
-				PSR_Mux_select = 3'b011; //CWP to write	
-				nextState <= 8'b10010000;
-			end
-			
-			// PSR Enable
-			8'b10010000:
-			begin	
-				PSR_Enable = 1;
-				nextState <= 8'b10010001;
-			end
-			
-			// Saving PC
-			8'b10010001:
-			begin	
-				PSR_Enable = 0;
-				ALU_op = 6'b000000; // add
-				in_PA = 5'b00000; //GET PC
-				ALUB_Mux_select = 4'b0011;
-				ALUA_Mux_select = 2'b00;
-				in_PC = 5'b10001;//PC->r17
-				nextState <= 8'b10010010;
-			end
-			
-			// Enable Reg
-			8'b10010010:
-			begin	
-				register_file = 1;
-				nextState <= 8'b10010011;
-			end
-			
-			// Saving nPC
-			8'b10010011:
-			begin	
-				register_file = 0;
-				ALUB_Mux_select = 4'b0100;
-				in_PC = 5'b10010;//NPC->r18
-				nextState <= 8'b10010100;
-			end
-			
-			// Enable Reg
-			8'b10010100:
-			begin	
-				register_file = 1;
-				nextState <= 8'b10010101;
-			end
-			
-			// Jump to trap PC <- TBR
-			8'b10010101:
-			begin	
-				register_file = 0;
-				//PC<-TBR
-				PC_In_Mux_select = 2'b10;  //TBR_Out
-				nextState <= 8'b10010110;
-			end
-			
-			// Enable PC
-			8'b10010110:
-			begin	
-				PC_enable = 1;
-				nextState <= 8'b10010111;
-			end
-			
-			// Disable PC, nPC -> PC + 4
-			8'b10010111:
-			begin	
-				PC_enable = 0;
-				//NPC<-TBR+4
-				ALUA_Mux_select = 2'b10; //NPC Out
-				ALUB_Mux_select = 4'b0110; //4
-				nextState <= 8'b10011000;
-			end
-			
-			// Enable nPC
-			8'b10011000:
-			begin	
-				NPC_enable = 1;
-				nextState <= 8'b10011001;
-			end
-			
-			// Disable nPC
-			8'b10011001:
-			begin	
-				NPC_enable = 0;
-				nextState = 8'b00000100; // Go to Fetch
-			end
-			
-			/********************/
-			/*	  Priority		*/
-			/*					*/
-			
-			8'b10011100:
-			begin
-				#1;
-				$display("hi: %b", TR_PR_Out[2]);
-				if(Hardware_Trap)
+			//Read TBR
+			7'b1110000:
 				begin
 					
+					if(PSR_Mux_out[7]) begin 
+						//go to trap 5
+						//nextState <= 
+					end
+					else begin
+						ALU_op = 6'b000000;
+						in_PA = 5'b00000;
+						in_PC  = IR_Out[29:25];
+						ALUA_Mux_select = 2'b00;
+						ALUB_Mux_select = 4'b1001;
+						nextState <= 7'b1110001;
+					end
 				end
-				// Overflow
-				else if(TR_PR_Out[0])
+			7'b1110001:
 				begin
-					
+					register_file =1;
+					nextState <= 7'b1110010;
 				end
-				// Underflow
-				else if(TR_PR_Out[1])
+			
+			7'b1110010:
 				begin
-					
+					register_file =0;
+					nextState <= 7'b1101101;//flow control
 				end
-				// Trap 3
-				else if(TR_PR_Out[2])
+			
+			//Read PSR
+			7'b1110011:
 				begin
-					TR_PR_enable = 0;
-					if(IR_Out[13])
-						nextState = 8'b10000110;
-					else
-						nextState = 8'b10000111;
+					if(PSR_Mux_out[7]) begin 
+						//go to trap 5
+					end
+					else begin
+						ALU_op = 6'b000000;
+						in_PA = 5'b00000;
+						in_PC  = IR_Out[29:25];
+						ALUA_Mux_select = 2'b00;
+						ALUB_Mux_select = 4'b1010;
+						nextState <= 7'b1110100;
+					end
 				end
-				// Trap 4
-				else if(TR_PR_Out[3])
+			7'b1110100:
 				begin
-					
+					register_file =1;
+					nextState <= 7'b1110101;
 				end
-			end
+			
+			7'b1110101:
+				begin
+					register_file =1;
+					nextState <= 7'b1101101; //go to flow control
+				end
+	
+			
 		endcase
 endmodule
