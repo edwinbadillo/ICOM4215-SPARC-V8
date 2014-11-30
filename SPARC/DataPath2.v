@@ -100,7 +100,7 @@ module DataPath2(
 	register_32 TEMP(TEMP_Out, RAM_Out, TEMP_Enable, TEMP_Clr, Clk);
 
 	// Process State Register
-	register_32 PSR(PSR_out, PSR_Mux_out, PSR_Enable, PSR_Clr, Clk);
+	PSR_register_32 PSR(PSR_out, PSR_Mux_out, PSR_Enable, PSR_Clr, Clk);
 	
 	TBR_register_32 TBR (TBR_Out, TBR_Mux_out, TBR_enable, TBR_Clr, Clk);
 	
@@ -143,7 +143,7 @@ module DataPath2(
 	mux_32_4x1 PC_In_Mux(PC_Mux_out, PC_In_Mux_select, NPC_out, ALU_out, TBR_Out, 32'h00000000);
 	
 	// Mux for the input of PSR
-	mux_8x1 PSR_Mux(PSR_Mux_out, PSR_Mux_select, {PSR_out[31:24],N,Z,V,C,PSR_out[19:0]}, {PSR_out[31:7],S,PSR_out[5:0]}, {PSR_out[31:6],ET,PSR_out[4:0]}, {PSR_out[31:2], ALU_out[1:0]}, {PSR_out[31:7],PS,PSR_out[5:0]}, ALU_out, 32'hZZZZZZZZ, 32'hZZZZZZZZ);
+	mux_8x1 PSR_Mux(PSR_Mux_out, PSR_Mux_select, {PSR_out[31:24],N,Z,V,C,PSR_out[19:0]}, {PSR_out[31:8],S,PSR_out[6:0]}, {PSR_out[31:6],ET,PSR_out[4:0]}, {PSR_out[31:2], ALU_out[1:0]}, {PSR_out[31:7],PS,PSR_out[5:0]}, ALU_out, 32'hZZZZZZZZ, 32'hZZZZZZZZ);
 	
 	BLA bla(out_BLA, BA_O, BN_O, IR_Out[28:25], PSR_out[23:20]);
 
