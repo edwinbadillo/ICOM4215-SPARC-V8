@@ -1420,7 +1420,9 @@ module ControlUnit2(
 
 			8'b10100110: // State 166
 			begin
-				if(WIM_Out & 2**((PSR_Out[1:0] - 1) % 4) || WIM_Out & 2**((PSR_Out[1:0] - 2) % 4))
+				$display("Result 1 %d",PSR_Out[1:0] - 1'b1);
+				$display("Result 1 %d",2**(PSR_Out[1:0] - 1'b1));
+				if(WIM_Out & 2**(PSR_Out[1:0] - 1'b1))
 				begin
 					$display("Overflow in save");
 					// Overflow
@@ -1511,7 +1513,7 @@ module ControlUnit2(
 			8'b10101101: // State 173
 			begin
 			
-				if(WIM_Out & 2**((PSR_Out[1:0] + 1) % 4))
+				if(WIM_Out & 2**(PSR_Out[1:0] + 1))
 				begin
 					$display("Underflow in restore");
 					// Underflow

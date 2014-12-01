@@ -44,7 +44,7 @@ module test_showTime3;
 		#1 Clk = !Clk;
 	end
 	
-	always @(Clk) begin
+	always @(IR_Out) begin
 		$display("Time: %tns", $time);
 		$display("State %b \t nextState %b", ControlUnit.state, ControlUnit.nextState);
 		$display("Clock: %d", Clk);
@@ -137,7 +137,7 @@ module test_showTime3;
 		$display("r10 r18: %d", DataPath.register_file.r_out[10]);
 		$display("r9 r17: %d", DataPath.register_file.r_out[9]);
 		$display("r8 r16: %d", DataPath.register_file.r_out[8]);
-		for(j = 352; j<404; j=j+4)
+		for(j = 352; j<440; j=j+4)
 		begin
 			$display("DataPath.ram.Mem[%0d]= %b %b %b %b\n",j,DataPath.ram.Mem[j],DataPath.ram.Mem[j+1],DataPath.ram.Mem[j+2],DataPath.ram.Mem[j+3]);
 		end
