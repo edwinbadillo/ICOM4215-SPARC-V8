@@ -1249,70 +1249,75 @@ module ControlUnit2(
 					// Underflow
 					Underflow = 1;
 					TR_PR_enable = 1;
-					
 					// Check priority
 					nextState <= 8'b10011010;
 				end
-				ALU_op = 6'b000000; // add
-				ALUA_Mux_select = 2'b11;//CWP
-				ALUB_Mux_select = 4'b0111;//1
-				PSR_Mux_select = 3'b011; //CWP to write
+				PC_In_Mux_select = 2'b00;
+				
 				nextState = 8'b10011100; 
 			end
 			
-			// PSR Enable
 			8'b10011100:
 			begin	
-				PSR_Enable = 1;
+				// Enable PC
+				PC_enable = 1;
+
 				nextState <= 8'b10011101;
 			end
 			
 			// PSR Disable
 			8'b10011101:
 			begin	
-				PSR_Enable = 0;
-				PC_In_Mux_select = 2'b00;
+				// Disable PC, nPC = rs1 + rs2 or rs1 + simm13
+				PC_enable = 0;
+				// nPC = rs1 + rs2 or rs1 + simm13
+				ALU_op = 6'b000000; // add
+				in_PA = IR_Out[18:14]; // Get rs1
+				if (IR_Out[13]) begin 
+					//B is an immediate argument in IR
+					ALUB_Mux_select = 4'b0001; // Select output of sign extender as B for ALU
+					extender_select = 2'b00;  // Select 13bit to 32bit extender
+				end
+				else begin 
+					//B is a register
+					ALUB_Mux_select = 3'b000;
+					in_PB = IR_Out[4:0];
+				end
+				in_PC = IR_Out[29:25];
 				nextState <= 8'b10011110;
 			end
 			
-			// Enable PC
+			
 			8'b10011110:
-			begin	
-				PC_enable = 1;
+			begin
+			// Enable register
+				register_file = 1;
+				NPC_enable = 1;
 				nextState <= 8'b10011111;
 			end
 			
-			// Disable PC, nPC = rs1 + rs2 or rs1 + simm13
 			8'b10011111:
 			begin	
-				PC_enable = 0;
-				// nPC = rs1 + rs2 or rs1 + simm13
-				in_PA = IR_Out[18:14]; // Get rs1
-				if (IR_Out[13]) begin 
-				//B is an immediate argument in IR
-				ALUB_Mux_select = 4'b0001; // Select output of sign extender as B for ALU
-				extender_select = 2'b00;  // Select 13bit to 32bit extender
-				end
-				else begin 
-				//B is a register
-				ALUB_Mux_select = 3'b000;
-				in_PB = IR_Out[4:0];
-				end
-				in_PC = IR_Out[29:25];
+				//Disable register,
+				register_file = 0;
+				NPC_enable = 0;
+				ALUA_Mux_select = 2'b11;//CWP
+				ALUB_Mux_select = 4'b0111;//1
+				PSR_Mux_select = 3'b011; //CWP to write
 				nextState <= 8'b10100000;
 			end
 			
-			// Enable register
+			
 			8'b10100000:
 			begin	
-				register_file = 1;
+				 PSR_Enable = 1;
 				nextState <= 8'b10100001;
 			end
 			
-			// Disable register, restore S from PS
+			//  restore S from PS
 			8'b10100001:
 			begin	
-				register_file = 0;
+				PSR_Enable = 0;
 				S = PSR_Out[6];
 				PSR_Mux_select = 3'b001;	
 				nextState = 8'b10100010;
