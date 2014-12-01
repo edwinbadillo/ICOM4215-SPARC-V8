@@ -32,7 +32,7 @@ module DataPath2(
 	output [31:0] WIM_Out,
 	
 	// Priority
-	input TR_PR_enable, TR_PR_Clr, Overflow, Underflow, T3, T4,
+	input TR_PR_enable, TR_PR_Clr, Overflow, Underflow, T3, T4, T5,
 	output [31:0] TR_PR_out,
 	
 	// ALU
@@ -108,7 +108,7 @@ module DataPath2(
 	register_32 WIM (WIM_Out, ALU_out, WIM_enable, WIM_Clr, Clk);
 	
 	// Priority Trap register
-	register_32 TR_PR (TR_PR_out, {28'b0000000000000000000000000000, T4, T3, Underflow, Overflow}, TR_PR_enable, TR_PR_Clr, Clk);
+	register_32 TR_PR (TR_PR_out, {27'b000000000000000000000000000,T5, T4, T3, Underflow, Overflow}, TR_PR_enable, TR_PR_Clr, Clk);
 	
 	/* Components */
 	
@@ -134,7 +134,7 @@ module DataPath2(
 	mux_2x1 TBR_Mux(TBR_Mux_out, TBR_Mux_select, ALU_out, {TBR_Out[31:7], ALU_out[2:0], TBR_Out[3:0]});
 	
 	// Mux for selecting second operand for ALU
-	mux_32_16x1 ALUB_Mux(ALUB_Mux_out, ALUB_Mux_select, out_PB, extender_out, MDR_Out, PC_out, NPC_out, TEMP_Out, 32'h00000004, 32'h00000001, WIM_Out,TBR_Out,PSR_out, 32'hZZZZZZZZ, 32'hZZZZZZZZ,32'hZZZZZZZZ,32'hZZZZZZZZ,32'hZZZZZZZZ);
+	mux_32_16x1 ALUB_Mux(ALUB_Mux_out, ALUB_Mux_select, out_PB, extender_out, MDR_Out, PC_out, NPC_out, TEMP_Out, 32'h00000004, 32'h00000001, WIM_Out,TBR_Out,PSR_out, 32'h00000000, 32'h00000002,32'h00000003,32'h00000004,32'h00000005);
 
 	// Mux for selecting first operand for ALU
 	mux_32_4x1 ALUA_Mux(ALUA_Mux_out, ALUA_Mux_select, out_PA, PC_out, NPC_out, {30'b000_0000_0000_0000_0000_0000_0000_000, PSR_out[1:0]});

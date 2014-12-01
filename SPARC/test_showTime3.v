@@ -23,22 +23,22 @@ module test_showTime3;
 
 	/* Outputs */
 	wire [31:0]IR_Out, ALU_Out, extender_out, out_PA, out_PB, ALUB_Mux_out, PSR_out, ALUA_Mux_out, WIM_Out, TR_PR_out;
-	wire MFC, MSET, BA_O, BN_O, cond, out_BLA, Overflow, Underflow, T3, T4;
+	wire MFC, MSET, BA_O, BN_O, cond, out_BLA, Overflow, Underflow, T3, T4, T5;
 	
 	reg Clk = 0;
 	
 	parameter sim_time = 200000;
 	
-	integer fd, positionInMem, data, i, j, counter = 0,fp;
+	integer fd, positionInMem, data, i, j = 0, counter = 0,fp;
 
 	reg RESET = 0, Hardware_Trap = 0;
 	
 	DataPath2 DataPath(IR_enable, IR_In, IR_Out, PC_enable, PC_Clr, NPC_enable, NPC_Clr, PSR_Enable, PSR_Clr, S, PS, ET, PSR_out, TEMP_Enable, TEMP_Clr, MDR_Enable, MDR_Clr,
-		MAR_Enable, MAR_Clr, TBR_enable, TBR_Clr, WIM_enable, WIM_Clr, WIM_Out, TR_PR_enable, TR_PR_Clr, Overflow, Underflow, T3, T4, TR_PR_out, ALU_op, ALU_Out, register_file_enable, in_PA, in_PB, in_PC, out_PA, out_PB, extender_select, extender_out, 
+		MAR_Enable, MAR_Clr, TBR_enable, TBR_Clr, WIM_enable, WIM_Clr, WIM_Out, TR_PR_enable, TR_PR_Clr, Overflow, Underflow, T3, T4, T5, TR_PR_out, ALU_op, ALU_Out, register_file_enable, in_PA, in_PB, in_PC, out_PA, out_PB, extender_select, extender_out, 
 		ALUA_Mux_select, ALUA_Mux_out, ALUB_Mux_select, ALUB_Mux_out, MDR_Mux_select, PC_In_Mux_select, TBR_Mux_select, PSR_Mux_select, RAM_OpCode, RAM_enable, MFC, MSET, out_BLA, BA_O, BN_O, Clk);
 	
 	ControlUnit2 ControlUnit(IR_enable, NPC_enable, PC_enable, MDR_Enable, MAR_Enable, register_file_enable, RAM_enable, PSR_Enable, TBR_enable, TR_PR_enable, WIM_enable, PC_Clr, TR_PR_Clr, TBR_Clr,PSR_Clr, WIM_Clr, extender_select, PC_In_Mux_select, ALUA_Mux_select, PSR_Mux_select, ALUB_Mux_select,
-		MDR_Mux_select, TBR_Mux_select, in_PC, in_PA, in_PB, ALU_op, RAM_OpCode, S, PS, ET, Overflow, Underflow, T3, T4, WIM_Out, PSR_out, TR_PR_out, ALU_Out, IR_Out, MFC, MSET, out_BLA, BA_O, BN_O, RESET, Hardware_Trap, Clk);
+		MDR_Mux_select, TBR_Mux_select, in_PC, in_PA, in_PB, ALU_op, RAM_OpCode, S, PS, ET, Overflow, Underflow, T3, T4, T5, WIM_Out, PSR_out, TR_PR_out, ALU_Out, IR_Out, MFC, MSET, out_BLA, BA_O, BN_O, RESET, Hardware_Trap, Clk);
 		
 	always begin
 		#1 Clk = !Clk;
@@ -70,60 +70,60 @@ module test_showTime3;
 		$display("r6: %d", DataPath.register_file.r_out[6]);
 		$display("r7: %d", DataPath.register_file.r_out[7]);
 		$display("Window 3");
-		$display("r8: %d", DataPath.register_file.r_out[8]);
-		$display("r9: %d", DataPath.register_file.r_out[9]);
-		$display("r10: %d", DataPath.register_file.r_out[10]);
-		$display("r11: %d", DataPath.register_file.r_out[11]);
-		$display("r12: %d", DataPath.register_file.r_out[12]);
-		$display("r13: %d", DataPath.register_file.r_out[13]);
-		$display("r14: %d", DataPath.register_file.r_out[14]);
-		$display("r15: %d", DataPath.register_file.r_out[15]);
-		$display("r16: %d", DataPath.register_file.r_out[16]);
-		$display("r17: %d", DataPath.register_file.r_out[17]);
-		$display("r18: %d", DataPath.register_file.r_out[18]);
-		$display("r19: %d", DataPath.register_file.r_out[19]);
-		$display("r20: %d", DataPath.register_file.r_out[20]);
-		$display("r21: %d", DataPath.register_file.r_out[21]);
-		$display("r22: %d", DataPath.register_file.r_out[22]);
-		$display("r23: %d", DataPath.register_file.r_out[23]);
+		$display("r16: %d", DataPath.register_file.r_out[8]);
+		$display("r17: %d", DataPath.register_file.r_out[9]);
+		$display("r18: %d", DataPath.register_file.r_out[10]);
+		$display("r19: %d", DataPath.register_file.r_out[11]);
+		$display("r20: %d", DataPath.register_file.r_out[12]);
+		$display("r21: %d", DataPath.register_file.r_out[13]);
+		$display("r22: %d", DataPath.register_file.r_out[14]);
+		$display("r23: %d", DataPath.register_file.r_out[15]);
+		$display("r24: %d", DataPath.register_file.r_out[16]);
+		$display("r25: %d", DataPath.register_file.r_out[17]);
+		$display("r26: %d", DataPath.register_file.r_out[18]);
+		$display("r27: %d", DataPath.register_file.r_out[19]);
+		$display("r28: %d", DataPath.register_file.r_out[20]);
+		$display("r29: %d", DataPath.register_file.r_out[21]);
+		$display("r30: %d", DataPath.register_file.r_out[22]);
+		$display("r31: %d", DataPath.register_file.r_out[23]);
 		$display("Window 2");
-		$display("r24: %d", DataPath.register_file.r_out[24]);
-		$display("r25: %d", DataPath.register_file.r_out[25]);
-		$display("r26: %d", DataPath.register_file.r_out[26]);
-		$display("r27: %d", DataPath.register_file.r_out[27]);
-		$display("r28: %d", DataPath.register_file.r_out[28]);
-		$display("r29: %d", DataPath.register_file.r_out[29]);
-		$display("r30: %d", DataPath.register_file.r_out[30]);
-		$display("r31: %d", DataPath.register_file.r_out[31]);
-		$display("r8: %d", DataPath.register_file.r_out[32]);
-		$display("r9: %d", DataPath.register_file.r_out[33]);
-		$display("r10: %d", DataPath.register_file.r_out[34]);
-		$display("r11: %d", DataPath.register_file.r_out[35]);
-		$display("r12: %d", DataPath.register_file.r_out[36]);
-		$display("r13: %d", DataPath.register_file.r_out[37]);
-		$display("r14: %d", DataPath.register_file.r_out[38]);
-		$display("r15: %d", DataPath.register_file.r_out[39]);
+		$display("r8: %0d", DataPath.register_file.r_out[24]);
+		$display("r9: %0d", DataPath.register_file.r_out[25]);
+		$display("r10: %0d", DataPath.register_file.r_out[26]);
+		$display("r11: %d", DataPath.register_file.r_out[27]);
+		$display("r12: %d", DataPath.register_file.r_out[28]);
+		$display("r13: %d", DataPath.register_file.r_out[29]);
+		$display("r14: %d", DataPath.register_file.r_out[30]);
+		$display("r15: %d", DataPath.register_file.r_out[31]);
+		$display("r16: %d", DataPath.register_file.r_out[32]);
+		$display("r17: %d", DataPath.register_file.r_out[33]);
+		$display("r18: %d", DataPath.register_file.r_out[34]);
+		$display("r19: %d", DataPath.register_file.r_out[35]);
+		$display("r20: %d", DataPath.register_file.r_out[36]);
+		$display("r21: %d", DataPath.register_file.r_out[37]);
+		$display("r22: %d", DataPath.register_file.r_out[38]);
+		$display("r23: %d", DataPath.register_file.r_out[39]);
 		$display("Window 1");
-		$display("r16: %d", DataPath.register_file.r_out[40]);
-		$display("r17: %d", DataPath.register_file.r_out[41]);
-		$display("r18: %d", DataPath.register_file.r_out[42]);
-		$display("r19: %d", DataPath.register_file.r_out[43]);
-		$display("r20: %d", DataPath.register_file.r_out[44]);
-		$display("r21: %d", DataPath.register_file.r_out[45]);
-		$display("r22: %d", DataPath.register_file.r_out[46]);
-		$display("r23: %d", DataPath.register_file.r_out[47]);
-		$display("r24: %d", DataPath.register_file.r_out[48]);
-		$display("r25: %d", DataPath.register_file.r_out[49]);
-		$display("r26: %d", DataPath.register_file.r_out[50]);
-		$display("r27: %d", DataPath.register_file.r_out[51]);
-		$display("r28: %d", DataPath.register_file.r_out[52]);
-		$display("r29: %d", DataPath.register_file.r_out[53]);
-		$display("r30: %d", DataPath.register_file.r_out[54]);
-		$display("r31: %d", DataPath.register_file.r_out[55]);
+		$display("r8: %0d", DataPath.register_file.r_out[40]);
+		$display("r9: %0d", DataPath.register_file.r_out[41]);
+		$display("r10: %0d", DataPath.register_file.r_out[42]);
+		$display("r11: %d", DataPath.register_file.r_out[43]);
+		$display("r12: %d", DataPath.register_file.r_out[44]);
+		$display("r13: %d", DataPath.register_file.r_out[45]);
+		$display("r14: %d", DataPath.register_file.r_out[46]);
+		$display("r15: %d", DataPath.register_file.r_out[47]);
+		$display("r16: %d", DataPath.register_file.r_out[48]);
+		$display("r17: %d", DataPath.register_file.r_out[49]);
+		$display("r18: %d", DataPath.register_file.r_out[50]);
+		$display("r19: %d", DataPath.register_file.r_out[51]);
+		$display("r20: %d", DataPath.register_file.r_out[52]);
+		$display("r21: %d", DataPath.register_file.r_out[53]);
+		$display("r22: %d", DataPath.register_file.r_out[54]);
+		$display("r23: %d", DataPath.register_file.r_out[55]);
 		$display("Window 0");
-		$display("r8: %d", DataPath.register_file.r_out[56]);
-		$display("r9: %d", DataPath.register_file.r_out[57]);
-		$display("r10: %d", DataPath.register_file.r_out[58]);
+		$display("r8: %0d", DataPath.register_file.r_out[56]);
+		$display("r9: %0d", DataPath.register_file.r_out[57]);
+		$display("r10: %0d", DataPath.register_file.r_out[58]);
 		$display("r11: %d", DataPath.register_file.r_out[59]);
 		$display("r12: %d", DataPath.register_file.r_out[60]);
 		$display("r13: %d", DataPath.register_file.r_out[61]);
@@ -137,9 +137,10 @@ module test_showTime3;
 		$display("r21: %d", DataPath.register_file.r_out[69]);
 		$display("r22: %d", DataPath.register_file.r_out[70]);
 		$display("r23: %d", DataPath.register_file.r_out[71]);
-		$display("Mem[352]: %d", DataPath.ram.Mem[384]);
-		$display("Mem[352]: %d", DataPath.ram.Mem[388]);
-		$display("Mem[352]: %d", DataPath.ram.Mem[392]);
+		for(j = 384; j<396; j=j+4)
+		begin
+			$display("DataPath.ram.Mem[%0d]= %b %b %b %b\n",j,DataPath.ram.Mem[j],DataPath.ram.Mem[j+1],DataPath.ram.Mem[j+2],DataPath.ram.Mem[j+3]);
+		end
 		$display("PC_out:  %d", DataPath.PC.out);
 		$display("NPC_out: %d", DataPath.NPC.out);
 		$display("MAR_Out: %d \t RAM_OpCode = %b", DataPath.MAR_Out, RAM_OpCode);

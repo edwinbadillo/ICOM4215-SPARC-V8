@@ -20,7 +20,7 @@ module ControlUnit2(
 	// PSR
 	output reg S, PS, ET,
 	// Priority
-	output reg Overflow, Underflow, T3,T4,
+	output reg Overflow, Underflow, T3, T4, T5,
 	
 	// WIM and PSR
 	input [31:0] WIM_Out, PSR_Out, TR_PR_Out, ALU_out,
@@ -67,6 +67,7 @@ module ControlUnit2(
 				Underflow = 0;
 				T3 = 0;
 				T4 = 0;
+				T5 = 0;
 				
 				nextState = 8'b00000001;
 			end
@@ -174,9 +175,16 @@ module ControlUnit2(
 					// Sethi
 					if (IR_Out[24:22] === 3'b100) nextState = 8'b00001001;
 					// Branches
-					else
-						nextState = 8'b00001100;
+					else if (IR_Out[24:22] === 3'b010)
 					begin
+						nextState = 8'b00001100;
+					end
+					else begin
+						$display("\n\n\nILLEGAL INSTRUCTION DETECTED\n\n\n");
+						// Set the TBR and do all the magicks to PC <- TBR, nPC <- TBR + 4
+						T5 = 1;
+						TR_PR_enable = 1;
+						nextState = 8'b10011010;
 					end
 				end
 				// OP = 01 (Call)
@@ -227,27 +235,28 @@ module ControlUnit2(
 					begin
 						nextState = 8'b1111100;
 					end
-
+					// Faltan
+					// Arithmetic
+					else if(IR_Out[24:19] === 6'b000001 || IR_Out[24:19] === 6'b010001 || IR_Out[24:19] === 6'b000101 || IR_Out[24:19] === 6'b010101 || IR_Out[24:19] === 6'b000010 || IR_Out[24:19] === 6'b010010 || IR_Out[24:19] === 6'b000110 || IR_Out[24:19] === 6'b010110 || IR_Out[24:19] === 6'b010011 || IR_Out[24:19] === 6'b000011 || IR_Out[24:19] === 6'b000111 || IR_Out[24:19] === 6'b010111 || IR_Out[24:19] === 6'b100101 || IR_Out[24:19] === 6'b100110 || IR_Out[24:19] === 6'b100111 || IR_Out[24:19] === 6'b000000 || IR_Out[24:19] === 6'b010000 || IR_Out[24:19] === 6'b001000 || IR_Out[24:19] === 6'b011000 || IR_Out[24:19] === 6'b000100 || IR_Out[24:19] === 6'b010100 || IR_Out[24:19] === 6'b001100 || IR_Out[24:19] === 6'b011100)
+						nextState = 8'b01010001;
 					// SAVE
 					else if(IR_Out[24:19] == 6'b111100)
 					begin
 						// go to first state of save
-						$display("SAVE!!!!!");
 						nextState = 8'b10100110;
 					end
 
 					else if(IR_Out[24:19] == 6'b111101)
 					begin
 						// go to first state of restore
-						$display("RESTORE!!!!!");
 						nextState = 8'b10101101; // Go to state 173
 					end
-
-					// Faltan
-					// Arithmetic
-					else 
-						nextState = 8'b01010001;
-					begin
+					else begin
+						$display("\n\n\nILLEGAL INSTRUCTION DETECTED\n\n\n");
+						// Set the TBR and do all the magicks to PC <- TBR, nPC <- TBR + 4
+						T5 = 1;
+						TR_PR_enable = 1;
+						nextState = 8'b10011010;
 					end
 				end
 				// OP = 11
@@ -264,10 +273,20 @@ module ControlUnit2(
 					begin
 						nextState = 8'b01100100;
 					end
+					else begin
+						$display("\n\n\nILLEGAL INSTRUCTION DETECTED\n\n\n");
+						// Set the TBR and do all the magicks to PC <- TBR, nPC <- TBR + 4
+						T5 = 1;
+						TR_PR_enable = 1;
+						nextState = 8'b10011010;
+					end
 				end
 				else begin
-				$display("\n\n\nILLEGAL INSTRUCTION DETECTED\n\n\n");
-				// Set the TBR and do all the magicks to PC <- TBR, nPC <- TBR + 4
+					$display("\n\n\nILLEGAL INSTRUCTION DETECTED\n\n\n");
+					// Set the TBR and do all the magicks to PC <- TBR, nPC <- TBR + 4
+					T5 = 1;
+					TR_PR_enable = 1;
+					nextState = 8'b10011010;
 				end
 			end
 			/********************/
@@ -813,6 +832,9 @@ module ControlUnit2(
 				begin
 					if(!PSR_Out[7]) begin 
 						//go to trap 5
+						T5 = 1;
+						TR_PR_enable = 1;
+						nextState = 8'b10011010;
 					end
 					else begin
 						ALU_op = 6'b000000;
@@ -839,7 +861,9 @@ module ControlUnit2(
 				begin
 					if(!PSR_Out[7]) begin 
 						//go to trap 5
-						//nextState <= 
+						T5 = 1;
+						TR_PR_enable = 1;
+						nextState = 8'b10011010;
 					end
 					else begin
 						ALU_op = 6'b000000;
@@ -898,6 +922,9 @@ module ControlUnit2(
 			begin
 				if(!PSR_Out[7]) begin 
 					//go to trap 5
+					T5 = 1;
+					TR_PR_enable = 1;
+					nextState = 8'b10011010;
 				end
 				else begin
 					ALU_op = 6'b000011; //XOR
@@ -934,6 +961,9 @@ module ControlUnit2(
 			begin
 				if(!PSR_Out[7]) begin 
 					//go to trap 5
+					T5 = 1;
+					TR_PR_enable = 1;
+					nextState = 8'b10011010;
 				end
 				else begin
 					ALU_op = 6'b000011; //XOR
@@ -978,6 +1008,9 @@ module ControlUnit2(
 			begin
 				if(!PSR_Out[7]) begin 
 					//go to trap 5
+					T5 = 1;
+					TR_PR_enable = 1;
+					nextState = 8'b10011010;
 				end
 				else begin
 					ALU_op = 6'b000011; //XOR
@@ -1019,11 +1052,6 @@ module ControlUnit2(
 					T3 = 1;
 					TR_PR_enable = 1;
 					
-					ALUA_Mux_select = 2'b00; 
-					TBR_Mux_select = 1'b1;
-					ALU_op = 6'b000000;
-					in_PA = IR_Out[18:14];
-					
 					// Check priority
 					nextState <= 8'b10011010;
 				end
@@ -1052,7 +1080,9 @@ module ControlUnit2(
 			
 			// TBR enable
 			8'b10001000:
-			begin	
+			begin
+				TR_PR_enable = 1;
+				
 				TBR_enable = 1;
 				nextState <= 8'b10001001;
 			end
@@ -1060,6 +1090,8 @@ module ControlUnit2(
 			// TBR disable
 			8'b10001001:
 			begin	
+				TR_PR_enable = 0;
+				
 				TBR_enable = 0;
 				// Save S in PS
 				PS = PSR_Out[7];
@@ -1206,7 +1238,7 @@ module ControlUnit2(
 			
 			8'b10011011: //155
 			begin	
-				if( WIM_Out & 2^(PSR_Out[1:0] + 1) == 1)
+				if( WIM_Out & 2^((PSR_Out[1:0] + 1) % 4) == 1)
 				begin
 					// Underflow
 					Underflow = 1;
@@ -1317,45 +1349,76 @@ module ControlUnit2(
 			8'b10011010:
 			begin
 				#1;
-				$display("hi: %b", TR_PR_Out[2]);
+				TR_PR_enable = 0;
+				
+				ALUA_Mux_select = 2'b00; 
+				TBR_Mux_select = 1'b1;
+				ALU_op = 6'b000000;
+				
 				if(Hardware_Trap)
 				begin
-					
+					in_PA = 5'b00000;
+					ALUB_Mux_select = 4'b10011;
+					nextState = 8'b10001000; // Go to trap handler  (136)
 				end
 				// Overflow
 				else if(TR_PR_Out[0])
 				begin
-					
+					Overflow = 0;
+					in_PA = 5'b00000;
+					ALUB_Mux_select = 4'b00111;
+					nextState = 8'b10001000; // Go to trap handler  (136)
 				end
 				// Underflow
 				else if(TR_PR_Out[1])
 				begin
 					// Go to trap table 2
+					Underflow = 0;
+					in_PA = 5'b00000;
+					ALUB_Mux_select = 4'b10100;
+					nextState = 8'b10001000; // Go to trap handler  (136)
 				end
 				// Trap 3
 				else if(TR_PR_Out[2])
 				begin
-					TR_PR_enable = 0;
+					T3 = 0;
+					in_PA = IR_Out[18:14];
 					if(IR_Out[13])
-						nextState = 8'b10000110;
+						nextState = 8'b10000110; // Go to trap handler  (136)
 					else
-						nextState = 8'b10000111;
+						nextState = 8'b10000111; // Go to trap handler  (136)
 				end
 				// Trap 4
 				else if(TR_PR_Out[3])
 				begin
-					
+					T4 = 0;
+				end
+				// Trap 5
+				else if(TR_PR_Out[4])
+				begin
+					T5 = 0;
+					in_PA = 5'b00000;
+					ALUB_Mux_select = 4'b11111;
+					nextState = 8'b10001000; // Go to trap handler  (136)
 				end
 			end
-
-
+			
 			/**************/
 			/*    Save    */
 			/**************/
 
 			8'b10100110: // State 166
 			begin
-				$display("HUE HUE HU EHU HUE \n\n\n\n\n\n\n\n\n");
+				if(WIM_Out & 2^((PSR_Out[1:0] - 1) % 4))
+				begin
+					$display("Overflow in save");
+					// Overflow
+					Overflow = 1;
+					TR_PR_enable = 1;
+					
+					// Check priority
+					nextState <= 8'b10011010;
+				end
 				PSR_Clr = 0;
 				ALU_op          = 6'b000000;     // add, no change in flags
 				ALUA_Mux_select = 2'b00;         // choose port A of regfile in muxA
@@ -1436,7 +1499,18 @@ module ControlUnit2(
 
 			8'b10101101: // State 173
 			begin
-				$display("LELELELELELELELELELELELEELEL\n\n\n\n\n\n\n");
+			
+				if(WIM_Out & 2^((PSR_Out[1:0] + 1) % 4))
+				begin
+					$display("Underflow in restore");
+					// Underflow
+					Underflow = 1;
+					TR_PR_enable = 1;
+					
+					// Check priority
+					nextState <= 8'b10011010;
+				end
+				
 				PSR_Clr = 0;
 				ALU_op          = 6'b000000;     // add, no change in flags
 				ALUA_Mux_select = 2'b00;         // choose port A of regfile in muxA
@@ -1517,9 +1591,6 @@ module ControlUnit2(
 				register_file = 0;
 				nextState = 8'b01101101; // Finished. Return to Flow Control, 109;
 			end
-
-
-
-
+			
 		endcase
 endmodule
