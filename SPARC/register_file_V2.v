@@ -77,14 +77,14 @@ module register_file(output [31:0] out_PA, output [31:0] out_PB, input [31:0] in
 	or or64 (r_enable[64], d3_out[24], d0_out[8]);
 
 	// 71-64 clear,
-	or or71_clear (r_clear[71], d3_clear[31], d0_out[15]);
-	or or70_clear (r_clear[70], d3_clear[30], d0_out[14]);
-	or or69_clear (r_clear[69], d3_clear[29], d0_out[13]);
-	or or68_clear (r_clear[68], d3_clear[28], d0_out[12]);
-	or or67_clear (r_clear[67], d3_clear[27], d0_out[11]);
-	or or66_clear (r_clear[66], d3_clear[26], d0_out[10]);
-	or or65_clear (r_clear[65], d3_clear[25], d0_out[9]);
-	or or64_clear (r_clear[64], d3_clear[24], d0_out[8]);
+	or or71_clear (r_clear[71], d3_clear[31], d0_clear[15]);
+	or or70_clear (r_clear[70], d3_clear[30], d0_clear[14]);
+	or or69_clear (r_clear[69], d3_clear[29], d0_clear[13]);
+	or or68_clear (r_clear[68], d3_clear[28], d0_clear[12]);
+	or or67_clear (r_clear[67], d3_clear[27], d0_clear[11]);
+	or or66_clear (r_clear[66], d3_clear[26], d0_clear[10]);
+	or or65_clear (r_clear[65], d3_clear[25], d0_clear[9]);
+	or or64_clear (r_clear[64], d3_clear[24], d0_clear[8]);
 
 	// Window 3: Local (r23-r16 del window 3) 
 	// r63-56 enable
@@ -164,21 +164,21 @@ module register_file(output [31:0] out_PA, output [31:0] out_PB, input [31:0] in
 	or or32 (r_enable[32], d2_out[8], d1_out[24]);
 
 	// r39-32 clear,
-	or or39_clear (r_clear[39], d2_clear[15], d1_out[31]);
-	or or38_clear (r_clear[38], d2_clear[14], d1_out[30]);
-	or or37_clear (r_clear[37], d2_clear[13], d1_out[29]);
-	or or36_clear (r_clear[36], d2_clear[12], d1_out[28]);
-	or or35_clear (r_clear[35], d2_clear[11], d1_out[27]);
-	or or34_clear (r_clear[34], d2_clear[10], d1_out[26]);
-	or or33_clear (r_clear[33], d2_clear[9], d1_out[25]);
-	or or32_clear (r_clear[32], d2_clear[8], d1_out[24]);
+	or or39_clear (r_clear[39], d2_clear[15], d1_clear[31]);
+	or or38_clear (r_clear[38], d2_clear[14], d1_clear[30]);
+	or or37_clear (r_clear[37], d2_clear[13], d1_clear[29]);
+	or or36_clear (r_clear[36], d2_clear[12], d1_clear[28]);
+	or or35_clear (r_clear[35], d2_clear[11], d1_clear[27]);
+	or or34_clear (r_clear[34], d2_clear[10], d1_clear[26]);
+	or or33_clear (r_clear[33], d2_clear[9], d1_clear[25]);
+	or or32_clear (r_clear[32], d2_clear[8], d1_clear[24]);
 
 	// Window 1: Local (r23-r16 del window 1) 
 	// r31-24 enable,
 	buf buf31  (r_enable[31], d1_out[23]);
 	buf buf30  (r_enable[30], d1_out[22]);
 	buf buf29  (r_enable[29], d1_out[21]);
-	buf buf28  (r_enable[28], d1_out[20]);;
+	buf buf28  (r_enable[28], d1_out[20]);
 	buf buf27  (r_enable[27], d1_out[19]);
 	buf buf26  (r_enable[26], d1_out[18]);
 	buf buf25  (r_enable[25], d1_out[17]);
@@ -218,24 +218,25 @@ module register_file(output [31:0] out_PA, output [31:0] out_PB, input [31:0] in
 
 	// Window 0: Local (r23-r16 del window 0) 
 	// r15-8 enable,
-	buf buf15  (r_enable[15], d0_out[15]);
-	buf buf14  (r_enable[14], d0_out[14]);
-	buf buf13  (r_enable[13], d0_out[13]);
-	buf buf12  (r_enable[12], d0_out[12]);
-	buf buf11  (r_enable[11], d0_out[11]);
-	buf buf10  (r_enable[10], d0_out[10]);
-	buf buf9   (r_enable[9],  d0_out[9]);
-	buf buf8   (r_enable[8],  d0_out[8]);
+	buf buf15  (r_enable[15], d0_out[23]);
+	buf buf14  (r_enable[14], d0_out[22]);
+	buf buf13  (r_enable[13], d0_out[21]);
+	buf buf12  (r_enable[12], d0_out[20]);
+	buf buf11  (r_enable[11], d0_out[19]);
+	buf buf10  (r_enable[10], d0_out[18]);
+	buf buf9   (r_enable[9],  d0_out[17]);
+	buf buf8   (r_enable[8],  d0_out[16]);
 
 	// r15-8 clear,
-	buf buf15_clear  (r_clear[15], d0_clear[15]);
-	buf buf14_clear  (r_clear[14], d0_clear[14]);
-	buf buf13_clear  (r_clear[13], d0_clear[13]);
-	buf buf12_clear  (r_clear[12], d0_clear[12]);
-	buf buf11_clear  (r_clear[11], d0_clear[11]);
-	buf buf10_clear  (r_clear[10], d0_clear[10]);
-	buf buf9_clear   (r_clear[9],  d0_clear[9]);
-	buf buf8_clear   (r_clear[8],  d0_clear[8]);
+	buf buf15_clear  (r_clear[15], d0_clear[23]);
+	buf buf14_clear  (r_clear[14], d0_clear[22]);
+	buf buf13_clear  (r_clear[13], d0_clear[21]);
+	buf buf12_clear  (r_clear[12], d0_clear[20]);
+	buf buf11_clear  (r_clear[11], d0_clear[19]);
+	buf buf10_clear  (r_clear[10], d0_clear[18]);
+	buf buf9_clear   (r_clear[9],  d0_clear[17]);
+	buf buf8_clear   (r_clear[8],  d0_clear[16]);
+
 
 
 	//---REGISTERS-----------------------------------------------------------------------------------------------------

@@ -38,6 +38,7 @@ module ControlUnit2(
 	input Hardware_Trap,
 	input Clk);
 
+	integer a;
 	reg [7:0] nextState, state;
 	
 	always @ (posedge Clk, RESET)
@@ -1409,7 +1410,7 @@ module ControlUnit2(
 
 			8'b10100110: // State 166
 			begin
-				if(WIM_Out & 2^((PSR_Out[1:0] - 1) % 4))
+				if(WIM_Out & 2**((PSR_Out[1:0] - 1) % 4))
 				begin
 					$display("Overflow in save");
 					// Overflow
@@ -1500,7 +1501,7 @@ module ControlUnit2(
 			8'b10101101: // State 173
 			begin
 			
-				if(WIM_Out & 2^((PSR_Out[1:0] + 1) % 4))
+				if(WIM_Out & 2**((PSR_Out[1:0] + 1) % 4))
 				begin
 					$display("Underflow in restore");
 					// Underflow
