@@ -44,7 +44,7 @@ module test_showTime3;
 		#1 Clk = !Clk;
 	end
 	
-	always @(IR_Out) begin
+	always @(Clk) begin
 		$display("Time: %tns", $time);
 		$display("State %b \t nextState %b", ControlUnit.state, ControlUnit.nextState);
 		$display("Clock: %d", Clk);

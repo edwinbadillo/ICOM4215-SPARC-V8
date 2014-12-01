@@ -235,6 +235,11 @@ module ControlUnit2(
 					else if(IR_Out[24:19] == 6'b110010)
 					begin
 						nextState = 8'b1111100;
+					end 
+					// rett
+					else if(IR_Out[24:19] == 6'b111001)
+					begin
+						nextState = 8'b10011011;
 					end
 					// Faltan
 					// Arithmetic
@@ -1239,7 +1244,7 @@ module ControlUnit2(
 			
 			8'b10011011: //155
 			begin	
-				if( WIM_Out & 2^((PSR_Out[1:0] + 1) % 4) == 1)
+				if( WIM_Out & 2**((PSR_Out[1:0] + 1) % 4) == 1)
 				begin
 					// Underflow
 					Underflow = 1;
@@ -1410,7 +1415,7 @@ module ControlUnit2(
 
 			8'b10100110: // State 166
 			begin
-				if(WIM_Out & 2**((PSR_Out[1:0] - 1) % 4))
+				if(WIM_Out & 2**((PSR_Out[1:0] - 1) % 4) || WIM_Out & 2**((PSR_Out[1:0] - 2) % 4))
 				begin
 					$display("Overflow in save");
 					// Overflow
