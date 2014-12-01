@@ -63,165 +63,179 @@ module register_file(output [31:0] out_PA, output [31:0] out_PB, input [31:0] in
 	// Mux for clearing global registers r0-r7
 	mux_8_4x1 mux_global_clear(r_clear[7:0], current_window, d0_clear[7:0], d1_clear[7:0], d2_clear[7:0], d3_clear[7:0]);
 	
-	// r8-r15 enable,
-	or  or8   (r_enable[8],  d3_out[24], d0_out[8]);
-	or  or9   (r_enable[9],  d3_out[25], d0_out[9]);
-	or  or10  (r_enable[10], d3_out[26], d0_out[10]);
-	or  or11  (r_enable[11], d3_out[27], d0_out[11]);
-	or  or12  (r_enable[12], d3_out[28], d0_out[12]);
-	or  or13  (r_enable[13], d3_out[29], d0_out[13]);
-	or  or14  (r_enable[14], d3_out[30], d0_out[14]);
-	or  or15  (r_enable[15], d3_out[31], d0_out[15]);
-	
-	// r8-r15 clear,
-	or  or8_clear   (r_clear[8],  d3_clear[24], d0_clear[8]);
-	or  or9_clear   (r_clear[9],  d3_clear[25], d0_clear[9]);
-	or  or10_clear  (r_clear[10], d3_clear[26], d0_clear[10]);
-	or  or11_clear  (r_clear[11], d3_clear[27], d0_clear[11]);
-	or  or12_clear  (r_clear[12], d3_clear[28], d0_clear[12]);
-	or  or13_clear  (r_clear[13], d3_clear[29], d0_clear[13]);
-	or  or14_clear  (r_clear[14], d3_clear[30], d0_clear[14]);
-	or  or15_clear  (r_clear[15], d3_clear[31], d0_clear[15]);
 
-	// r16-23 enable,
-	buf buf16 (r_enable[16], d0_out[16]);
-	buf buf17 (r_enable[17], d0_out[17]);
-	buf buf18 (r_enable[18], d0_out[18]);
-	buf buf19 (r_enable[19], d0_out[19]);
-	buf buf20 (r_enable[20], d0_out[20]);
-	buf buf21 (r_enable[21], d0_out[21]);
-	buf buf22 (r_enable[22], d0_out[22]);
-	buf buf23 (r_enable[23], d0_out[23]);
-	
-	// r16-23 clear,
-	buf buf16_clear (r_clear[16], d0_clear[16]);
-	buf buf17_clear (r_clear[17], d0_clear[17]);
-	buf buf18_clear (r_clear[18], d0_clear[18]);
-	buf buf19_clear (r_clear[19], d0_clear[19]);
-	buf buf20_clear (r_clear[20], d0_clear[20]);
-	buf buf21_clear (r_clear[21], d0_clear[21]);
-	buf buf22_clear (r_clear[22], d0_clear[22]);
-	buf buf23_clear (r_clear[23], d0_clear[23]);
+	// Window 3: Inputs  (r31-r24 del window 3) 
+	// Window 0: Outputs (r15-r8  del window 0) 
+	// 71-64  enable,
+	or or71 (r_enable[71], d3_out[31], d0_out[15]);
+	or or70 (r_enable[70], d3_out[30], d0_out[14]);
+	or or69 (r_enable[69], d3_out[29], d0_out[13]);
+	or or68 (r_enable[68], d3_out[28], d0_out[12]);
+	or or67 (r_enable[67], d3_out[27], d0_out[11]);
+	or or66 (r_enable[66], d3_out[26], d0_out[10]);
+	or or65 (r_enable[65], d3_out[25], d0_out[9]);
+	or or64 (r_enable[64], d3_out[24], d0_out[8]);
 
-	// r24-31 enable,
-	or  or24  (r_enable[24], d0_out[24], d1_out[8]);
-	or  or25  (r_enable[25], d0_out[25], d1_out[9]);
-	or  or26  (r_enable[26], d0_out[26], d1_out[10]);
-	or  or27  (r_enable[27], d0_out[27], d1_out[11]);
-	or  or28  (r_enable[28], d0_out[28], d1_out[12]);
-	or  or29  (r_enable[29], d0_out[29], d1_out[13]);
-	or  or30  (r_enable[30], d0_out[30], d1_out[14]);
-	or  or31  (r_enable[31], d0_out[31], d1_out[15]);
-	
-	// r24-r31 clear,
-	or  or24_clear  (r_clear[24], d0_clear[24], d1_clear[8]);
-	or  or25_clear  (r_clear[25], d0_clear[25], d1_clear[9]);
-	or  or26_clear  (r_clear[26], d0_clear[26], d1_clear[10]);
-	or  or27_clear  (r_clear[27], d0_clear[27], d1_clear[11]);
-	or  or28_clear  (r_clear[28], d0_clear[28], d1_clear[12]);
-	or  or29_clear  (r_clear[29], d0_clear[29], d1_clear[13]);
-	or  or30_clear  (r_clear[30], d0_clear[30], d1_clear[14]);
-	or  or31_clear  (r_clear[31], d0_clear[31], d1_clear[15]);
+	// 71-64 clear,
+	or or71_clear (r_clear[71], d3_clear[31], d0_out[15]);
+	or or70_clear (r_clear[70], d3_clear[30], d0_out[14]);
+	or or69_clear (r_clear[69], d3_clear[29], d0_out[13]);
+	or or68_clear (r_clear[68], d3_clear[28], d0_out[12]);
+	or or67_clear (r_clear[67], d3_clear[27], d0_out[11]);
+	or or66_clear (r_clear[66], d3_clear[26], d0_out[10]);
+	or or65_clear (r_clear[65], d3_clear[25], d0_out[9]);
+	or or64_clear (r_clear[64], d3_clear[24], d0_out[8]);
 
-	// r32-r39 enable,
-	buf buf32 (r_enable[32], d1_out[16]);
-	buf buf33 (r_enable[33], d1_out[17]);
-	buf buf34 (r_enable[34], d1_out[18]);
-	buf buf35 (r_enable[35], d1_out[19]);
-	buf buf36 (r_enable[36], d1_out[20]);
-	buf buf37 (r_enable[37], d1_out[21]);
-	buf buf38 (r_enable[38], d1_out[22]);
-	buf buf39 (r_enable[39], d1_out[23]);
-	
-	// r32-r39 clear,
-	buf buf32_clear (r_clear[32], d1_clear[16]);
-	buf buf33_clear (r_clear[33], d1_clear[17]);
-	buf buf34_clear (r_clear[34], d1_clear[18]);
-	buf buf35_clear (r_clear[35], d1_clear[19]);
-	buf buf36_clear (r_clear[36], d1_clear[20]);
-	buf buf37_clear (r_clear[37], d1_clear[21]);
-	buf buf38_clear (r_clear[38], d1_clear[22]);
-	buf buf39_clear (r_clear[39], d1_clear[23]);
+	// Window 3: Local (r23-r16 del window 3) 
+	// r63-56 enable
+	buf buf63  (r_enable[63], d3_out[23]); 
+	buf buf62  (r_enable[62], d3_out[22]); 
+	buf buf61  (r_enable[61], d3_out[21]); 
+	buf buf60  (r_enable[60], d3_out[20]); 
+	buf buf59  (r_enable[59], d3_out[19]); 
+	buf buf58  (r_enable[58], d3_out[18]);
+	buf buf57  (r_enable[57], d3_out[17]); 
+	buf buf56  (r_enable[56], d3_out[16]); 
 
-	// r40-47 enable,
-	or  or40  (r_enable[40], d1_out[24], d2_out[8]);
-	or  or41  (r_enable[41], d1_out[25], d2_out[9]);
-	or  or42  (r_enable[42], d1_out[26], d2_out[10]);
-	or  or43  (r_enable[43], d1_out[27], d2_out[11]);
-	or  or44  (r_enable[44], d1_out[28], d2_out[12]);
-	or  or45  (r_enable[45], d1_out[29], d2_out[13]);
-	or  or46  (r_enable[46], d1_out[30], d2_out[14]);
-	or  or47  (r_enable[47], d1_out[31], d2_out[15]);
-	
-	// r40-47 clear,
-	or  or40_clear  (r_clear[40], d1_clear[24], d2_clear[8]);
-	or  or41_clear  (r_clear[41], d1_clear[25], d2_clear[9]);
-	or  or42_clear  (r_clear[42], d1_clear[26], d2_clear[10]);
-	or  or43_clear  (r_clear[43], d1_clear[27], d2_clear[11]);
-	or  or44_clear  (r_clear[44], d1_clear[28], d2_clear[12]);
-	or  or45_clear  (r_clear[45], d1_clear[29], d2_clear[13]);
-	or  or46_clear  (r_clear[46], d1_clear[30], d2_clear[14]);
-	or  or47_clear  (r_clear[47], d1_clear[31], d2_clear[15]);
-	
-	// r48-55 enable,
-	buf buf48 (r_enable[48], d2_out[16]);
-	buf buf49 (r_enable[49], d2_out[17]);
-	buf buf50 (r_enable[50], d2_out[18]);
-	buf buf51 (r_enable[51], d2_out[19]);
-	buf buf52 (r_enable[52], d2_out[20]);
-	buf buf53 (r_enable[53], d2_out[21]);
-	buf buf54 (r_enable[54], d2_out[22]);
-	buf buf55 (r_enable[55], d2_out[23]);
-	
-	// r48-55 clear,
-	buf buf48_clear (r_clear[48], d2_clear[16]);
-	buf buf49_clear (r_clear[49], d2_clear[17]);
-	buf buf50_clear (r_clear[50], d2_clear[18]);
-	buf buf51_clear (r_clear[51], d2_clear[19]);
-	buf buf52_clear (r_clear[52], d2_clear[20]);
-	buf buf53_clear (r_clear[53], d2_clear[21]);
-	buf buf54_clear (r_clear[54], d2_clear[22]);
-	buf buf55_clear (r_clear[55], d2_clear[23]);
+	// r63-56 clear
+	buf buf63_clear  (r_clear[63], d3_clear[23]); 
+	buf buf62_clear  (r_clear[62], d3_clear[22]); 
+	buf buf61_clear  (r_clear[61], d3_clear[21]); 
+	buf buf60_clear  (r_clear[60], d3_clear[20]); 
+	buf buf59_clear  (r_clear[59], d3_clear[19]); 
+	buf buf58_clear  (r_clear[58], d3_clear[18]); 
+	buf buf57_clear  (r_clear[57], d3_clear[17]); 
+	buf buf56_clear  (r_clear[56], d3_clear[16]); 
 
-	// r56-63 enable
-	or  or56  (r_enable[56], d2_out[24], d3_out[8]);
-	or  or57  (r_enable[57], d2_out[25], d3_out[9]);
-	or  or58  (r_enable[58], d2_out[26], d3_out[10]);
-	or  or59  (r_enable[59], d2_out[27], d3_out[11]);
-	or  or60  (r_enable[60], d2_out[28], d3_out[12]);
-	or  or61  (r_enable[61], d2_out[29], d3_out[13]);
-	or  or62  (r_enable[62], d2_out[30], d3_out[14]);
-	or  or63  (r_enable[63], d2_out[31], d3_out[15]);
+	// Window 3: Outputs (r15-r8  del window 3)
+	// Window 2: Inputs  (r31-r24 del window 2) 
+	// r55-48 enable,
+	or or55 (r_enable[55], d3_out[15],  d2_out[31]);
+	or or54 (r_enable[54], d3_out[14],  d2_out[30]);
+	or or53 (r_enable[53], d3_out[13],  d2_out[29]);
+	or or52 (r_enable[52], d3_out[12],  d2_out[28]);
+	or or51 (r_enable[51], d3_out[11],  d2_out[27]);
+	or or50 (r_enable[50], d3_out[10],  d2_out[26]);
+	or or49 (r_enable[49], d3_out[9],  d2_out[25]);
+	or or48 (r_enable[48], d3_out[8],  d2_out[24]);
+
+	// r55-48 clear,
+	or or55_clear (r_clear[55], d3_clear[15],  d2_clear[31]);
+	or or54_clear (r_clear[54], d3_clear[14],  d2_clear[30]);
+	or or53_clear (r_clear[53], d3_clear[13],  d2_clear[29]);
+	or or52_clear (r_clear[52], d3_clear[12],  d2_clear[28]);
+	or or51_clear (r_clear[51], d3_clear[11],  d2_clear[27]);
+	or or50_clear (r_clear[50], d3_clear[10],  d2_clear[26]);
+	or or49_clear (r_clear[49], d3_clear[9],  d2_clear[25]);
+	or or48_clear (r_clear[48], d3_clear[8],  d2_clear[24]);
+
+	// Window 2: Local (r23-r16 del window 2) 
+	// r47-40 enable,
+	buf buf47  (r_enable[47], d2_out[23]);
+	buf buf46  (r_enable[46], d2_out[22]);
+	buf buf45  (r_enable[45], d2_out[21]);
+	buf buf44  (r_enable[44], d2_out[20]);
+	buf buf43  (r_enable[43], d2_out[19]);
+	buf buf42  (r_enable[42], d2_out[18]);
+	buf buf41  (r_enable[41], d2_out[17]);
+	buf buf40  (r_enable[40], d2_out[16]);
 	
-	// r56-63 clear
-	or  or56_clear  (r_clear[56], d2_clear[24], d3_clear[8]);
-	or  or57_clear  (r_clear[57], d2_clear[25], d3_clear[9]);
-	or  or58_clear  (r_clear[58], d2_clear[26], d3_clear[10]);
-	or  or59_clear  (r_clear[59], d2_clear[27], d3_clear[11]);
-	or  or60_clear  (r_clear[60], d2_clear[28], d3_clear[12]);
-	or  or61_clear  (r_clear[61], d2_clear[29], d3_clear[13]);
-	or  or62_clear  (r_clear[62], d2_clear[30], d3_clear[14]);
-	or  or63_clear  (r_clear[63], d2_clear[31], d3_clear[15]);
+
+	// r47-40 clear,
+	buf buf47_clear  (r_clear[47], d2_clear[23]);
+	buf buf46_clear  (r_clear[46], d2_clear[22]);
+	buf buf45_clear  (r_clear[45], d2_clear[21]);
+	buf buf44_clear  (r_clear[44], d2_clear[20]);
+	buf buf43_clear  (r_clear[43], d2_clear[19]);
+	buf buf42_clear  (r_clear[42], d2_clear[18]);
+	buf buf41_clear  (r_clear[41], d2_clear[17]);
+	buf buf40_clear  (r_clear[40], d2_clear[16]);
 	
-	// 64-71 enable,
-	buf buf64 (r_enable[64], d3_out[16]);
-	buf buf65 (r_enable[65], d3_out[17]);
-	buf buf66 (r_enable[66], d3_out[18]);
-	buf buf67 (r_enable[67], d3_out[19]);
-	buf buf68 (r_enable[68], d3_out[20]);
-	buf buf69 (r_enable[69], d3_out[21]);
-	buf buf70 (r_enable[70], d3_out[22]);
-	buf buf71 (r_enable[71], d3_out[23]);
-	
-	// 64-71 clear,
-	buf buf64_clear (r_clear[64], d3_clear[16]);
-	buf buf65_clear (r_clear[65], d3_clear[17]);
-	buf buf66_clear (r_clear[66], d3_clear[18]);
-	buf buf67_clear (r_clear[67], d3_clear[19]);
-	buf buf68_clear (r_clear[68], d3_clear[20]);
-	buf buf69_clear (r_clear[69], d3_clear[21]);
-	buf buf70_clear (r_clear[70], d3_clear[22]);
-	buf buf71_clear (r_clear[71], d3_clear[23]);
+	// Window 2: Outputs (r15-r8  del window 2)
+	// Window 1: Inputs  (r31-r24 del window 1) 
+	// r39-32 enable,
+	or or39 (r_enable[39], d2_out[15], d1_out[31]);
+	or or38 (r_enable[38], d2_out[14], d1_out[30]);
+	or or37 (r_enable[37], d2_out[13], d1_out[29]);
+	or or36 (r_enable[36], d2_out[12], d1_out[28]);
+	or or35 (r_enable[35], d2_out[11], d1_out[27]);
+	or or34 (r_enable[34], d2_out[10], d1_out[26]);
+	or or33 (r_enable[33], d2_out[9], d1_out[25]);
+	or or32 (r_enable[32], d2_out[8], d1_out[24]);
+
+	// r39-32 clear,
+	or or39_clear (r_clear[39], d2_clear[15], d1_out[31]);
+	or or38_clear (r_clear[38], d2_clear[14], d1_out[30]);
+	or or37_clear (r_clear[37], d2_clear[13], d1_out[29]);
+	or or36_clear (r_clear[36], d2_clear[12], d1_out[28]);
+	or or35_clear (r_clear[35], d2_clear[11], d1_out[27]);
+	or or34_clear (r_clear[34], d2_clear[10], d1_out[26]);
+	or or33_clear (r_clear[33], d2_clear[9], d1_out[25]);
+	or or32_clear (r_clear[32], d2_clear[8], d1_out[24]);
+
+	// Window 1: Local (r23-r16 del window 1) 
+	// r31-24 enable,
+	buf buf31  (r_enable[31], d1_out[23]);
+	buf buf30  (r_enable[30], d1_out[22]);
+	buf buf29  (r_enable[29], d1_out[21]);
+	buf buf28  (r_enable[28], d1_out[20]);;
+	buf buf27  (r_enable[27], d1_out[19]);
+	buf buf26  (r_enable[26], d1_out[18]);
+	buf buf25  (r_enable[25], d1_out[17]);
+	buf buf24  (r_enable[24], d1_out[16]);
+
+	// r31-24 clear,
+	buf buf31_clear  (r_clear[31], d1_clear[23]);
+	buf buf30_clear  (r_clear[30], d1_clear[22]);
+	buf buf29_clear  (r_clear[29], d1_clear[21]);
+	buf buf28_clear  (r_clear[28], d1_clear[20]);
+	buf buf27_clear  (r_clear[27], d1_clear[19]);
+	buf buf26_clear  (r_clear[26], d1_clear[18]);
+	buf buf25_clear  (r_clear[25], d1_clear[17]);
+	buf buf24_clear  (r_clear[24], d1_clear[16]);
+
+	// Window 1: Outputs (r15-r8  del window 1)
+	// Window 0: Inputs  (r31-r24 del window 0) 
+	// r23-16 enable,
+	or or23 (r_enable[23], d1_out[15], d0_out[31]);
+	or or22 (r_enable[22], d1_out[14], d0_out[30]);
+	or or21 (r_enable[21], d1_out[13], d0_out[29]);
+	or or20 (r_enable[20], d1_out[12], d0_out[28]);
+	or or19 (r_enable[19], d1_out[11], d0_out[27]);
+	or or18 (r_enable[18], d1_out[10], d0_out[26]);
+	or or17 (r_enable[17], d1_out[9], d0_out[25]);
+	or or16 (r_enable[16], d1_out[8], d0_out[24]);
+
+	// r23-16 clear,
+	or or23_clear (r_clear[23], d1_clear[15], d0_clear[23]);
+	or or22_clear (r_clear[22], d1_clear[14], d0_clear[22]);
+	or or21_clear (r_clear[21], d1_clear[13], d0_clear[21]);
+	or or20_clear (r_clear[20], d1_clear[12], d0_clear[20]);
+	or or19_clear (r_clear[19], d1_clear[11], d0_clear[19]);
+	or or18_clear (r_clear[18], d1_clear[10], d0_clear[18]);
+	or or17_clear (r_clear[17], d1_clear[9], d0_clear[17]);
+	or or16_clear (r_clear[16], d1_clear[8], d0_clear[16]);
+
+	// Window 0: Local (r23-r16 del window 0) 
+	// r15-8 enable,
+	buf buf15  (r_enable[15], d0_out[15]);
+	buf buf14  (r_enable[14], d0_out[14]);
+	buf buf13  (r_enable[13], d0_out[13]);
+	buf buf12  (r_enable[12], d0_out[12]);
+	buf buf11  (r_enable[11], d0_out[11]);
+	buf buf10  (r_enable[10], d0_out[10]);
+	buf buf9   (r_enable[9],  d0_out[9]);
+	buf buf8   (r_enable[8],  d0_out[8]);
+
+	// r15-8 clear,
+	buf buf15_clear  (r_clear[15], d0_clear[15]);
+	buf buf14_clear  (r_clear[14], d0_clear[14]);
+	buf buf13_clear  (r_clear[13], d0_clear[13]);
+	buf buf12_clear  (r_clear[12], d0_clear[12]);
+	buf buf11_clear  (r_clear[11], d0_clear[11]);
+	buf buf10_clear  (r_clear[10], d0_clear[10]);
+	buf buf9_clear   (r_clear[9],  d0_clear[9]);
+	buf buf8_clear   (r_clear[8],  d0_clear[8]);
 
 
 	//---REGISTERS-----------------------------------------------------------------------------------------------------
