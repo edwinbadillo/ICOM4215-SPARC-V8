@@ -20,41 +20,43 @@ module register_file(output [31:0] out_PA, output [31:0] out_PB, input [31:0] in
 	//---DECODER-LOGIC-FOR-CHOOSING-CORRECT-REGISTER-BASED-ON-CURRENT-WINDOW FOR ENABLING-------------------------------------------
 
 	wire [3:0]  d_window_out; // 4-bit bus that is the output of the enable decoder in charge of choosing the current register window
-
+	
+	wire [31:0] d3_out; // The output of the decoder used for choosing a register in window 3
+	wire [31:0] d2_out; // The output of the decoder used for choosing a register in window 2
+	wire [31:0] d1_out; // The output of the decoder used for choosing a register in window 1
 	wire [31:0] d0_out; // The output of the decoder used for choosing a register in window 0
-	wire [31:0] d1_out;
-	wire [31:0] d2_out;
-	wire [31:0] d3_out;
+	
 
 	decoder_2x4 d_window(d_window_out, current_window, enable); // This decoder chooses the window
 
 	// Each one chooses one out of the 32 visible registers in the current window
-	decoder_5x32 d0(d0_out, in_PC, d_window_out[0]);
-	decoder_5x32 d1(d1_out, in_PC, d_window_out[1]);
-	decoder_5x32 d2(d2_out, in_PC, d_window_out[2]);
 	decoder_5x32 d3(d3_out, in_PC, d_window_out[3]);
+	decoder_5x32 d2(d2_out, in_PC, d_window_out[2]);
+	decoder_5x32 d1(d1_out, in_PC, d_window_out[1]);
+	decoder_5x32 d0(d0_out, in_PC, d_window_out[0]);
 	
 	//---DECODER-LOGIC-FOR-CHOOSING-CORRECT-REGISTER-BASED-ON-CURRENT-WINDOW FOR CLEARING-------------------------------------------
 	
 	wire [3:0]  d_window_out_clear; // 4-bit bus that is the output of the clear decoder in charge of choosing the current register window
 	
-	wire [31:0] d0_clear; // The output of the decoder used for clearing a register in window 0
-	wire [31:0] d1_clear;
-	wire [31:0] d2_clear;
 	wire [31:0] d3_clear;
+	wire [31:0] d2_clear;
+	wire [31:0] d1_clear;
+	wire [31:0] d0_clear; // The output of the decoder used for clearing a register in window 0
 
 	decoder_2x4 d_window_clear(d_window_out_clear, current_window, Clr); // This decoder chooses the window for clearing
 
-	// Each one chooses one out of the 32 visible registers in the current window to be cleared
-	decoder_5x32 c0(d0_clear, in_PC, d_window_out_clear[0]);
-	decoder_5x32 c1(d1_clear, in_PC, d_window_out_clear[1]);
-	decoder_5x32 c2(d2_clear, in_PC, d_window_out_clear[2]);
+	// Each one chooses one out of the 32 visible registers in the current window to be cleared	
 	decoder_5x32 c3(d3_clear, in_PC, d_window_out_clear[3]);
+	decoder_5x32 c2(d2_clear, in_PC, d_window_out_clear[2]);
+	decoder_5x32 c1(d1_clear, in_PC, d_window_out_clear[1]);
+	decoder_5x32 c0(d0_clear, in_PC, d_window_out_clear[0]);
 	
-	//---INTERCONNECTION OF CLEAR AND ENABLE SIGNALS TO THE REGISTERS--------------------------------------------------------------------------------------
+	
+	//---INTERCONNECTION-OF-CLEAR-AND-ENABLE-SIGNALS-TO-THE-REGISTERS--------------------------------------------------------------------------------------
 	
 	wire [71:0] r_enable; // a 72-bit bus for enabling each of the registers
-	wire [71:0] r_clear; // a 72-bit bus for clearing each of the registers
+	wire [71:0] r_clear;  // a 72-bit bus for clearing each of the registers
 
 	// Mux for enabling global registers r0-r7
 	mux_8_4x1 mux_global(r_enable[7:0], current_window, d0_out[7:0], d1_out[7:0], d2_out[7:0], d3_out[7:0]);
@@ -227,88 +229,102 @@ module register_file(output [31:0] out_PA, output [31:0] out_PB, input [31:0] in
 	wire [31:0] r_out[71:0]; // 72 32-bit buses corresponding to the outputs of the registers
 
 	// Global Registers r0-r7
-	register_dummy_32 r0  (r_out[0], in, Clk); // r0 should always be 0. It is implemented with a dummy 32'b0 register
-
-	register_32 r1  (r_out[1],  in, r_enable[1], r_clear[1], Clk);
-	register_32 r2  (r_out[2],  in, r_enable[2], r_clear[2], Clk);
-	register_32 r3  (r_out[3],  in, r_enable[3], r_clear[3], Clk);
-	register_32 r4  (r_out[4],  in, r_enable[4], r_clear[4], Clk);
-	register_32 r5  (r_out[5],  in, r_enable[5], r_clear[5], Clk);
-	register_32 r6  (r_out[6],  in, r_enable[6], r_clear[6], Clk);
 	register_32 r7  (r_out[7],  in, r_enable[7], r_clear[7], Clk);
-	// Variable registers 
-	// r8-r15
-	register_32 r8  (r_out[8],  in, r_enable[8],  r_clear[8], Clk);
-	register_32 r9  (r_out[9],  in, r_enable[9],  r_clear[9], Clk);
-	register_32 r10 (r_out[10], in, r_enable[10], r_clear[10], Clk);
-	register_32 r11 (r_out[11], in, r_enable[11], r_clear[11], Clk);
-	register_32 r12 (r_out[12], in, r_enable[12], r_clear[12], Clk);
-	register_32 r13 (r_out[13], in, r_enable[13], r_clear[13], Clk);
-	register_32 r14 (r_out[14], in, r_enable[14], r_clear[14], Clk);
-	register_32 r15 (r_out[15], in, r_enable[15], r_clear[15], Clk);
-	// r16-r23
-	register_32 r16 (r_out[16], in, r_enable[16], r_clear[16], Clk);
-	register_32 r17 (r_out[17], in, r_enable[17], r_clear[17], Clk);
-	register_32 r18 (r_out[18], in, r_enable[18], r_clear[18], Clk);
-	register_32 r19 (r_out[19], in, r_enable[19], r_clear[19], Clk);
-	register_32 r20 (r_out[20], in, r_enable[20], r_clear[20], Clk);
-	register_32 r21 (r_out[21], in, r_enable[21], r_clear[21], Clk);
-	register_32 r22 (r_out[22], in, r_enable[22], r_clear[22], Clk);
-	register_32 r23 (r_out[23], in, r_enable[23], r_clear[23], Clk);
-	// r24-r31
-	register_32 r24 (r_out[24], in, r_enable[24], r_clear[24], Clk);
-	register_32 r25 (r_out[25], in, r_enable[25], r_clear[25], Clk);
-	register_32 r26 (r_out[26], in, r_enable[26], r_clear[26], Clk);
-	register_32 r27 (r_out[27], in, r_enable[27], r_clear[27], Clk);
-	register_32 r28 (r_out[28], in, r_enable[28], r_clear[28], Clk);
-	register_32 r29 (r_out[29], in, r_enable[29], r_clear[29], Clk);
-	register_32 r30 (r_out[30], in, r_enable[30], r_clear[30], Clk);
-	register_32 r31 (r_out[31], in, r_enable[31], r_clear[31], Clk);
-	// r32-r39
-	register_32 r32 (r_out[32], in, r_enable[32], r_clear[32], Clk);
-	register_32 r33 (r_out[33], in, r_enable[33], r_clear[33], Clk);
-	register_32 r34 (r_out[34], in, r_enable[34], r_clear[34], Clk);
-	register_32 r35 (r_out[35], in, r_enable[35], r_clear[35], Clk);
-	register_32 r36 (r_out[36], in, r_enable[36], r_clear[36], Clk);
-	register_32 r37 (r_out[37], in, r_enable[37], r_clear[37], Clk);
-	register_32 r38 (r_out[38], in, r_enable[38], r_clear[38], Clk);
-	register_32 r39 (r_out[39], in, r_enable[39], r_clear[39], Clk);
-	// r40-r47
-	register_32 r40 (r_out[40], in, r_enable[40], r_clear[40], Clk);
-	register_32 r41 (r_out[41], in, r_enable[41], r_clear[41], Clk);
-	register_32 r42 (r_out[42], in, r_enable[42], r_clear[42], Clk);
-	register_32 r43 (r_out[43], in, r_enable[43], r_clear[43], Clk);
-	register_32 r44 (r_out[44], in, r_enable[44], r_clear[44], Clk);
-	register_32 r45 (r_out[45], in, r_enable[45], r_clear[45], Clk);
-	register_32 r46 (r_out[46], in, r_enable[46], r_clear[46], Clk);
-	register_32 r47 (r_out[47], in, r_enable[47], r_clear[47], Clk);
-	// r48-r55
-	register_32 r48 (r_out[48], in, r_enable[48], r_clear[48], Clk);
-	register_32 r49 (r_out[49], in, r_enable[49], r_clear[49], Clk);
-	register_32 r50 (r_out[50], in, r_enable[50], r_clear[50], Clk);
-	register_32 r51 (r_out[51], in, r_enable[51], r_clear[51], Clk);
-	register_32 r52 (r_out[52], in, r_enable[52], r_clear[52], Clk);
-	register_32 r53 (r_out[53], in, r_enable[53], r_clear[53], Clk);
-	register_32 r54 (r_out[54], in, r_enable[54], r_clear[54], Clk);
-	register_32 r55 (r_out[55], in, r_enable[55], r_clear[55], Clk);
-	// r56-r63
-	register_32 r56 (r_out[56], in, r_enable[56], r_clear[56], Clk);
-	register_32 r57 (r_out[57], in, r_enable[57], r_clear[57], Clk);
-	register_32 r58 (r_out[58], in, r_enable[58], r_clear[58], Clk);
-	register_32 r59 (r_out[59], in, r_enable[59], r_clear[59], Clk);
-	register_32 r60 (r_out[60], in, r_enable[60], r_clear[60], Clk);
-	register_32 r61 (r_out[61], in, r_enable[61], r_clear[61], Clk);
-	register_32 r62 (r_out[62], in, r_enable[62], r_clear[62], Clk);
-	register_32 r63 (r_out[63], in, r_enable[63], r_clear[63], Clk);
-	// r64-r71
-	register_32 r64 (r_out[64], in, r_enable[64], r_clear[64], Clk);
-	register_32 r65 (r_out[65], in, r_enable[65], r_clear[65], Clk);
-	register_32 r66 (r_out[66], in, r_enable[66], r_clear[66], Clk);
-	register_32 r67 (r_out[67], in, r_enable[67], r_clear[67], Clk);
-	register_32 r68 (r_out[68], in, r_enable[68], r_clear[68], Clk);
-	register_32 r69 (r_out[69], in, r_enable[69], r_clear[69], Clk);
-	register_32 r70 (r_out[70], in, r_enable[70], r_clear[70], Clk);
+	register_32 r6  (r_out[6],  in, r_enable[6], r_clear[6], Clk);
+	register_32 r5  (r_out[5],  in, r_enable[5], r_clear[5], Clk);
+	register_32 r4  (r_out[4],  in, r_enable[4], r_clear[4], Clk);
+	register_32 r3  (r_out[3],  in, r_enable[3], r_clear[3], Clk);
+	register_32 r2  (r_out[2],  in, r_enable[2], r_clear[2], Clk);
+	register_32 r1  (r_out[1],  in, r_enable[1], r_clear[1], Clk);
+	register_dummy_32 r0  (r_out[0], in, Clk); // r0 should always be 0. It is implemented with a dummy 32'b0 register
+	
+	// Variable registers
+
+	// Window 3: Inputs  (r31-r24 del window 3) 
+	// Window 0: Outputs (r15-r8  del window 0) 
 	register_32 r71 (r_out[71], in, r_enable[71], r_clear[71], Clk);
+	register_32 r70 (r_out[70], in, r_enable[70], r_clear[70], Clk);
+	register_32 r69 (r_out[69], in, r_enable[69], r_clear[69], Clk);
+	register_32 r68 (r_out[68], in, r_enable[68], r_clear[68], Clk);
+	register_32 r67 (r_out[67], in, r_enable[67], r_clear[67], Clk);
+	register_32 r66 (r_out[66], in, r_enable[66], r_clear[66], Clk);
+	register_32 r65 (r_out[65], in, r_enable[65], r_clear[65], Clk);
+	register_32 r64 (r_out[64], in, r_enable[64], r_clear[64], Clk);
+	
+	// Window 3: Local (r23-r16 del window 3) 
+	register_32 r63 (r_out[63], in, r_enable[63], r_clear[63], Clk);
+	register_32 r62 (r_out[62], in, r_enable[62], r_clear[62], Clk);
+	register_32 r61 (r_out[61], in, r_enable[61], r_clear[61], Clk);
+	register_32 r60 (r_out[60], in, r_enable[60], r_clear[60], Clk);
+	register_32 r59 (r_out[59], in, r_enable[59], r_clear[59], Clk);
+	register_32 r58 (r_out[58], in, r_enable[58], r_clear[58], Clk);
+	register_32 r57 (r_out[57], in, r_enable[57], r_clear[57], Clk);
+	register_32 r56 (r_out[56], in, r_enable[56], r_clear[56], Clk);
+
+	// Window 3: Outputs (r15-r8  del window 3)
+	// Window 2: Inputs  (r31-r24 del window 2) 
+	register_32 r55 (r_out[55], in, r_enable[55], r_clear[55], Clk);
+	register_32 r54 (r_out[54], in, r_enable[54], r_clear[54], Clk);
+	register_32 r53 (r_out[53], in, r_enable[53], r_clear[53], Clk);
+	register_32 r52 (r_out[52], in, r_enable[52], r_clear[52], Clk);
+	register_32 r51 (r_out[51], in, r_enable[51], r_clear[51], Clk);
+	register_32 r50 (r_out[50], in, r_enable[50], r_clear[50], Clk);
+	register_32 r49 (r_out[49], in, r_enable[49], r_clear[49], Clk);
+	register_32 r48 (r_out[48], in, r_enable[48], r_clear[48], Clk);
+	
+	// Window 2: Local (r23-r16 del window 2) 
+	register_32 r47 (r_out[47], in, r_enable[47], r_clear[47], Clk);
+	register_32 r46 (r_out[46], in, r_enable[46], r_clear[46], Clk);
+	register_32 r45 (r_out[45], in, r_enable[45], r_clear[45], Clk);
+	register_32 r44 (r_out[44], in, r_enable[44], r_clear[44], Clk);
+	register_32 r43 (r_out[43], in, r_enable[43], r_clear[43], Clk);
+	register_32 r42 (r_out[42], in, r_enable[42], r_clear[42], Clk);
+	register_32 r41 (r_out[41], in, r_enable[41], r_clear[41], Clk);
+	register_32 r40 (r_out[40], in, r_enable[40], r_clear[40], Clk);
+
+	// Window 2: Outputs (r15-r8  del window 2)
+	// Window 1: Inputs  (r31-r24 del window 1) 
+	register_32 r39 (r_out[39], in, r_enable[39], r_clear[39], Clk);
+	register_32 r38 (r_out[38], in, r_enable[38], r_clear[38], Clk);
+	register_32 r37 (r_out[37], in, r_enable[37], r_clear[37], Clk);
+	register_32 r36 (r_out[36], in, r_enable[36], r_clear[36], Clk);
+	register_32 r35 (r_out[35], in, r_enable[35], r_clear[35], Clk);
+	register_32 r34 (r_out[34], in, r_enable[34], r_clear[34], Clk);
+	register_32 r33 (r_out[33], in, r_enable[33], r_clear[33], Clk);
+	register_32 r32 (r_out[32], in, r_enable[32], r_clear[32], Clk);
+	
+	
+	// Window 1: Local (r23-r16 del window 1) 
+	register_32 r31 (r_out[31], in, r_enable[31], r_clear[31], Clk);
+	register_32 r30 (r_out[30], in, r_enable[30], r_clear[30], Clk);
+	register_32 r29 (r_out[29], in, r_enable[29], r_clear[29], Clk);
+	register_32 r28 (r_out[28], in, r_enable[28], r_clear[28], Clk);
+	register_32 r27 (r_out[27], in, r_enable[27], r_clear[27], Clk);
+	register_32 r26 (r_out[26], in, r_enable[26], r_clear[26], Clk);
+	register_32 r25 (r_out[25], in, r_enable[25], r_clear[25], Clk);
+	register_32 r24 (r_out[24], in, r_enable[24], r_clear[24], Clk);	
+	
+	// Window 1: Outputs (r15-r8  del window 1)
+	// Window 0: Inputs  (r31-r24 del window 0) 
+	register_32 r23 (r_out[23], in, r_enable[23], r_clear[23], Clk);
+	register_32 r22 (r_out[22], in, r_enable[22], r_clear[22], Clk);
+	register_32 r21 (r_out[21], in, r_enable[21], r_clear[21], Clk);
+	register_32 r20 (r_out[20], in, r_enable[20], r_clear[20], Clk);
+	register_32 r19 (r_out[19], in, r_enable[19], r_clear[19], Clk);
+	register_32 r18 (r_out[18], in, r_enable[18], r_clear[18], Clk);
+	register_32 r17 (r_out[17], in, r_enable[17], r_clear[17], Clk);
+	register_32 r16 (r_out[16], in, r_enable[16], r_clear[16], Clk);
+	
+	// Window 0: Local (r23-r16 del window 0) 
+	register_32 r15 (r_out[15], in, r_enable[15], r_clear[15], Clk);
+	register_32 r14 (r_out[14], in, r_enable[14], r_clear[14], Clk);
+	register_32 r13 (r_out[13], in, r_enable[13], r_clear[13], Clk);
+	register_32 r12 (r_out[12], in, r_enable[12], r_clear[12], Clk);
+	register_32 r11 (r_out[11], in, r_enable[11], r_clear[11], Clk);
+	register_32 r10 (r_out[10], in, r_enable[10], r_clear[10], Clk);
+	register_32 r9  (r_out[9],  in, r_enable[9],  r_clear[9], Clk);
+	register_32 r8  (r_out[8],  in, r_enable[8],  r_clear[8], Clk);
+
 
 
 	//---MULTIPLEXING-FOR-OUTPUT---------------------------------------------------------------------------------------
