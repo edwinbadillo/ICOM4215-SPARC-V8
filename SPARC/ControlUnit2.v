@@ -984,15 +984,20 @@ module ControlUnit2(
 						ALUB_Mux_select = 4'b0000;
 						in_PB = IR_Out[4:0];
 					end
+					PSR_Mux_select = 3'b101; //ALU_out
+					nextState <= 8'b01111010;
 					//ALU_out  = what we want to write
-					if(ALU_out[4:0] > 3) begin//// YOYOYOYOYO
-						//go to trap 5
-					end
-					else begin
-						PSR_Mux_select = 3'b101; //ALU_out
-						nextState <= 8'b01111010;
+					// if(ALU_out[4:0] > 3) begin//// YOYOYOYOYO
+						// go to trap 5
+						// T5 = 1;
+						// TR_PR_enable = 1;
+						// nextState = 8'b10011010;
+					// end
+					// else begin
+						// PSR_Mux_select = 3'b101; //ALU_out
+						// nextState <= 8'b01111010;
 
-					end
+					// end
 				end
 			end
 			
@@ -1369,7 +1374,7 @@ module ControlUnit2(
 				if(Hardware_Trap)
 				begin
 					in_PA = 5'b00000;
-					ALUB_Mux_select = 4'b10011;
+					ALUB_Mux_select = 4'b1011;
 					nextState = 8'b10001000; // Go to trap handler  (136)
 				end
 				// Overflow
@@ -1377,7 +1382,7 @@ module ControlUnit2(
 				begin
 					Overflow = 0;
 					in_PA = 5'b00000;
-					ALUB_Mux_select = 4'b00111;
+					ALUB_Mux_select = 4'b0111;
 					nextState = 8'b10001000; // Go to trap handler  (136)
 				end
 				// Underflow
@@ -1386,7 +1391,7 @@ module ControlUnit2(
 					// Go to trap table 2
 					Underflow = 0;
 					in_PA = 5'b00000;
-					ALUB_Mux_select = 4'b10100;
+					ALUB_Mux_select = 4'b1100;
 					nextState = 8'b10001000; // Go to trap handler  (136)
 				end
 				// Trap 3
@@ -1409,7 +1414,7 @@ module ControlUnit2(
 				begin
 					T5 = 0;
 					in_PA = 5'b00000;
-					ALUB_Mux_select = 4'b11111;
+					ALUB_Mux_select = 4'b1111;
 					nextState = 8'b10001000; // Go to trap handler  (136)
 				end
 			end
@@ -1420,8 +1425,6 @@ module ControlUnit2(
 
 			8'b10100110: // State 166
 			begin
-				$display("Result 1 %d",PSR_Out[1:0] - 1'b1);
-				$display("Result 1 %d",2**(PSR_Out[1:0] - 1'b1));
 				if(WIM_Out & 2**(PSR_Out[1:0] - 1'b1))
 				begin
 					$display("Overflow in save");
@@ -1512,12 +1515,12 @@ module ControlUnit2(
 
 			8'b10101101: // State 173
 			begin
-			
 				if(WIM_Out & 2**(PSR_Out[1:0] + 1))
 				begin
 					$display("Underflow in restore");
 					// Underflow
 					Underflow = 1;
+					// Overflow = 1;
 					TR_PR_enable = 1;
 					
 					// Check priority
