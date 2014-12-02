@@ -112,8 +112,6 @@ module DataPath2(
 	
 	/* Components */
 	
-	//register_file_coupler coupler(coupler_out, PSR_out[1:0]);
-	
 	register_file register_file(out_PA, out_PB, ALU_out, in_PA, in_PB, in_PC, register_file_enable, register_file_Clr, Clk, PSR_out[1:0]);
 	
 	// ALU
